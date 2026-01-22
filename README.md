@@ -12,8 +12,7 @@
 - Frontend: `React`, `NextJS`
 - Backend: `Firebase`
 - Language: `JavaScript`, `TypeScript`
-- Style: `Tailwind css` or `CSS Module`
-    - 기존에 주로 사용했던 `styled-components`는 ssr에는 적합하지 않음.
-    - `Tailwind CSS` or `CSS Module` 택 1
+- Style: `CSS Module`, `styled-components`
+- 상태 관리: `Zustand`
 ---
 
