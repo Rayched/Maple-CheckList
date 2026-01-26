@@ -2,21 +2,14 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { useEffect, useState } from "react";
 import styled from "styled-components";
-import ShowingNav from "./Navigations/ShowingNav";
-import HideNav from "./Navigations/HideNav";
-
-interface I_NavItem {
-
-}
 
 const Container = styled.nav`
     display: flex;
     flex-direction: row;
     align-items: center;
     justify-content: center;
-    width: 30%;
+    width: 100%;
     height: 100%;
 `;
 
@@ -51,25 +44,19 @@ const MatchBox = styled.div`
     z-index: 0;
 `;
 
-export default function NavBar(){
+export default function ShowingNav(){
     const pathNm = usePathname();
-    const [InnerWidth, setInnerWidth] = useState(window.innerWidth);
-
-    useEffect(() => {
-        console.log(InnerWidth);
-    }, [InnerWidth]);
-
-    useEffect(() => {
-        const WidthResized = () => {
-            setInnerWidth(window.innerWidth);
-        };
-
-        window.addEventListener("resize", WidthResized);
-    })
 
     return (
         <Container>
-            {InnerWidth >= 640 ? <ShowingNav /> : <HideNav />}
+            <NavItem>
+                <Link href={"/chartodos"}>메할일</Link>
+                {pathNm === "/chartodos" ? <MatchBox /> : null}
+            </NavItem>
+            <NavItem>
+                <Link href={"/incomes"}>주간 수익</Link>
+                {pathNm === "/incomes" ? <MatchBox /> : null}
+            </NavItem>
         </Container>
     );
 }
