@@ -2,7 +2,7 @@ import type { Metadata, Viewport } from "next";
 import "../styles/global.css";
 import styles from "../styles/Root.module.css";
 import Link from "next/link";
-import NavBar from "@/components/NavBar";
+import Navigations from "@/components/navs/Navigations";
 
 export interface I_LayoutProps {
   children: React.ReactNode;
@@ -36,7 +36,7 @@ export default function RootLayout({
             <img src={"imgs/logo/icons.png"} />
             <span>메이플 To Do</span>
           </Link>
-          <NavBar />
+          <Navigations />
         </header>
         {children}
       </body>
