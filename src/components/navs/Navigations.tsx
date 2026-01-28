@@ -7,6 +7,11 @@ import { useEffect, useState } from "react";
 import styled from "styled-components";
 import Sidebar from "./Sidebar";
 
+export type PathDataTypes = {
+    pathValue: string;
+    pathNm: string;
+};
+
 const Container = styled.div`
     width: 30%;
     height: 100%;
@@ -51,6 +56,7 @@ const PathCheck = styled.div`
     right: 0;
     z-index: 0;
     border-radius: 10px;
+    font-weight: bold;
     background-color: rgb(53, 59, 72);
 `;
 
@@ -77,6 +83,11 @@ const SidebarWrapper = styled.div`
     background-color: rgba(0, 0, 0, 0.8);
 `;
 
+const PathData: PathDataTypes[] = [
+    {pathValue: "/chartodos", pathNm: "메할일"},
+    {pathValue: "/incomes", pathNm: "주간 수익"}
+];
+
 export default function Navigations(){
     const [IsHide, setHide] = useState(true);
     const [InnerWidth, setInnerWidth] = useState<number>(0);
@@ -101,14 +112,16 @@ export default function Navigations(){
             {
                 InnerWidth >= 640 ? (
                     <LinkBox>
-                        <LinkItem>
-                            <Link href={"/chartodos"}>메할일</Link>
-                            {pathName === "/chartodos" ? <PathCheck>메할일</PathCheck>: null}
-                        </LinkItem>
-                        <LinkItem>
-                            <Link href={"/incomes"}>주간 수익</Link>
-                            {pathName === "/incomes" ? <PathCheck>주간 수익</PathCheck>: null}
-                        </LinkItem>
+                        {
+                            PathData.map((data, idx) => {
+                                return (
+                                    <LinkItem key={`path${idx}`}>
+                                        <Link href={data.pathValue}>{data.pathNm}</Link>
+                                        {pathName === data.pathValue ? <PathCheck>{data.pathNm}</PathCheck>: null}
+                                    </LinkItem>
+                                );
+                            })
+                        }
                     </LinkBox>
                 ): null
             }
@@ -125,7 +138,7 @@ export default function Navigations(){
                 { 
                     !IsHide ? (
                         <SidebarWrapper>
-                            <Sidebar setStateFn={() => setHide((s) => !s)} />
+                            <Sidebar pathData={PathData} setStateFn={() => setHide((s) => !s)} />
                         </SidebarWrapper>
                     ): null
                 }
