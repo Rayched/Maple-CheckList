@@ -1,7 +1,9 @@
 import Link from "next/link";
 import styles from "../../../../styles/addtodos.module.css";
-import { GetCharData, GetOcids } from "@/utils/Fetchs";
-import CharacterBox from "@/components/addtodos/CharacterBox";
+import {  GetCharData, GetOcids } from "@/utils/Fetchs";
+import CharacterBox from "@/components/chartodos/addtodos/CharacterBox";
+import { redirect } from "next/navigation";
+import { Categories } from "@/stores";
 
 interface I_AddToDosPage {
     params: {
@@ -13,10 +15,14 @@ export default async function AddToDosPage({params}: I_AddToDosPage){
     const {charNm} = await params;
     
     const OcidData = await GetOcids(charNm);
-    const CharBasicData = await GetCharData(OcidData.ocid);
+    const CharBasicData = await GetCharData(OcidData?.ocid);
 
     console.log(CharBasicData);
 
+    if((!OcidData)||(!CharBasicData)){
+        redirect(`/chartodos?error=invalid-parameters&name=${charNm}`);
+    }
+        
     return (
         <div className={styles.Wrapper}>
             <div className={styles.Container}>
@@ -36,7 +42,18 @@ export default async function AddToDosPage({params}: I_AddToDosPage){
                         worldNm={CharBasicData.world_name}
                     />
                 </div>
+                <select>
+                    {
+                        Categories.map((data) => {
+                            return <option key={data.categoryId}>{data.categoryNm}</option>
+                        })
+                    }
+                </select>
             </div>
         </div>
     );
 }
+
+/**
+ * 
+ */

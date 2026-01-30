@@ -48,7 +48,7 @@ export default function SearchBar(){
         setCharNm(value);
     };
 
-    const Navigate = () => {
+    const Navigate = async() => {
         if(CharNm === ""){
             alert("캐릭터 이름을 입력하지 않았습니다.");
             setCharNm("");

@@ -2,6 +2,11 @@
 * '/chartodos' page CSS Style's
 */
 
-.AddToDosBtn {
-    border: 1px solid black;
+.Wrapper {
+    display: flex;
+    flex-direction: column;
+    position: relative;
+    width: 100%;
+    height: 100%;
+    align-items: center;
 }

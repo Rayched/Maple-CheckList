@@ -1,4 +1,4 @@
-type GetOcids = {
+type I_Ocids = {
     ocid?: string
 };
 
@@ -23,30 +23,35 @@ const BasedURL = "https://open.api.nexon.com/maplestory/v1";
 
 const APIKeys = process.env.NEXON_API_KEY;
 
+const headers = {
+    "x-nxopen-api-key": `${APIKeys}`
+};
+
 export async function GetOcids(charNm:string) {
     const APIURL = BasedURL + `/id?character_name=${charNm}`;
 
-    const GetOcidData = await(await(
-        await fetch(APIURL, {
-            headers: {
-                "x-nxopen-api-key": `${APIKeys}`
-            }
-        })
-    ).json()) as GetOcids;
+    const Resp = await fetch(APIURL, {headers});
 
-    return GetOcidData;
+    if(!Resp.ok){
+        return null;
+    }
+
+    const Json = await Resp.json() as I_Ocids;
+    return Json;
 };
 
 export async function GetCharData(ocids?: string){
     const CharBasicURL = BasedURL + `/character/basic?ocid=${ocids}`
 
-    const GetCharBasicData = await(await(
-        await fetch(CharBasicURL, {
-            headers: {
-                "x-nxopen-api-key": `${APIKeys}`
-            }
-        })
-    ).json()) as I_CharacterBasic;
+    const Resp = await fetch(
+        CharBasicURL, {headers}
+    );
 
-    return GetCharBasicData;
+    if(!Resp.ok){
+        return null
+    }
+
+    const CharBasicData = await Resp.json() as I_CharacterBasic
+
+    return CharBasicData;
 };
