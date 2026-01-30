@@ -84,7 +84,7 @@ const SidebarWrapper = styled.div`
 `;
 
 const PathData: PathDataTypes[] = [
-    {pathValue: "/chartodos", pathNm: "메할일"},
+    {pathValue: "/chartodos", pathNm: "메할일 추가"},
     {pathValue: "/incomes", pathNm: "주간 수익"}
 ];
 

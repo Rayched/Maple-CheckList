@@ -3,7 +3,7 @@ import styles from "../../../../styles/addtodos.module.css";
 import {  GetCharData, GetOcids } from "@/utils/Fetchs";
 import CharacterBox from "@/components/chartodos/addtodos/CharacterBox";
 import { redirect } from "next/navigation";
-import { Categories } from "@/stores";
+import AddToDosLayout from "@/components/chartodos/addtodos/AddToDosLayout";
 
 interface I_AddToDosPage {
     params: {
@@ -25,31 +25,14 @@ export default async function AddToDosPage({params}: I_AddToDosPage){
         
     return (
         <div className={styles.Wrapper}>
-            <div className={styles.Container}>
-                <div className={styles.Header}>
-                    <Link href={".."} className={styles.CloseBtn}>
-                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 640" fill="#ffffff" width={"20"} height={"20"}>
-                            <path d="M183.1 137.4C170.6 124.9 150.3 124.9 137.8 137.4C125.3 149.9 125.3 170.2 137.8 182.7L275.2 320L137.9 457.4C125.4 469.9 125.4 490.2 137.9 502.7C150.4 515.2 170.7 515.2 183.2 502.7L320.5 365.3L457.9 502.6C470.4 515.1 490.7 515.1 503.2 502.6C515.7 490.1 515.7 469.8 503.2 457.3L365.8 320L503.1 182.6C515.6 170.1 515.6 149.8 503.1 137.3C490.6 124.8 470.3 124.8 457.8 137.3L320.5 274.7L183.1 137.4z"/>
-                        </svg>
-                    </Link>
-                </div>
-                <div className={styles.AddtodosBody}>
-                    <CharacterBox 
-                        charNm={CharBasicData.character_name}
-                        charImg={CharBasicData.character_image}
-                        charClass={CharBasicData.character_class}
-                        charLV={CharBasicData.character_level}
-                        worldNm={CharBasicData.world_name}
-                    />
-                </div>
-                <select>
-                    {
-                        Categories.map((data) => {
-                            return <option key={data.categoryId}>{data.categoryNm}</option>
-                        })
-                    }
-                </select>
-            </div>
+            <CharacterBox 
+                charNm={CharBasicData.character_name}
+                charLV={CharBasicData.character_level}
+                charClass={CharBasicData.character_class}
+                charImg={CharBasicData.character_image}
+                worldNm={CharBasicData.world_name}
+            />
+            <AddToDosLayout />
         </div>
     );
 }

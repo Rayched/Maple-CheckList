@@ -2,11 +2,39 @@
 * '/chartodos' page CSS Style's
 */
 
+/*Layout CSS Style's*/
 .Wrapper {
     display: flex;
     flex-direction: column;
     position: relative;
     width: 100%;
-    height: 100%;
+    height: 94%;
     align-items: center;
+}
+
+.ChartodosHeads {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    height: 10%;
+}
+
+.ChartodosBodys {
+    width: 100%;
+    height: 90%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+/*Page.tsx CSS Styles*/
+
+.ChartodosPageWrapper {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: inherit;
+    height: inherit;
 }
