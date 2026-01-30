@@ -2,6 +2,7 @@
 
 import { useRouter } from "next/navigation";
 import { useState } from "react";
+import { useForm } from "react-hook-form";
 import styled from "styled-components";
 
 const Container = styled.div`
@@ -41,6 +42,7 @@ const SearchBtn = styled.div`
 
 export default function SearchBar(){
     const [CharNm, setCharNm] = useState("");
+    const {} = useForm();
     const routers = useRouter();
 
     const TextInputs = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -51,10 +53,10 @@ export default function SearchBar(){
     const Navigate = async() => {
         if(CharNm === ""){
             alert("캐릭터 이름을 입력하지 않았습니다.");
-            setCharNm("");
             return;
         } else {
-            routers.push(`chartodos/addtodos/${CharNm}`)
+            routers.push(`/addtodos/${CharNm}`);
+            setCharNm("");
         }
     };
 

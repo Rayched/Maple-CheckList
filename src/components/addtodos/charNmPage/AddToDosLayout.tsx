@@ -1,10 +1,10 @@
 "use client"
 
 import { Categories } from "@/stores";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import styled from "styled-components";
-import WeeklyForms from "./WeeklyForms";
-import BossForms from "./BossForms";
+import WeeklyForms from "./Forms/WeeklyForms";
+import BossForms from "./Forms/BossForms";
 
 const Container = styled.div`
     width: 90%;
@@ -37,6 +37,8 @@ export default function AddToDosLayout(){
             setNowCategory(value);
         }
     };
+
+    useEffect(() => console.log(AddToDoData), [AddToDoData]);
 
     return (
         <Container>

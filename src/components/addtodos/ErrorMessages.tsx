@@ -58,7 +58,7 @@ export default function ErrorMessages(){
 
     const MessageBoxClosed = () => {
         setErrors(false);
-        router.push("/chartodos");
+        router.push("/addtodos");
     }
 
     useEffect(() => {
