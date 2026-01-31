@@ -1,7 +1,7 @@
 import { BossContentsData } from "@/utils/contentsData";
 import { I_AddToDoForms } from "./WeeklyForms";
 
-export default function BossForms({setStateFn}: I_AddToDoForms){
+export default function BossForms({charNm}: I_AddToDoForms){
     const BossContents = BossContentsData;
 
     return (

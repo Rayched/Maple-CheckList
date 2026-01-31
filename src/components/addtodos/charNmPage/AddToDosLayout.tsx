@@ -1,15 +1,16 @@
 "use client"
 
-import { Categories } from "@/stores";
-import { useEffect, useState } from "react";
+import { BookmarkData, Categories, I_CharToDos, MapleToDoDataStore } from "@/stores";
+import { useState } from "react";
 import styled from "styled-components";
 import WeeklyForms from "./Forms/WeeklyForms";
 import BossForms from "./Forms/BossForms";
+import { useStore } from "zustand";
+import { useRouter } from "next/navigation";
 
 const Container = styled.div`
     width: 90%;
     height: 80%;
-    background-color: red;
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -22,11 +23,19 @@ const CategorySelect = styled.select`
     text-align: center;
 `;
 
-export default function AddToDosLayout(){
+export default function AddToDosLayout({charNm}: {charNm?: string}){
     const CategoryData = Categories;
+    const router = useRouter();
+
+    const [ToDos, setToDos] = useState<I_CharToDos>({
+        charNm: "",
+        WeeklyToDos: [],
+        BossToDos: []
+    });
 
     const [NowCategory, setNowCategory] = useState("");
-    const [AddToDoData, setAddToDoData] = useState();
+
+    const {MapleToDoData, setMapleToDoData} = useStore(MapleToDoDataStore);
 
     const CategoryChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
         const {currentTarget: {value}} = event;
@@ -38,7 +47,16 @@ export default function AddToDosLayout(){
         }
     };
 
-    useEffect(() => console.log(AddToDoData), [AddToDoData]);
+    const SavedCharToDo = () => {
+        const NewBookmark: BookmarkData = {
+            charNm: String(charNm),
+            charWorld: "",
+            charImg: "",
+            charLV: "",
+        };
+        setMapleToDoData(NewBookmark);
+        setTimeout(() => router.push("/"), 500);
+    }
 
     return (
         <Container>
@@ -51,9 +69,10 @@ export default function AddToDosLayout(){
                 }
             </CategorySelect>
             <div>
-                {NowCategory === CategoryData[0].categoryId ? <WeeklyForms setStateFn={setAddToDoData} /> : null}
-                {NowCategory === CategoryData[1].categoryId ? <BossForms setStateFn={setAddToDoData} /> : null}
+                {NowCategory === CategoryData[0].categoryId ? <WeeklyForms charNm={String(charNm)} ToDosData={ToDos} setToDosData={setToDos}/> : null}
+                {NowCategory === CategoryData[1].categoryId ? <BossForms charNm={String(charNm)} ToDosData={ToDos} setToDosData={setToDos} /> : null}
             </div>
+            <button onClick={SavedCharToDo}>메할일 저장하기</button>
         </Container>
     );
 }

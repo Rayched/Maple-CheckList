@@ -31,7 +31,7 @@ export default async function AddtodosNestedPage({params}: I_AddtodosNestedPage)
                 worldNm={CharData.world_name}
                 charImg={CharData.character_image}
             />
-            <AddToDosLayout />
+            <AddToDosLayout charNm={CharData?.character_name}/>
         </div>
     );
 }

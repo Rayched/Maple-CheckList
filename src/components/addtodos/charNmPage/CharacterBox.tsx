@@ -45,7 +45,7 @@ const DataBox = styled.div`
     justify-content: center;
 `;
 
-export default function CharacterBox({charImg, worldNm, charLV, charClass}: I_CharacterBox){
+export default function CharacterBox({charNm, charImg, worldNm, charLV, charClass}: I_CharacterBox){
     const [worldId, setWorldId] = useState("");
 
     const GetWorldId = () => {
@@ -64,7 +64,7 @@ export default function CharacterBox({charImg, worldNm, charLV, charClass}: I_Ch
             </ImageBox>
             <DataBox>
                 <div>
-                    <img src={`/imgs/worlds/${worldId}.png`} /> 손곈
+                    <img src={`/imgs/worlds/${worldId}.png`} /> {charNm}
                 </div>
                 <div>LV.{charLV}</div>
                 <div>{charClass}</div>
