@@ -6,11 +6,11 @@ import { useEffect } from "react";
 import { useForm } from "react-hook-form";
 import styled from "styled-components";
 import { useStore } from "zustand";
+import { I_ToDosData, WeeklyToDoType } from "../AddToDosLayout";
 
 export interface I_AddToDoForms {
-    charNm: string;
-    ToDosData: I_CharToDos,
-    setToDosData: (newValue: I_CharToDos) => void;
+    ToDosData: I_ToDosData,
+    setToDosData: (newValue: I_ToDosData) => void;
 };
 
 const WeeklyToDoForms = styled.form`
@@ -27,7 +27,7 @@ type WeeklyFormValuesType = {
     selectedTargets: string[];
 };
 
-export default function WeeklyForms({charNm, ToDosData, setToDosData}: I_AddToDoForms){
+export default function WeeklyForms({ToDosData, setToDosData}: I_AddToDoForms){
     const WeeklyContents = WeeklyContentsData;
 
     const {register, handleSubmit, setValue} = useForm<WeeklyFormValuesType>({
@@ -43,40 +43,36 @@ export default function WeeklyForms({charNm, ToDosData, setToDosData}: I_AddToDo
             if(!GetData){
                 return;
             } else {
-                const Convert: I_WeeklyToDos = {
-                    ContentsId: GetData.ContentsId,
-                    IsDone: false,
-                    Units: GetData.Units
+                const Convert: WeeklyToDoType = {
+                    contentsId: GetData.ContentsId,
                 };
 
                 return Convert;
             }
-        }) as I_WeeklyToDos[];
+        }) as WeeklyToDoType[];
         
-        const Outputs: I_CharToDos = {
-            charNm: charNm,
-            WeeklyToDos: [...ToDosData.WeeklyToDos, ...GetWeeklysData],
+        const Outputs: I_ToDosData = {
+            WeeklyToDos: [...GetWeeklysData],
             BossToDos: ToDosData.BossToDos
         };
         setToDosData(Outputs);
         setValue("selectedTargets", []);
     };
 
-    useEffect(() => console.log(ToDosData), [])
+    useEffect(() => console.log(ToDosData), [ToDosData.WeeklyToDos]);
 
     return (
         <WeeklyToDoForms onSubmit={handleSubmit(onValid)}>
             {
                 WeeklyContents.map((data) => {
-                    const DuplicateCheck = ToDosData.WeeklyToDos.findIndex((s) => s.ContentsId === data.ContentsId);
+                    const DuplicateCheck = ToDosData.WeeklyToDos.findIndex((s) => s.contentsId === data.ContentsId);
 
                     if(DuplicateCheck !== -1){
                         return (
                             <div key={data.ContentsId}>
                                 <input 
                                     type="checkbox" 
-                                    checked
-                                    disabled
+                                    defaultChecked
                                 />
                                 <span>{data.ContentsNm}</span>
                             </div>

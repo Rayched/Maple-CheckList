@@ -8,6 +8,24 @@ import BossForms from "./Forms/BossForms";
 import { useStore } from "zustand";
 import { useRouter } from "next/navigation";
 
+interface I_AddToDosLayout {
+    charNm?: string;
+}
+
+export type WeeklyToDoType = {
+    contentsId?: string;
+};
+
+type BossToDoType = {
+    BossId?: string;
+    Rank?: string;
+};
+
+export interface I_ToDosData {
+    WeeklyToDos: WeeklyToDoType[],
+    BossToDos: BossToDoType[]
+};
+
 const Container = styled.div`
     width: 90%;
     height: 80%;
@@ -23,12 +41,11 @@ const CategorySelect = styled.select`
     text-align: center;
 `;
 
-export default function AddToDosLayout({charNm}: {charNm?: string}){
+export default function AddToDosLayout({charNm}: I_AddToDosLayout){
     const CategoryData = Categories;
     const router = useRouter();
 
-    const [ToDos, setToDos] = useState<I_CharToDos>({
-        charNm: "",
+    const [ToDos, setToDos] = useState<I_ToDosData>({
         WeeklyToDos: [],
         BossToDos: []
     });
@@ -69,8 +86,8 @@ export default function AddToDosLayout({charNm}: {charNm?: string}){
                 }
             </CategorySelect>
             <div>
-                {NowCategory === CategoryData[0].categoryId ? <WeeklyForms charNm={String(charNm)} ToDosData={ToDos} setToDosData={setToDos}/> : null}
-                {NowCategory === CategoryData[1].categoryId ? <BossForms charNm={String(charNm)} ToDosData={ToDos} setToDosData={setToDos} /> : null}
+                {NowCategory === CategoryData[0].categoryId ? <WeeklyForms ToDosData={ToDos} setToDosData={setToDos}/> : null}
+                {NowCategory === CategoryData[1].categoryId ? <BossForms ToDosData={ToDos} setToDosData={setToDos} /> : null}
             </div>
             <button onClick={SavedCharToDo}>메할일 저장하기</button>
         </Container>
