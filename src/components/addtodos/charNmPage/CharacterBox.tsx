@@ -1,6 +1,6 @@
 "use client";
 
-import { WorldDatas } from "@/utils/contentsData";
+import { WorldDatas } from "@/game_datas/contentsData";
 import { useEffect, useState } from "react";
 import styled from "styled-components";
 

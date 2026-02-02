@@ -1,6 +1,6 @@
 "use client"
 
-import { BookmarkData, Categories, I_CharToDos, MapleToDoDataStore } from "@/stores";
+import { I_Bookmark, Categories, I_CharToDos, MapleToDoDataStore } from "@/stores";
 import { useState } from "react";
 import styled from "styled-components";
 import WeeklyForms from "./Forms/WeeklyForms";
@@ -10,10 +10,17 @@ import { useRouter } from "next/navigation";
 
 interface I_AddToDosLayout {
     charNm?: string;
+    charLv?: number;
+    charClass?: string;
+    charImg?: string;
+    worldNm?: string;
 }
 
 export type WeeklyToDoType = {
     contentsId?: string;
+    contentsNm: string;
+    IsDone: boolean;
+    contentsUnit: string;
 };
 
 type BossToDoType = {
@@ -41,7 +48,7 @@ const CategorySelect = styled.select`
     text-align: center;
 `;
 
-export default function AddToDosLayout({charNm}: I_AddToDosLayout){
+export default function AddToDosLayout({charNm, charLv, charClass, charImg, worldNm}: I_AddToDosLayout){
     const CategoryData = Categories;
     const router = useRouter();
 
@@ -52,7 +59,7 @@ export default function AddToDosLayout({charNm}: I_AddToDosLayout){
 
     const [NowCategory, setNowCategory] = useState("");
 
-    const {MapleToDoData, setMapleToDoData} = useStore(MapleToDoDataStore);
+    //const {MapleToDoData, setMapleToDoData} = useStore(MapleToDoDataStore);
 
     const CategoryChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
         const {currentTarget: {value}} = event;
@@ -65,19 +72,19 @@ export default function AddToDosLayout({charNm}: I_AddToDosLayout){
     };
 
     const SavedCharToDo = () => {
-        const NewBookmark: BookmarkData = {
-            charNm: String(charNm),
-            charWorld: "",
-            charImg: "",
-            charLV: "",
+        const NewBookmark: I_Bookmark = {
+            charNm: charNm,
+            charLV: charLv,
+            charClass: charClass,
+            charImg: charImg,
+            worldNm: worldNm
         };
-        setMapleToDoData(NewBookmark);
         setTimeout(() => router.push("/"), 500);
     }
 
     return (
         <Container>
-            <CategorySelect onChange={CategoryChange}>
+            <CategorySelect onChange={CategoryChange} value={NowCategory}>
                 <option value="">-- 카테고리를 선택해주세요 --</option>
                 {
                     CategoryData.map((data) => {
@@ -86,8 +93,24 @@ export default function AddToDosLayout({charNm}: I_AddToDosLayout){
                 }
             </CategorySelect>
             <div>
-                {NowCategory === CategoryData[0].categoryId ? <WeeklyForms ToDosData={ToDos} setToDosData={setToDos}/> : null}
-                {NowCategory === CategoryData[1].categoryId ? <BossForms ToDosData={ToDos} setToDosData={setToDos} /> : null}
+                {
+                    NowCategory === CategoryData[0].categoryId ? (
+                        <WeeklyForms 
+                            ToDosData={ToDos} 
+                            setToDosData={setToDos}
+                            setCategory={setNowCategory}
+                        />
+                    ): null
+                }
+                {
+                    NowCategory === CategoryData[1].categoryId ? (
+                        <BossForms 
+                            ToDosData={ToDos} 
+                            setToDosData={setToDos} 
+                            setCategory={setNowCategory}
+                        />
+                    ) : null
+                }
             </div>
             <button onClick={SavedCharToDo}>메할일 저장하기</button>
         </Container>

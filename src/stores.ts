@@ -1,15 +1,18 @@
+import { loadComponents } from "next/dist/server/load-components";
 import { create } from "zustand";
+import { createJSONStorage, persist } from "zustand/middleware";
 
 type CategoryType = {
     categoryId: string;
     categoryNm: string;
 };
 
-export type BookmarkData = {
-    charNm: string;
-    charWorld: string;
-    charImg: string;
-    charLV: string;
+export interface I_Bookmark {
+    charNm?: string;
+    charLV?: number;
+    charClass?: string;
+    charImg?: string;
+    worldNm?: string;
 };
 
 export interface I_WeeklyToDos {
@@ -30,23 +33,42 @@ export interface I_CharToDos {
     BossToDos: BossToDosType[];
 };
 
-interface I_MapleToDoDatas {
-    Bookmarks: BookmarkData[];
-    CharToDos: I_CharToDos[];
-    AccountWeeklys: I_WeeklyToDos[];
-};
-
 export const Categories: CategoryType[] = [
     {categoryId: "category00", categoryNm: "주간 컨텐츠"},
     {categoryId: "category01", categoryNm: "주간 보스"}
 ];
 
 interface I_MapleToDoDataStore {
-    MapleToDoData: BookmarkData[],
-    setMapleToDoData: (UpdateValue: BookmarkData) => void;
+    CharToDos: I_CharToDos[],
+    Bookmarks: I_Bookmark[],
+    AccountWeeklys: I_WeeklyToDos[],
+    UpdateCharToDos: (updateValue: I_CharToDos[]) => void;
+    UpdateBookmarks: (updateValue: I_Bookmark[]) => void;
+    UpdateAccWeeklys: (updateValue: I_WeeklyToDos[]) => void; 
 };
 
+/*
 export const MapleToDoDataStore = create<I_MapleToDoDataStore>((set) => ({
     MapleToDoData: [],
     setMapleToDoData: (UpdateValue) => set((s) => ({MapleToDoData: [...s.MapleToDoData, UpdateValue]}))
 }));
+*/
+
+export const MapleToDoDataStore = create<I_MapleToDoDataStore>()(
+    persist((set, get) => ({
+        CharToDos: [] as I_CharToDos[],
+        Bookmarks: [] as I_Bookmark[],
+        AccountWeeklys: [] as I_WeeklyToDos[],
+        UpdateCharToDos: (newCharToDosData) => set({CharToDos: newCharToDosData}),
+        UpdateBookmarks: (newBookmarkData) => set({Bookmarks: newBookmarkData}),
+        UpdateAccWeeklys: (newAccWeeklysData) => set({AccountWeeklys: newAccWeeklysData})
+    }), {
+        name: "Maple-tododatas", 
+        storage: createJSONStorage(() => localStorage),
+        partialize: (state) => ({
+            CharToDos: state.CharToDos,
+            Bookmarks: state.Bookmarks,
+            AccountWeeklys: state.AccountWeeklys
+        })
+    })
+);

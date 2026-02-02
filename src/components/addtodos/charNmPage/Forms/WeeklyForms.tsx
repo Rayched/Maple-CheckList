@@ -1,7 +1,7 @@
 "use client"
 
-import { I_CharToDos, I_WeeklyToDos } from "@/stores";
-import { WeeklyContentsData } from "@/utils/contentsData";
+import { Categories, I_CharToDos, I_WeeklyToDos } from "@/stores";
+import { WeeklyContentsData } from "@/game_datas/contentsData";
 import { useEffect } from "react";
 import { useForm } from "react-hook-form";
 import styled from "styled-components";
@@ -9,8 +9,9 @@ import { useStore } from "zustand";
 import { I_ToDosData, WeeklyToDoType } from "../AddToDosLayout";
 
 export interface I_AddToDoForms {
-    ToDosData: I_ToDosData,
+    ToDosData: I_ToDosData;
     setToDosData: (newValue: I_ToDosData) => void;
+    setCategory: (newValue: string) => void;
 };
 
 const WeeklyToDoForms = styled.form`
@@ -27,7 +28,7 @@ type WeeklyFormValuesType = {
     selectedTargets: string[];
 };
 
-export default function WeeklyForms({ToDosData, setToDosData}: I_AddToDoForms){
+export default function WeeklyForms({ToDosData, setToDosData, setCategory}: I_AddToDoForms){
     const WeeklyContents = WeeklyContentsData;
 
     const {register, handleSubmit, setValue} = useForm<WeeklyFormValuesType>({
@@ -45,6 +46,9 @@ export default function WeeklyForms({ToDosData, setToDosData}: I_AddToDoForms){
             } else {
                 const Convert: WeeklyToDoType = {
                     contentsId: GetData.ContentsId,
+                    contentsNm: GetData.ContentsNm,
+                    IsDone: false,
+                    contentsUnit: GetData.Units
                 };
 
                 return Convert;
@@ -57,6 +61,7 @@ export default function WeeklyForms({ToDosData, setToDosData}: I_AddToDoForms){
         };
         setToDosData(Outputs);
         setValue("selectedTargets", []);
+        setCategory("");
     };
 
     useEffect(() => console.log(ToDosData), [ToDosData.WeeklyToDos]);

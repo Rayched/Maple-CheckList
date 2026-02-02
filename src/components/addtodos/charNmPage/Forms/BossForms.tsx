@@ -1,16 +1,26 @@
-import { BossContentsData } from "@/utils/contentsData";
+import { BossContentsData } from "@/game_datas/contentsData";
 import { I_AddToDoForms } from "./WeeklyForms";
 import styled from "styled-components";
 import { useEffect, useState } from "react";
+import BossFormItem from "./BossFormItem";
 
 const BossFormContainer = styled.div`
     display: flex;
     flex-direction: row;
     align-items: center;
-    width: 300px;
+    width: 320px;
     height: 350px;
     background-color: darkgray;
     justify-content: flex-end;
+`;
+
+const FormItems = styled.ul`
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 90%;
+    height: 100%;
+    margin-right: 5px;
 `;
 
 const ScrollBar = styled.div`
@@ -36,7 +46,6 @@ const ScrollBtn = styled.div`
 export default function BossForms({ToDosData, setToDosData}: I_AddToDoForms){
     const BossContents = BossContentsData;
     
-
     const [Pages, setPages] = useState(0);
 
     const UpBtnListener = () => {
@@ -57,27 +66,27 @@ export default function BossForms({ToDosData, setToDosData}: I_AddToDoForms){
 
     return (
         <BossFormContainer>
-            <ul>
+            <FormItems>
                 {
                     BossContents.map((data, idx) => {
                         const length = (BossContents.length / 3) - 1;
 
                         if(Pages === 0){
                             return (
-                                idx <= length ? <li key={data.BossId}>{data.BossNm}</li> : null
+                                idx <= length ? <BossFormItem key={data.BossId} MonsterData={data}/> : null
                             );
                         } else if(Pages === 1){
                             return (
-                                idx > length && idx <= ((length * 2) + 1) ? <li key={data.BossId}>{data.BossNm}</li> : null
+                                idx > length && idx <= ((length * 2) + 1) ? <BossFormItem key={data.BossId} MonsterData={data}/> : null
                             );
                         } else {
                             return (
-                                idx > ((length * 2)+1) ? <li key={data.BossId}>{data.BossNm}</li> : null
+                                idx > ((length * 2)+1) ? <BossFormItem key={data.BossId} MonsterData={data}/> : null
                             )
                         }
                     })
                 }
-            </ul>
+            </FormItems>
             <ScrollBar>
                 <ScrollBtn onClick={UpBtnListener}>▲</ScrollBtn>
                 <ScrollBtn onClick={DownBtnListener}>▼</ScrollBtn>
