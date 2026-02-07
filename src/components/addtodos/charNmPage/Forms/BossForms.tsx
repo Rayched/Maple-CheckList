@@ -1,8 +1,7 @@
 import { BossContentsData, RankInfo } from "@/game_datas/contentsData";
 import { I_AddToDoForms } from "./WeeklyForms";
 import styled from "styled-components";
-import { useEffect, useState } from "react";
-import BossFormItem from "./BossFormItem";
+import { ChangeEvent, useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import { RankColorInfos } from "@/game_datas/bossrank_colordata";
 
@@ -10,6 +9,20 @@ interface I_RankIcon {
     textcolor: string;
     bgcolor: string;
     bordercolor: string;
+};
+
+interface I_ContentsData {
+    bossId: string;
+    rankNm: string
+};
+
+interface onCheckedProps {
+    e: ChangeEvent<HTMLInputElement>;
+    id: string;
+};
+
+type BossFormValueType = {
+    selectedTargets: string[];
 };
 
 const Container = styled.div`
@@ -97,30 +110,17 @@ const RanksBox = styled.div`
     align-items: center;
 `;
 
-const RankItem = styled.div`
-    height: 100%;
-    display: flex;
-    flex-direction: row;
-    align-items: center;
-    justify-content: center;
-    margin: 0px 3px;
-`;
-
-const RankIcon = styled.div<I_RankIcon>`
-    width: 15px;
-    height: 15px;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    color: ${(props) => props.textcolor};
-    background-color: ${(props) => props.bgcolor};
-    border: 3px solid ${(props) => props.bordercolor};
-`;
+const RankSelect = styled.select``;
 
 export default function BossForms({ToDosData, setToDosData}: I_AddToDoForms){
     const BossContents = BossContentsData;
 
-    const {register} = useForm();
+    const {register} = useForm<BossFormValueType>({
+        defaultValues: {
+            selectedTargets: []
+        },
+        mode: "onChange"
+    });
 
     const [isClosed, setClosed] = useState(true);
 
@@ -138,37 +138,33 @@ export default function BossForms({ToDosData, setToDosData}: I_AddToDoForms){
                                 return (
                                     <FormItem key={data.BossId}>
                                         <BossIcons>
+                                            <input type="checkbox" />
                                             <img src={`/imgs/boss_monsters/${data.BossId}.png`} />
                                         </BossIcons>
                                         <RanksBox>
-                                        {
-                                            data.Ranks.map((rankdata) => {
-                                                const rankboxkey = data.BossId + "_" + rankdata.rank;
+                                            {
+                                                data.Ranks.length >= 2 ? (
+                                                    <RankSelect>
+                                                        <option value="">-- 난이도 선택 --</option>
+                                                        {
+                                                            data.Ranks.map((rankdata) => {
+                                                                const keys = data.BossId + "_" + rankdata.rank;
+                                                                const GetRankNm = RankInfo.find((info) => info.RankId === rankdata.rank);
 
-                                                const RankColors = RankColorInfos.find((colordata) => colordata.rankId === rankdata.rank);
-
-                                                if(RankColors){
-                                                    return (
-                                                        <RankItem key={rankboxkey}>
-                                                            <input type="checkbox" />
-                                                            <RankIcon 
-                                                                textcolor={RankColors.fontColor}
-                                                                bgcolor={RankColors.bgColor}
-                                                                bordercolor={RankColors.borderColor}
-                                                            >{rankdata.rank.slice(0, 1)}</RankIcon>
-                                                        </RankItem>
-                                                );
-                                                } else {
-                                                    return <div>Color, rankid error</div>
-                                                }
-                                                
-                                            })
-                                        }
+                                                                return (
+                                                                    <option key={keys}>{GetRankNm?.RankNm}</option>
+                                                                );
+                                                            })
+                                                        }
+                                                    </RankSelect>
+                                                ) : (<div>{data.Ranks[0].rank}</div>)
+                                            }
                                         </RanksBox>
                                     </FormItem>
                                 );
                             })
                         }
+                        <button>저장</button>
                     </BossForm>
                 ): null
             }
