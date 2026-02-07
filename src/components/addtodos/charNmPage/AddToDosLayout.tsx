@@ -35,7 +35,6 @@ export interface I_ToDosData {
 
 const Container = styled.div`
     width: 90%;
-    height: 80%;
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -44,8 +43,29 @@ const Container = styled.div`
 const CategorySelect = styled.select`
     width: 300px;
     height: 30px;
-    margin-top: 5px;
+    margin: 5px 0px;
     text-align: center;
+`;
+
+const FormOutlet = styled.div`
+    width: 90%;
+    max-width: 350px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+`;
+
+const SaveBtn = styled.div`
+    width: 150px;
+    height: 40px;
+    border: 2px solid black;
+    border-radius: 10px;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+    font-weight: bold;
+    background-color: darkgray;
 `;
 
 export default function AddToDosLayout({charNm, charLv, charClass, charImg, worldNm}: I_AddToDosLayout){
@@ -92,7 +112,7 @@ export default function AddToDosLayout({charNm, charLv, charClass, charImg, worl
                     })
                 }
             </CategorySelect>
-            <div>
+            <FormOutlet>
                 {
                     NowCategory === CategoryData[0].categoryId ? (
                         <WeeklyForms 
@@ -111,8 +131,8 @@ export default function AddToDosLayout({charNm, charLv, charClass, charImg, worl
                         />
                     ) : null
                 }
-            </div>
-            <button onClick={SavedCharToDo}>메할일 저장하기</button>
+            </FormOutlet>
+            <SaveBtn onClick={SavedCharToDo}>메할일 등록</SaveBtn>
         </Container>
     );
 }

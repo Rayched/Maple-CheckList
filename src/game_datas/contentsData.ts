@@ -200,15 +200,7 @@ export const BossContentsData: I_BossContents[] = [
             {rank: "Hard", price: 99400000},
         ]
     },
-    {
-        //챌린저스 월드 전용
-        BossId: "boss18-1",
-        BossNm: "시즌보스 카이",
-        Ranks: [
-            {rank: "Normal", price: 0},
-            {rank: "Hard", price: 0},
-        ]
-    },
+    
     {
         BossId: "boss19",
         BossNm: "세렌",
@@ -272,15 +264,6 @@ export const BossContentsData: I_BossContents[] = [
             {rank: "Hard", price: 3240000000},
         ]
     },
-    {
-        /**월간 보스 */
-        BossId: "boss30",
-        BossNm: "검은 마법사",
-        Ranks: [
-            {rank: "Hard", price: 700000000},
-            {rank: "Extreme", price: 9200000000},
-        ]
-    },
 ];
 /** 보스 콘텐츠 양식
  * {
@@ -290,6 +273,24 @@ export const BossContentsData: I_BossContents[] = [
             {rank: "", price: 0},
             {rank: "", price: 0},
             {rank: "", price: 0},
+        ]
+    },
+    - dummy data's
+    {
+        챌린저스 월드 전용
+        BossId: "boss18-1",
+        BossNm: "시즌보스 카이",
+        Ranks: [
+            {rank: "Normal", price: 0},
+            {rank: "Hard", price: 0},
+        ]
+    },
+    {
+        BossId: "boss30",
+        BossNm: "검은 마법사",
+        Ranks: [
+            {rank: "Hard", price: 700000000},
+            {rank: "Extreme", price: 9200000000},
         ]
     },
  */

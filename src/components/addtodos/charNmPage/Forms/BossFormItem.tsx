@@ -2,6 +2,7 @@
 
 import { RankColorInfos } from "@/game_datas/bossrank_colordata";
 import { I_BossContents, RankInfo } from "@/game_datas/contentsData";
+import { UseFormRegister } from "react-hook-form";
 import styled from "styled-components";
 
 interface I_BossFormItem {
@@ -9,9 +10,9 @@ interface I_BossFormItem {
 };
 
 interface I_RankBox {
-    fontColor: string;
-    bgColor: string;
-    borderColor: string
+    text_color: string;
+    bg_color: string;
+    border_color: string
 };
 
 const Container = styled.div`
@@ -22,37 +23,53 @@ const Container = styled.div`
     display: flex;
     flex-direction: row;
     align-items: center;
-    background-color: white;
-    border: 1px solid black;
+    justify-content: space-between;
+    background-color: rgb(241, 242, 246);
+    border: 1px solid rgb(241, 242, 246);
+    border-radius: 8px;
     font-size: 15px;
     font-weight: bold;
 `;
 
-const BossIconImg = styled.img`
-    width: 30px;
-    height: 30px;
+const BossIcons = styled.div`
+    width: 15%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    img {
+        width: 25px;
+        height: 25px;
+    }
 `;
 
 const RanksContainer = styled.div`
     display: flex;
     flex-direction: row;
     align-items: center;
+    justify-content: center;
+    width: 70%;
+    height: 100%;
 `;
 
 const RankItem = styled.div`
     display: flex;
     flex-direction: row;
+    align-items: center;
+    justify-content: center;
+    margin: 0px 5px;
 `;
 
 const RankBox = styled.div<I_RankBox>`
-    width: 20px;
-    height: 20px;
+    width: 15px;
+    height: 15px;
     display: flex;
     align-items: center;
     justify-content: center;
-    color: ${(props) => props.fontColor};
-    background-color: ${(props) => props.bgColor};
-    border: 2px solid ${(props) => props.borderColor};
+    color: ${(props) => props.text_color};
+    background-color: ${(props) => props.bg_color};
+    border: 3px solid ${(props) => props.border_color};
 `;
 
 export default function BossFormItem({MonsterData}: I_BossFormItem){
@@ -73,19 +90,23 @@ export default function BossFormItem({MonsterData}: I_BossFormItem){
 
     return (
         <Container>
-            <BossIconImg src={`/imgs/boss_monsters/${MonsterData.BossId}.png`}/>
+            <BossIcons>
+                <img src={`/imgs/boss_monsters/${MonsterData.BossId}.png`}/>
+            </BossIcons>
             <RanksContainer>
                 {
                     GetRanksInfo.map((data) => {
-                        const RankColors = RankColorInfos;
-
                         const GetRankColors = RankColorInfos.find((color) => color.rankId === data?.rankId);
 
                         if(GetRankColors){
                             return (
                             <RankItem key={data?.rankId}>
                                 <input type="checkbox" />
-                                <RankBox fontColor={GetRankColors?.fontColor} bgColor={GetRankColors.bgColor} borderColor={GetRankColors.borderColor}>
+                                <RankBox 
+                                    text_color={GetRankColors.fontColor} 
+                                    bg_color={GetRankColors.bgColor} 
+                                    border_color={GetRankColors.borderColor}
+                                >
                                     {data?.rankId.slice(0, 1)}
                                 </RankBox>
                             </RankItem>
