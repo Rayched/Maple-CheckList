@@ -115,7 +115,7 @@ const RankSelect = styled.select``;
 export default function BossForms({ToDosData, setToDosData}: I_AddToDoForms){
     const BossContents = BossContentsData;
 
-    const {register} = useForm<BossFormValueType>({
+    const {register, watch} = useForm<BossFormValueType>({
         defaultValues: {
             selectedTargets: []
         },
@@ -123,6 +123,8 @@ export default function BossForms({ToDosData, setToDosData}: I_AddToDoForms){
     });
 
     const [isClosed, setClosed] = useState(true);
+
+    useEffect(() => console.log(watch("selectedTargets")), [watch("selectedTargets")])
 
     return (
         <Container>
@@ -138,28 +140,42 @@ export default function BossForms({ToDosData, setToDosData}: I_AddToDoForms){
                                 return (
                                     <FormItem key={data.BossId}>
                                         <BossIcons>
-                                            <input type="checkbox" />
+                                            <input 
+                                                type="checkbox" 
+                                                value={data.BossId} 
+                                                {...register("selectedTargets")}
+                                            />
                                             <img src={`/imgs/boss_monsters/${data.BossId}.png`} />
                                         </BossIcons>
-                                        <RanksBox>
-                                            {
-                                                data.Ranks.length >= 2 ? (
-                                                    <RankSelect>
-                                                        <option value="">-- 난이도 선택 --</option>
-                                                        {
-                                                            data.Ranks.map((rankdata) => {
-                                                                const keys = data.BossId + "_" + rankdata.rank;
-                                                                const GetRankNm = RankInfo.find((info) => info.RankId === rankdata.rank);
+                                        {
+                                            watch("selectedTargets").includes(data.BossId) && (
+                                                <RanksBox>
+                                                    {
+                                                        data.Ranks.length >= 2 ? (
+                                                            <RankSelect >
+                                                                <option value="">-- 난이도 선택 --</option>
+                                                                {
+                                                                    data.Ranks.map((rankdata) => {
+                                                                        const keys = data.BossId + "_" + rankdata.rank;
+                                                                        const GetRankNm = RankInfo.find((info) => info.RankId === rankdata.rank);
 
-                                                                return (
-                                                                    <option key={keys}>{GetRankNm?.RankNm}</option>
-                                                                );
-                                                            })
-                                                        }
-                                                    </RankSelect>
-                                                ) : (<div>{data.Ranks[0].rank}</div>)
-                                            }
-                                        </RanksBox>
+                                                                        return (
+                                                                            <option key={keys}>
+                                                                                {GetRankNm?.RankNm}
+                                                                            </option>
+                                                                        );
+                                                                    })
+                                                                }
+                                                            </RankSelect>
+                                                        ) : (
+                                                            <div>
+                                                                {data.Ranks[0].rank}
+                                                            </div>
+                                                        )
+                                                    }
+                                                </RanksBox>
+                                            )
+                                        }
                                     </FormItem>
                                 );
                             })
