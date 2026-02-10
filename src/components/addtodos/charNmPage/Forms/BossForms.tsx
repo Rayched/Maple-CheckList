@@ -13,12 +13,12 @@ interface I_RankIcon {
 
 interface I_ContentsData {
     bossId: string;
-    rankNm: string
+    rankId: string;
 };
 
-interface onCheckedProps {
-    e: ChangeEvent<HTMLInputElement>;
-    id: string;
+interface I_SelectEvent {
+    Itemkey: string;
+    isChecked: boolean;
 };
 
 type BossFormValueType = {
@@ -110,7 +110,12 @@ const RanksBox = styled.div`
     align-items: center;
 `;
 
-const RankSelect = styled.select``;
+const RankItem = styled.div`
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+`;
 
 export default function BossForms({ToDosData, setToDosData}: I_AddToDoForms){
     const BossContents = BossContentsData;
@@ -123,8 +128,51 @@ export default function BossForms({ToDosData, setToDosData}: I_AddToDoForms){
     });
 
     const [isClosed, setClosed] = useState(true);
+    const [Selected, setSelected] = useState<String[]>([]);
+    const [ContentsData, setContentsData] = useState<I_ContentsData[]>([]);
 
-    useEffect(() => console.log(watch("selectedTargets")), [watch("selectedTargets")])
+    const SelectEvent = ({Itemkey, isChecked}: I_SelectEvent) => {
+        const BossData = Itemkey.split("_");
+        const idx = ContentsData.findIndex((data) => data.bossId === BossData[0]);
+        if(!isChecked){
+            if(!Selected.includes(BossData[0]) || idx === -1) return;
+
+            const SelectedFilter = Selected.filter((data) => data !== BossData[0]);
+            const ContentsFilter = ContentsData.filter((data) => data.bossId !== BossData[0]);
+
+            setSelected(SelectedFilter);
+            setContentsData(ContentsFilter);
+        } else {
+            if(!Selected.includes(BossData[0]) && idx === -1){
+                const NewValue: I_ContentsData = {
+                    bossId: BossData[0],
+                    rankId: BossData[1]
+                };
+                setSelected([...Selected, BossData[0]]);
+                setContentsData([...ContentsData, NewValue]);
+            } else if(Selected.includes(BossData[0]) && idx !== -1){
+                const ContentsCheck = ContentsData.some((data) => data.bossId === BossData[0] && data.rankId !== BossData[1]);
+
+                switch(ContentsCheck){
+                    case true:
+                        const UpdateValue: I_ContentsData = {
+                            bossId: BossData[0],
+                            rankId: BossData[1]
+                        };
+                        setContentsData([
+                            ...ContentsData.slice(0, idx),
+                            UpdateValue,
+                            ...ContentsData.slice(idx + 1)
+                        ])
+                        break;
+                    case false:
+                        break;
+                }
+            }
+        }
+    };
+
+    useEffect(() => console.log(ContentsData), [ContentsData]);
 
     return (
         <Container>
@@ -140,42 +188,33 @@ export default function BossForms({ToDosData, setToDosData}: I_AddToDoForms){
                                 return (
                                     <FormItem key={data.BossId}>
                                         <BossIcons>
-                                            <input 
-                                                type="checkbox" 
-                                                value={data.BossId} 
-                                                {...register("selectedTargets")}
-                                            />
                                             <img src={`/imgs/boss_monsters/${data.BossId}.png`} />
                                         </BossIcons>
-                                        {
-                                            watch("selectedTargets").includes(data.BossId) && (
-                                                <RanksBox>
-                                                    {
-                                                        data.Ranks.length >= 2 ? (
-                                                            <RankSelect >
-                                                                <option value="">-- 난이도 선택 --</option>
-                                                                {
-                                                                    data.Ranks.map((rankdata) => {
-                                                                        const keys = data.BossId + "_" + rankdata.rank;
-                                                                        const GetRankNm = RankInfo.find((info) => info.RankId === rankdata.rank);
-
-                                                                        return (
-                                                                            <option key={keys}>
-                                                                                {GetRankNm?.RankNm}
-                                                                            </option>
-                                                                        );
-                                                                    })
+                                        <RanksBox>
+                                            {
+                                                data.Ranks.map((rankdata) => {
+                                                    const Keys = `${data.BossId}_${rankdata.rank}`;
+                                                    return (
+                                                        <RankItem key={Keys}>
+                                                            <input 
+                                                                type="checkbox" 
+                                                                value={Keys}
+                                                                {...register("selectedTargets", {
+                                                                    onChange: (e: ChangeEvent<HTMLInputElement>) => {
+                                                                        const {currentTarget: {value}} = e;
+                                                                        const {target: {checked}} = e;
+                                                                        SelectEvent({Itemkey: value, isChecked: checked});
+                                                                    }  
+                                                                })}
+                                                                checked={
+                                                                    Selected.includes(data.BossId) && ContentsData.some((state) => state.rankId === rankdata.rank)
                                                                 }
-                                                            </RankSelect>
-                                                        ) : (
-                                                            <div>
-                                                                {data.Ranks[0].rank}
-                                                            </div>
-                                                        )
-                                                    }
-                                                </RanksBox>
-                                            )
-                                        }
+                                                            />
+                                                        </RankItem>
+                                                    );
+                                                })
+                                            }
+                                        </RanksBox>
                                     </FormItem>
                                 );
                             })
