@@ -21,16 +21,17 @@ export interface I_WeeklyToDos {
     Units: string;
 };
 
-type BossToDosType = {
+export interface I_BossToDos {
     bossId: string;
-    ranks: string;
+    bossNm: string;
+    rankId: string;
     IsDone: boolean;
 }
 
 export interface I_CharToDos {
     charNm: string;
     WeeklyToDos: I_WeeklyToDos[];
-    BossToDos: BossToDosType[];
+    BossToDos: I_BossToDos[];
 };
 
 export const Categories: CategoryType[] = [

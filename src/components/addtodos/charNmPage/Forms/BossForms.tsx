@@ -1,28 +1,31 @@
 import { BossContentsData, RankInfo } from "@/game_datas/contentsData";
 import { I_AddToDoForms } from "./WeeklyForms";
 import styled from "styled-components";
-import { ChangeEvent, useEffect, useState } from "react";
-import { useForm } from "react-hook-form";
+import React, { ChangeEvent, useEffect, useState } from "react";
+import { Form, useForm } from "react-hook-form";
 import { RankColorInfos } from "@/game_datas/bossrank_colordata";
+import { I_BossToDos } from "@/stores";
+import { todo } from "node:test";
 
 interface I_RankIcon {
-    textcolor: string;
-    bgcolor: string;
-    bordercolor: string;
-};
-
-interface I_ContentsData {
-    bossId: string;
-    rankId: string;
-};
-
-interface I_SelectEvent {
-    Itemkey: string;
-    isChecked: boolean;
+    textcolor?: string;
+    bgcolor?: string;
+    bordercolor?: string;
 };
 
 type BossFormValueType = {
     selectedTargets: string[];
+};
+
+interface I_onSelectProps {
+    isSelect: boolean;
+    targetId?: string;
+    defaultRank?: string;
+};
+
+interface I_SelectTarget {
+    bossid?: string;
+    rankid?: string;
 };
 
 const Container = styled.div`
@@ -90,89 +93,74 @@ const FormItem = styled.div`
 `;
 
 const BossIcons = styled.div`
-    width: 15%;
+    width: 40%;
     height: 100%;
     display: flex;
     align-items: center;
-    justify-content: center;
+    justify-content: flex-start;
 
     img {
         width: 25px;
         height: 25px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
     }
+
+    .bossNm {
+        margin-left: 3px;
+    };
 `;
 
-const RanksBox = styled.div`
-    width: 60%;
-    height: 100%;
-    display: flex;
-    flex-direction: row;
-    align-items: center;
+const RanksBox = styled.div``;
+
+const RankSelect = styled.select`
+    text-align: center;
 `;
 
-const RankItem = styled.div`
+const RankIcon = styled.div<I_RankIcon>`
     display: flex;
     flex-direction: row;
     align-items: center;
     justify-content: center;
+    color: ${(props) => props.textcolor};
+    background-color: ${(props) => props.bgcolor};
+    border: 2px solid ${(props) => props.bordercolor};
 `;
 
 export default function BossForms({ToDosData, setToDosData}: I_AddToDoForms){
     const BossContents = BossContentsData;
 
-    const {register, watch} = useForm<BossFormValueType>({
+    const {register, watch, handleSubmit} = useForm<BossFormValueType>({
         defaultValues: {
             selectedTargets: []
         },
         mode: "onChange"
     });
 
-    const [isClosed, setClosed] = useState(true);
-    const [Selected, setSelected] = useState<String[]>([]);
-    const [ContentsData, setContentsData] = useState<I_ContentsData[]>([]);
-
-    const SelectEvent = ({Itemkey, isChecked}: I_SelectEvent) => {
-        const BossData = Itemkey.split("_");
-        const idx = ContentsData.findIndex((data) => data.bossId === BossData[0]);
-        if(!isChecked){
-            if(!Selected.includes(BossData[0]) || idx === -1) return;
-
-            const SelectedFilter = Selected.filter((data) => data !== BossData[0]);
-            const ContentsFilter = ContentsData.filter((data) => data.bossId !== BossData[0]);
-
-            setSelected(SelectedFilter);
-            setContentsData(ContentsFilter);
+    const updateSelect = ({isSelect, targetId, defaultRank}: I_onSelectProps) => {
+        if(!isSelect){
+            const Filter = Selected.filter((data) => data.bossid !== targetId);
+            setSelected(Filter);
         } else {
-            if(!Selected.includes(BossData[0]) && idx === -1){
-                const NewValue: I_ContentsData = {
-                    bossId: BossData[0],
-                    rankId: BossData[1]
-                };
-                setSelected([...Selected, BossData[0]]);
-                setContentsData([...ContentsData, NewValue]);
-            } else if(Selected.includes(BossData[0]) && idx !== -1){
-                const ContentsCheck = ContentsData.some((data) => data.bossId === BossData[0] && data.rankId !== BossData[1]);
+            if(Selected.length >= 12) return;
 
-                switch(ContentsCheck){
-                    case true:
-                        const UpdateValue: I_ContentsData = {
-                            bossId: BossData[0],
-                            rankId: BossData[1]
-                        };
-                        setContentsData([
-                            ...ContentsData.slice(0, idx),
-                            UpdateValue,
-                            ...ContentsData.slice(idx + 1)
-                        ])
-                        break;
-                    case false:
-                        break;
-                }
-            }
+            const NewToDo: I_SelectTarget = {
+                bossid: targetId,
+                rankid: defaultRank
+            };
+
+            setSelected((prevData) => [
+                ...prevData,
+                NewToDo
+            ]);
         }
     };
 
-    useEffect(() => console.log(ContentsData), [ContentsData]);
+    const [isClosed, setClosed] = useState(false);
+    const [Selected, setSelected] = useState<I_SelectTarget[]>([]);
+
+    useEffect(() => console.log(Selected), [Selected]);
 
     return (
         <Container>
@@ -185,34 +173,79 @@ export default function BossForms({ToDosData, setToDosData}: I_AddToDoForms){
                     <BossForm>
                         {
                             BossContents.map((data) => {
+                                const {BossId, BossNm, SubName, Ranks} = data;
+
+                                const RankData = Ranks.map((rankdata) => {
+                                    const RankName = RankInfo.find((info) => info.RankId == rankdata.rank);
+
+                                    return {
+                                        rankId: rankdata.rank,
+                                        rankNm: RankName?.RankNm,
+                                        price: rankdata.price
+                                    }
+                                });
+
+                                const ColorData = RankColorInfos.find((color) => color.rankId === Ranks[0].rank);
+
+                                const SelectCheck = watch("selectedTargets").includes(BossId);
+
                                 return (
-                                    <FormItem key={data.BossId}>
+                                    <FormItem key={BossId}>
                                         <BossIcons>
-                                            <img src={`/imgs/boss_monsters/${data.BossId}.png`} />
+                                            <input 
+                                                key={`checkbox_${BossId}`}
+                                                type="checkbox"
+                                                value={BossId}
+                                                disabled={watch("selectedTargets").length === 12 && !SelectCheck}
+                                                {...register("selectedTargets", {
+                                                    onChange: (e: React.ChangeEvent<HTMLInputElement>) => {
+                                                        const {currentTarget: {value}} = e;
+                                                        const {target: {checked}} = e;
+
+                                                        if(!checked){
+                                                            updateSelect({isSelect: false, targetId: value});
+                                                        } else {
+                                                            updateSelect({
+                                                                isSelect: true,
+                                                                targetId: value,
+                                                                defaultRank: RankData[0].rankId
+                                                            });
+                                                        }
+                                                    } 
+                                                })}
+                                            />
+                                            <img src={`/imgs/boss_monsters/${BossId}.png`} />
+                                            <div className="bossNm">
+                                                {SubName === undefined ? BossNm : null}
+                                                {SubName !== undefined ? SubName : null}
+                                            </div>
                                         </BossIcons>
                                         <RanksBox>
                                             {
-                                                data.Ranks.map((rankdata) => {
-                                                    const Keys = `${data.BossId}_${rankdata.rank}`;
-                                                    return (
-                                                        <RankItem key={Keys}>
-                                                            <input 
-                                                                type="checkbox" 
-                                                                value={Keys}
-                                                                {...register("selectedTargets", {
-                                                                    onChange: (e: ChangeEvent<HTMLInputElement>) => {
-                                                                        const {currentTarget: {value}} = e;
-                                                                        const {target: {checked}} = e;
-                                                                        SelectEvent({Itemkey: value, isChecked: checked});
-                                                                    }  
-                                                                })}
-                                                                checked={
-                                                                    Selected.includes(data.BossId) && ContentsData.some((state) => state.rankId === rankdata.rank)
-                                                                }
-                                                            />
-                                                        </RankItem>
-                                                    );
-                                                })
+                                                Ranks.length < 2 && SelectCheck ? (
+                                                    <RankIcon 
+                                                        textcolor={ColorData?.fontColor} 
+                                                        bgcolor={ColorData?.bgColor} 
+                                                        bordercolor={ColorData?.borderColor}
+                                                    >
+                                                        {RankData[0].rankNm}
+                                                    </RankIcon>
+                                                ) : null
+                                            }
+                                            {
+                                                Ranks.length >= 2 && SelectCheck ? (
+                                                    <select key={`${BossId}_rankselect`}>
+                                                        {
+                                                            RankData.map((rank) => {
+                                                                return (
+                                                                    <option key={`${BossId}_${rank.rankId}`}>
+                                                                        {rank.rankNm}
+                                                                    </option>
+                                                                );
+                                                            })
+                                                        }
+                                                    </select>
+                                                ) : null
                                             }
                                         </RanksBox>
                                     </FormItem>
