@@ -6,7 +6,7 @@ import { useEffect } from "react";
 import { useForm } from "react-hook-form";
 import styled from "styled-components";
 import { useStore } from "zustand";
-import { I_ToDosData, WeeklyToDoType } from "../AddToDosLayout";
+import { I_ToDosData, I_WeeklyToDoData } from "../AddToDosLayout";
 
 export interface I_AddToDoForms {
     ToDosData: I_ToDosData;
@@ -44,7 +44,7 @@ export default function WeeklyForms({ToDosData, setToDosData, setCategory}: I_Ad
             if(!GetData){
                 return;
             } else {
-                const Convert: WeeklyToDoType = {
+                const Convert: I_WeeklyToDoData = {
                     contentsId: GetData.ContentsId,
                     contentsNm: GetData.ContentsNm,
                     IsDone: false,
@@ -53,7 +53,7 @@ export default function WeeklyForms({ToDosData, setToDosData, setCategory}: I_Ad
 
                 return Convert;
             }
-        }) as WeeklyToDoType[];
+        }) as I_WeeklyToDoData[];
         
         const Outputs: I_ToDosData = {
             WeeklyToDos: [...GetWeeklysData],
@@ -64,7 +64,7 @@ export default function WeeklyForms({ToDosData, setToDosData, setCategory}: I_Ad
         setCategory("");
     };
 
-    useEffect(() => console.log(ToDosData), [ToDosData.WeeklyToDos]);
+    useEffect(() => console.log(ToDosData), []);
 
     return (
         <WeeklyToDoForms onSubmit={handleSubmit(onValid)}>

@@ -17,8 +17,9 @@ type RankInfoType = {
     RankNm: string;
 };
 
-type RankType = {
-    rank: string;
+interface I_RankType {
+    rankId: string;
+    rankNm: string;
     price: number;
 };
 
@@ -26,7 +27,7 @@ export interface I_BossContents {
     BossId: string;
     BossNm: string;
     SubName?: string;
-    Ranks: RankType[];
+    Ranks: I_RankType[];
 };
 
 interface I_WorldDatas {
@@ -53,21 +54,13 @@ export const WeeklyContentsData: I_WeeklyContents[] = [
     {ContentsId: "weekly03", ContentsNm: "플래그 레이스", Units: "character"},
 ];
 
-export const RankInfo: RankInfoType[] = [
-    {RankId: "easy", RankNm: "이지"},
-    {RankId: "Normal", RankNm: "노말"},
-    {RankId: "Hard", RankNm: "하드"},
-    {RankId: "Chaos", RankNm: "카오스"},
-    {RankId: "Extreme", RankNm: "익스트림"},
-];
-
 export const BossContentsData: I_BossContents[] = [
     //Price, Latest Update: 2026-02-02
     {
         BossId: "boss01",
         BossNm: "자쿰",
         Ranks: [{
-            rank: "Chaos", price: 8080000
+            rankId: "Chaos", rankNm: "카오스", price: 8080000
         }]
     },
     {
@@ -75,14 +68,14 @@ export const BossContentsData: I_BossContents[] = [
         BossNm: "매그너스",
         SubName: "매그",
         Ranks: [{
-            rank: "Hard", price: 8560000
+            rankId: "Hard",rankNm: "하드", price: 8560000
         }]
     },
     {
         BossId: "boss03",
         BossNm: "힐라",
         Ranks: [
-            {rank: "Hard", price: 5750000}
+            {rankId: "Hard",rankNm: "하드", price: 5750000}
         ]
     },
     {
@@ -90,21 +83,21 @@ export const BossContentsData: I_BossContents[] = [
         BossNm: "파풀라투스",
         SubName: "파풀",
         Ranks: [
-            {rank: "Chaos", price: 13800000}
+            {rankId: "Chaos", rankNm: "카오스", price: 13800000}
         ]
     },
     {
         BossId: "boss05",
         BossNm: "피에르",
         Ranks: [
-            {rank: "Chaos", price: 8170000}
+            {rankId: "Chaos", rankNm: "카오스", price: 8170000}
         ]
     },
     {
         BossId: "boss06",
         BossNm: "반반",
         Ranks: [
-            {rank: "Chaos", price: 8150000}
+            {rankId: "Chaos", rankNm: "카오스", price: 8150000}
         ]
     },
     {
@@ -112,21 +105,21 @@ export const BossContentsData: I_BossContents[] = [
         BossNm: "블러디퀸",
         SubName: "블퀸",
         Ranks: [
-            {rank: "Chaos", price: 8140000}
+            {rankId: "Chaos", rankNm: "카오스", price: 8140000}
         ]
     },
     {
         BossId: "boss08",
         BossNm: "벨룸",
         Ranks: [
-            {rank: "Chaos", price: 9280000}
+            {rankId: "Chaos", rankNm: "카오스", price: 9280000}
         ]
     },
     {
         BossId: "boss09",
         BossNm: "핑크빈",
         Ranks: [
-            {rank: "Chaos", price: 6580000}
+            {rankId: "Chaos", rankNm: "카오스", price: 6580000}
         ]
     },
     {
@@ -134,25 +127,25 @@ export const BossContentsData: I_BossContents[] = [
         BossNm: "시그너스",
         SubName: "시그",
         Ranks: [
-            {rank: "easy", price: 4550000},
-            {rank: "Normal", price: 7500000}
+            {rankId: "easy",rankNm: "이지", price: 4550000},
+            {rankId: "Normal",rankNm: "노말", price: 7500000}
         ]
     },
     {
         BossId: "boss11",
         BossNm: "스우",
         Ranks: [
-            {rank: "Normal", price: 17600000},
-            {rank: "Hard", price: 54200000},
-            {rank: "Extreme", price: 0},
+            {rankId: "Normal",rankNm: "노말", price: 17600000},
+            {rankId: "Hard",rankNm: "하드", price: 54200000},
+            {rankId: "Extreme", rankNm: "익스트림", price: 0},
         ]
     },
     {
         BossId: "boss12",
         BossNm: "데미안",
         Ranks: [
-            {rank: "Normal", price: 18400000},
-            {rank: "Hard", price: 51500000},
+            {rankId: "Normal",rankNm: "노말", price: 18400000},
+            {rankId: "Hard",rankNm: "하드", price: 51500000},
         ]
     },
     {
@@ -160,34 +153,34 @@ export const BossContentsData: I_BossContents[] = [
         BossNm: "가디언 엔젤 슬라임",
         SubName: "가엔슬",
         Ranks: [
-            {rank: "Normal", price: 26800000},
-            {rank: "Chaos", price: 79100000},
+            {rankId: "Normal",rankNm: "노말", price: 26800000},
+            {rankId: "Chaos", rankNm: "카오스", price: 79100000},
         ]
     },
     {
         BossId: "boss14",
         BossNm: "루시드",
         Ranks: [
-            {rank: "easy", price: 31400000},
-            {rank: "Normal", price: 37500000},
-            {rank: "Hard", price: 66200000},
+            {rankId: "easy",rankNm: "이지", price: 31400000},
+            {rankId: "Normal",rankNm: "노말", price: 37500000},
+            {rankId: "Hard",rankNm: "하드", price: 66200000},
         ]
     },
     {
         BossId: "boss15",
         BossNm: "윌",
         Ranks: [
-            {rank: "easy", price: 34000000},
-            {rank: "Normal", price: 43300000},
-            {rank: "Hard", price: 81200000},
+            {rankId: "easy",rankNm: "이지", price: 34000000},
+            {rankId: "Normal",rankNm: "노말", price: 43300000},
+            {rankId: "Hard",rankNm: "하드", price: 81200000},
         ]
     },
     {
         BossId: "boss16",
         BossNm: "더스크",
         Ranks: [
-            {rank: "Normal", price: 46300000},
-            {rank: "Chaos", price: 73500000},
+            {rankId: "Normal",rankNm: "노말", price: 46300000},
+            {rankId: "Chaos", rankNm: "카오스", price: 73500000},
         ]
     },
     {
@@ -195,16 +188,16 @@ export const BossContentsData: I_BossContents[] = [
         BossNm: "진 힐라",
         SubName: "진힐라",
         Ranks: [
-            {rank: "Normal", price: 74900000},
-            {rank: "Hard", price: 112000000},
+            {rankId: "Normal",rankNm: "노말", price: 74900000},
+            {rankId: "Hard",rankNm: "하드", price: 112000000},
         ]
     },
     {
         BossId: "boss18",
         BossNm: "듄켈",
         Ranks: [
-            {rank: "Normal", price: 50000000},
-            {rank: "Hard", price: 99400000},
+            {rankId: "Normal",rankNm: "노말", price: 50000000},
+            {rankId: "Hard",rankNm: "하드", price: 99400000},
         ]
     },
     
@@ -213,19 +206,19 @@ export const BossContentsData: I_BossContents[] = [
         BossNm: "선택받은 세렌",
         SubName: "세렌",
         Ranks: [
-            {rank: "Normal", price: 266000000},
-            {rank: "Hard", price: 396000000},
-            {rank: "Extreme", price: 3150000000},
+            {rankId: "Normal",rankNm: "노말", price: 266000000},
+            {rankId: "Hard",rankNm: "하드", price: 396000000},
+            {rankId: "Extreme",rankNm: "익스트림", price: 3150000000},
         ]
     },
     {
         BossId: "boss20",
         BossNm: "칼로스",
         Ranks: [
-            {rank: "easy", price: 311000000},
-            {rank: "Normal", price: 561000000},
-            {rank: "Chaos", price: 1340000000},
-            {rank: "Extreme", price: 4320000000},
+            {rankId: "easy",rankNm: "이지", price: 311000000},
+            {rankId: "Normal",rankNm: "노말", price: 561000000},
+            {rankId: "Chaos", rankNm: "카오스", price: 1340000000},
+            {rankId: "Extreme",rankNm: "익스트림", price: 4320000000},
         ]
     },
     {
@@ -233,20 +226,20 @@ export const BossContentsData: I_BossContents[] = [
         BossNm: "최초의 대적자",
         SubName: "대적자",
         Ranks: [
-            {rank: "easy", price: 324000000},
-            {rank: "Normal", price: 589000000},
-            {rank: "Hard", price: 1510000000},
-            {rank: "Extreme", price: 4960000000},
+            {rankId: "easy",rankNm: "이지", price: 324000000},
+            {rankId: "Normal",rankNm: "노말", price: 589000000},
+            {rankId: "Hard",rankNm: "하드", price: 1510000000},
+            {rankId: "Extreme",rankNm: "익스트림", price: 4960000000},
         ]
     },
     {
         BossId: "boss22",
         BossNm: "카링",
         Ranks: [
-            {rank: "easy", price: 419000000},
-            {rank: "Normal", price: 714000000},
-            {rank: "Hard", price: 1830000000},
-            {rank: "Extreme", price: 5670000000},
+            {rankId: "easy",rankNm: "이지", price: 419000000},
+            {rankId: "Normal",rankNm: "노말", price: 714000000},
+            {rankId: "Hard",rankNm: "하드", price: 1830000000},
+            {rankId: "Extreme",rankNm: "익스트림", price: 5670000000},
         ]
     },
     {
@@ -254,16 +247,16 @@ export const BossContentsData: I_BossContents[] = [
         BossNm: "찬란한 흉성",
         SubName: "흉성",
         Ranks: [
-            {rank: "Normal", price: 658000000},
-            {rank: "Hard", price: 2819000000},
+            {rankId: "Normal",rankNm: "노말", price: 658000000},
+            {rankId: "Hard",rankNm: "하드", price: 2819000000},
         ]
     },
     {
         BossId: "boss24",
         BossNm: "림보",
         Ranks: [
-            {rank: "Normal", price: 1080000000},
-            {rank: "Hard", price: 2510000000},
+            {rankId: "Normal",rankNm: "노말", price: 1080000000},
+            {rankId: "Hard",rankNm: "하드", price: 2510000000},
         ]
     },
     {
@@ -271,8 +264,8 @@ export const BossContentsData: I_BossContents[] = [
         BossNm: "발드릭스",
         SubName: "발드",
         Ranks: [
-            {rank: "Normal", price: 1440000000},
-            {rank: "Hard", price: 3240000000},
+            {rankId: "Normal",rankNm: "노말", price: 1440000000},
+            {rankId: "Hard", rankNm: "하드", price: 3240000000},
         ]
     },
 ];

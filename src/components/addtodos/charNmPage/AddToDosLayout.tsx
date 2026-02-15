@@ -16,21 +16,23 @@ interface I_AddToDosLayout {
     worldNm?: string;
 }
 
-export type WeeklyToDoType = {
+export interface I_WeeklyToDoData {
     contentsId?: string;
     contentsNm: string;
     IsDone: boolean;
     contentsUnit: string;
 };
 
-type BossToDoType = {
+export interface I_BossToDoData {
     BossId?: string;
+    BossNm?: string;
     Rank?: string;
+    IsDone: boolean;
 };
 
 export interface I_ToDosData {
-    WeeklyToDos: WeeklyToDoType[],
-    BossToDos: BossToDoType[]
+    WeeklyToDos: I_WeeklyToDoData[],
+    BossToDos: I_BossToDoData[]
 };
 
 const Container = styled.div`
