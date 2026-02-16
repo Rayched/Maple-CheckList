@@ -102,7 +102,7 @@ export default function AddToDosLayout({charNm, charLv, charClass, charImg, worl
             worldNm: worldNm
         };
         setTimeout(() => router.push("/"), 500);
-    }
+    };
 
     return (
         <Container>

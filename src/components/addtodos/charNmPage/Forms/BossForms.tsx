@@ -4,9 +4,9 @@ import styled from "styled-components";
 import React, { ChangeEvent, useEffect, useState } from "react";
 import { Form, useForm } from "react-hook-form";
 import { RankColorInfos } from "@/game_datas/bossrank_colordata";
-import { I_BossToDos } from "@/stores";
-import { todo } from "node:test";
 import { I_BossToDoData, I_ToDosData } from "../AddToDosLayout";
+import { select } from "framer-motion/client";
+import { todo } from "node:test";
 
 interface I_RankIcon {
     textcolor?: string;
@@ -204,13 +204,14 @@ export default function BossForms({ToDosData, setToDosData, setCategory}: I_AddT
     };
 
     const onValid = () => {
+        /*
         const NewBossToDoData = Selected.map((selectdata) => {
             const convert: I_BossToDoData = {
                 BossId: selectdata.bossid,
                 BossNm: selectdata.bossNm,
                 Rank: selectdata.rankid,
                 IsDone: false
-            };
+            };Contents
 
             return convert;
         });
@@ -227,6 +228,45 @@ export default function BossForms({ToDosData, setToDosData, setCategory}: I_AddT
          * - 기존 데이터 상태 존중하지 않음
          * - 기존 데이터 + Selected, update data
          */
+        const PrevData = ToDosData.BossToDos.filter((tododata) => {
+            const IdCheck = BossContents.find((origindata) => origindata.BossId !== tododata.BossId);
+            const NmCheck = Selected.find((selectdata) => selectdata.bossNm === tododata.BossNm);
+
+            /**
+             * bossid update 여부 체크
+             * - idcheck/undefined * NmCheck/undefined => id만 update return
+             * - idcheck/undefined * Nmcheck/true => update 대상, return (종료)
+             * - idcheck/true * NmCheck/undefined => tododata return
+             * - idcheck/true * NmCheck/true => update 대상, return (종료)
+             */
+
+            if(!IdCheck && !NmCheck){
+                //boss contents 추가 인해, bossid 변동사항이 생긴 경우
+                const GetNewId = BossContents.find((origin) => origin.BossNm === tododata.BossNm)?.BossId;
+
+                const IdUpdate: I_BossToDoData = {
+                    BossId: GetNewId,
+                    BossNm: tododata.BossNm,
+                    IsDone: tododata.IsDone,
+                    Rank: tododata.Rank
+                };
+
+                return IdUpdate;
+            } else if(IdCheck && !NmCheck){
+                return tododata;
+            } else if((IdCheck && NmCheck)||(!IdCheck && NmCheck)){
+                return;
+            } 
+        });
+
+        const UpdateData = Selected.map((data) => {
+            /**
+             * Nmcheck, rankcheck
+             * Nmcheck/undefined * rankcheck/undefined => data return
+             * Nmcheck/true * rankcheck/undefined => updatedata return
+             * Nmcheck/true * rankcheck/true => return null
+             */
+        });
     };
 
     useEffect(() => console.log(ToDosData), []);
