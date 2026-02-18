@@ -7,6 +7,7 @@ import { RankColorInfos } from "@/game_datas/bossrank_colordata";
 import { I_BossToDoData, I_ToDosData } from "../AddToDosLayout";
 import { select } from "framer-motion/client";
 import { todo } from "node:test";
+import { BossToDoSort } from "@/utils/SortFuncs";
 
 interface I_RankIcon {
     textcolor?: string;
@@ -232,14 +233,6 @@ export default function BossForms({ToDosData, setToDosData, setCategory}: I_AddT
             const IdCheck = BossContents.find((origindata) => origindata.BossId !== tododata.BossId);
             const NmCheck = Selected.find((selectdata) => selectdata.bossNm === tododata.BossNm);
 
-            /**
-             * bossid update 여부 체크
-             * - idcheck/undefined * NmCheck/undefined => id만 update return
-             * - idcheck/undefined * Nmcheck/true => update 대상, return (종료)
-             * - idcheck/true * NmCheck/undefined => tododata return
-             * - idcheck/true * NmCheck/true => update 대상, return (종료)
-             */
-
             if(!IdCheck && !NmCheck){
                 //boss contents 추가 인해, bossid 변동사항이 생긴 경우
                 const GetNewId = BossContents.find((origin) => origin.BossNm === tododata.BossNm)?.BossId;
@@ -260,13 +253,6 @@ export default function BossForms({ToDosData, setToDosData, setCategory}: I_AddT
         });
 
         const UpdateData = Selected.map((data) => {
-            /**
-             * Nmcheck, rankcheck
-             * Nmcheck/undefined * rankcheck/undefined => data return
-             * Nmcheck/true * rankcheck/undefined => updatedata return
-             * Nmcheck/true * rankcheck/true => return null
-             */
-
             const NmCheck = ToDosData.BossToDos.find((todos) => todos.BossNm === data.bossNm);
             const RankCheck = ToDosData.BossToDos.find((todos) => todos.Rank === data.rankid);
 
@@ -292,14 +278,14 @@ export default function BossForms({ToDosData, setToDosData, setCategory}: I_AddT
             }
         }).filter((data) => data !== null);
 
-        const ToDosUpdate: I_ToDosData = {
-            WeeklyToDos: ToDosData.WeeklyToDos,
-            BossToDos: [
-                ...PrevData, ...UpdateData
-            ]
-        };
+        const UpdateBossToDos = BossToDoSort({
+            BossToDoDatas: [...PrevData, ...UpdateData]
+        });
 
-        setToDosData(ToDosUpdate);
+        setToDosData({
+            WeeklyToDos: ToDosData.WeeklyToDos,
+            BossToDos: UpdateBossToDos
+        });
         setCategory("");
     };
 
