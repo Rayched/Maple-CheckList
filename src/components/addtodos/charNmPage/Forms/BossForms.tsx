@@ -1,4 +1,4 @@
-import { BossContentsData} from "@/game_datas/contentsData";
+import { BossContentsData, WeeklyContentsData} from "@/game_datas/contentsData";
 import { I_AddToDoForms } from "./WeeklyForms";
 import styled from "styled-components";
 import React, { ChangeEvent, useEffect, useState } from "react";
@@ -266,10 +266,42 @@ export default function BossForms({ToDosData, setToDosData, setCategory}: I_AddT
              * Nmcheck/true * rankcheck/undefined => updatedata return
              * Nmcheck/true * rankcheck/true => return null
              */
-        });
-    };
 
-    useEffect(() => console.log(ToDosData), []);
+            const NmCheck = ToDosData.BossToDos.find((todos) => todos.BossNm === data.bossNm);
+            const RankCheck = ToDosData.BossToDos.find((todos) => todos.Rank === data.rankid);
+
+            if(!NmCheck && !RankCheck){
+                const NewData: I_BossToDoData = {
+                    BossId: data.bossid,
+                    BossNm: data.bossNm,
+                    Rank: data.rankid,
+                    IsDone: false
+                };
+                return NewData;
+            } else if(NmCheck && !RankCheck){
+                const RankUpdate: I_BossToDoData = {
+                    BossId: data.bossid,
+                    BossNm: NmCheck.BossNm,
+                    Rank: data.rankid,
+                    IsDone: NmCheck.IsDone
+                };
+
+                return RankUpdate;
+            } else {
+                return null;
+            }
+        }).filter((data) => data !== null);
+
+        const ToDosUpdate: I_ToDosData = {
+            WeeklyToDos: ToDosData.WeeklyToDos,
+            BossToDos: [
+                ...PrevData, ...UpdateData
+            ]
+        };
+
+        setToDosData(ToDosUpdate);
+        setCategory("");
+    };
 
     return (
         <Container>

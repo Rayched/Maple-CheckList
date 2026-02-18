@@ -64,8 +64,6 @@ export default function WeeklyForms({ToDosData, setToDosData, setCategory}: I_Ad
         setCategory("");
     };
 
-    useEffect(() => console.log(ToDosData), []);
-
     return (
         <WeeklyToDoForms onSubmit={handleSubmit(onValid)}>
             {

@@ -1,12 +1,13 @@
 "use client"
 
 import { I_Bookmark, Categories, I_CharToDos, MapleToDoDataStore } from "@/stores";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import styled from "styled-components";
 import WeeklyForms from "./Forms/WeeklyForms";
 import BossForms from "./Forms/BossForms";
 import { useStore } from "zustand";
 import { useRouter } from "next/navigation";
+import ShowToDosData from "./Forms/ShowToDos";
 
 interface I_AddToDosLayout {
     charNm?: string;
@@ -104,6 +105,8 @@ export default function AddToDosLayout({charNm, charLv, charClass, charImg, worl
         setTimeout(() => router.push("/"), 500);
     };
 
+    useEffect(() => console.log(ToDos), [ToDos])
+
     return (
         <Container>
             <CategorySelect onChange={CategoryChange} value={NowCategory}>
@@ -115,6 +118,9 @@ export default function AddToDosLayout({charNm, charLv, charClass, charImg, worl
                 }
             </CategorySelect>
             <FormOutlet>
+                {
+                    NowCategory === "" ? <ShowToDosData ToDosData={ToDos}/> : null
+                }
                 {
                     NowCategory === CategoryData[0].categoryId ? (
                         <WeeklyForms 
