@@ -1,5 +1,5 @@
 import { BossContentsData, WeeklyContentsData} from "@/game_datas/contentsData";
-import { I_AddToDoForms } from "./WeeklyForms";
+import { I_AddToDoForms } from "../WeeklyForms/WeeklyForms";
 import styled from "styled-components";
 import React, { ChangeEvent, useEffect, useState } from "react";
 import { Form, useForm } from "react-hook-form";
@@ -30,16 +30,6 @@ interface I_SelectTarget {
     bossid?: string;
     bossNm?: string;
     rankid?: string;
-};
-
-interface I_RankChangeProps {
-    bossId: string;
-    event: React.ChangeEvent<HTMLSelectElement>;
-};
-
-type I_Rankdata = {
-    rankId: string;
-    rankNm: string;
 };
 
 const Container = styled.div`
@@ -205,30 +195,6 @@ export default function BossForms({ToDosData, setToDosData, setCategory}: I_AddT
     };
 
     const onValid = () => {
-        /*
-        const NewBossToDoData = Selected.map((selectdata) => {
-            const convert: I_BossToDoData = {
-                BossId: selectdata.bossid,
-                BossNm: selectdata.bossNm,
-                Rank: selectdata.rankid,
-                IsDone: false
-            };Contents
-
-            return convert;
-        });
-
-        const UpdateToDos: I_ToDosData = {
-            WeeklyToDos: ToDosData.WeeklyToDos,
-            BossToDos: NewBossToDoData
-        };
-
-        setToDosData(UpdateToDos);
-        setCategory("");
-        /**
-         * 현 방식, 새로 덮어쓰기 방식
-         * - 기존 데이터 상태 존중하지 않음
-         * - 기존 데이터 + Selected, update data
-         */
         const PrevData = ToDosData.BossToDos.filter((tododata) => {
             const IdCheck = BossContents.find((origindata) => origindata.BossId !== tododata.BossId);
             const NmCheck = Selected.find((selectdata) => selectdata.bossNm === tododata.BossNm);
@@ -308,7 +274,7 @@ export default function BossForms({ToDosData, setToDosData, setCategory}: I_AddT
                                     const OptionValue = tododata.BossId + "_" + tododata.Rank;
 
                                     return OptionValue;
-                                })
+                                });
 
                                 return (
                                     <FormItem key={data.BossId}>

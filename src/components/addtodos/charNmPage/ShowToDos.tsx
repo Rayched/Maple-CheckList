@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { I_ToDosData } from "../AddToDosLayout";
+import { I_ToDosData } from "./AddToDosLayout";
 import styled from "styled-components";
 
 interface I_ShowToDosDataProps {

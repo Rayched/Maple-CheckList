@@ -1,6 +1,6 @@
 //주간 컨텐츠 및 주간 보스 컨텐츠 데이터 모음집
 
-interface I_WeeklyContents {
+export interface I_WeeklyContents {
     ContentsId: string;
     ContentsNm: string;
     Units: string; 

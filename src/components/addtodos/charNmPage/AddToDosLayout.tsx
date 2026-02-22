@@ -3,11 +3,11 @@
 import { I_Bookmark, Categories, I_CharToDos, MapleToDoDataStore } from "@/stores";
 import { useEffect, useState } from "react";
 import styled from "styled-components";
-import WeeklyForms from "./Forms/WeeklyForms";
-import BossForms from "./Forms/BossForms";
+import WeeklyForms from "./WeeklyForms/WeeklyForms";
+import BossForms from "./BossForms/BossForms";
 import { useStore } from "zustand";
 import { useRouter } from "next/navigation";
-import ShowToDosData from "./Forms/ShowToDos";
+import ShowToDosData from "./ShowToDos";
 
 interface I_AddToDosLayout {
     charNm?: string;
