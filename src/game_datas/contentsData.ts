@@ -268,6 +268,14 @@ export const BossContentsData: I_BossContents[] = [
             {rankId: "Hard", rankNm: "하드", price: 3240000000},
         ]
     },
+    {
+        BossId: "boss26",
+        BossNm: "유피테르",
+        Ranks: [
+            {rankId: "Normal", rankNm: "노말", price: 1700000000},
+            {rankId: "Hard", rankNm: "하드", price: 5100000000}
+        ]
+    }
 ];
 /** 보스 콘텐츠 양식
  * {

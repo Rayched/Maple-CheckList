@@ -3,8 +3,8 @@
 import { I_Bookmark, Categories, I_CharToDos, MapleToDoDataStore } from "@/stores";
 import { useEffect, useState } from "react";
 import styled from "styled-components";
-import WeeklyForms from "./WeeklyForms/WeeklyForms";
-import BossForms from "./BossForms/BossForms";
+import WeeklyForms from "./WeeklyForm/WeeklyForms";
+import BossForms from "./BossForm/BossForms";
 import { useStore } from "zustand";
 import { useRouter } from "next/navigation";
 import ShowToDosData from "./ShowToDos";

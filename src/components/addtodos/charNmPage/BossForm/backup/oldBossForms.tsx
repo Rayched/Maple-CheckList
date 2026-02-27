@@ -1,12 +1,10 @@
 import { BossContentsData, WeeklyContentsData} from "@/game_datas/contentsData";
-import { I_AddToDoForms } from "../WeeklyForms/WeeklyForms";
+import { I_AddToDoForms } from "../WeeklyForm/WeeklyForms";
 import styled from "styled-components";
 import React, { ChangeEvent, useEffect, useState } from "react";
-import { Form, useForm } from "react-hook-form";
+import { useForm, FormProvider } from "react-hook-form";
 import { RankColorInfos } from "@/game_datas/bossrank_colordata";
-import { I_BossToDoData, I_ToDosData } from "../AddToDosLayout";
-import { select } from "framer-motion/client";
-import { todo } from "node:test";
+import { I_BossToDoData } from "../AddToDosLayout";
 import { BossToDoSort } from "@/utils/SortFuncs";
 
 interface I_RankIcon {
@@ -132,7 +130,7 @@ const RankIcon = styled.div<I_RankIcon>`
     border: 2px solid ${(props) => props.bordercolor};
 `;
 
-export default function BossForms({ToDosData, setToDosData, setCategory}: I_AddToDoForms){
+export default function oldBossForms({ToDosData, setToDosData, setCategory}: I_AddToDoForms){
     const BossContents = BossContentsData;
     const [isClosed, setClosed] = useState(false);
     const [Selected, setSelected] = useState<I_SelectTarget[]>([]);
