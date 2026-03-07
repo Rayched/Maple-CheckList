@@ -2,7 +2,7 @@
 
 import React, { useState } from "react";
 import styled from "styled-components";
-import { CloseToggleBar, FormItem } from "../Commons";
+import { CloseToggleBar, FormItem } from "../FormCommons";
 import { useFormContext } from "react-hook-form";
 import { I_WeeklyToDoData } from "../AddToDosLayout";
 import { I_WeeklyContents } from "@/game_datas/contentsData";

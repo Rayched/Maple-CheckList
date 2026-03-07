@@ -2,7 +2,7 @@
 
 import { WeeklyContentsData } from "@/game_datas/contentsData";
 import { I_ToDosData, I_WeeklyToDoData } from "../AddToDosLayout";
-import { CloseToggleBar, FormContainer, FormItem, Forms } from "../Commons";
+import { CloseToggleBar, FormContainer, FormItem, Forms } from "../FormCommons";
 import { FormProvider, useForm } from "react-hook-form";
 import {styled} from "styled-components";
 import { useEffect, useState } from "react";
