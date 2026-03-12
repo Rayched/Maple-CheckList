@@ -19,12 +19,20 @@ export interface I_FormValue {
     WeeklySelect: String[];
 };
 
+export interface I_SelectTarget {
+    weeklyId: string;
+    weeklyNm: string;
+    weeklyUnits: string;
+};
+
 const WeeklyForm = styled(Forms)`
     padding: 0px;
 `;
 
 export default function WeeklyForms({ToDosData, setToDosData, setCategory}: I_AddToDoForms){
-    const WeeklysData = WeeklyContentsData
+    const WeeklysData = WeeklyContentsData;
+
+    const [SelectTarget, setSelectTarget] = useState<I_SelectTarget[]>([]);
 
     const AccountWeeklys = WeeklysData.filter((data) => data.Units === "account" || data.ContentsId === "account01");
     const ArcaneWeeklys = WeeklysData.map((data) => {
@@ -56,51 +64,62 @@ export default function WeeklyForms({ToDosData, setToDosData, setCategory}: I_Ad
         }
     });
 
-    const {watch, handleSubmit, setValue} = Methods;
+    const {watch, handleSubmit} = Methods;
 
     const onValid = () => {
-        const SelectedTargets = watch("WeeklySelect");
-
-        if(SelectedTargets.length === 0){
-            return;
-        } else {
-            const PrevData = ToDosData.WeeklyToDos.filter((todos) => {
-                if(SelectedTargets.includes(String(todos.contentsId))){
-                    return;
-                } else {
-                    return todos;
-                }
-            });
-
-            const NewToDoData = WeeklysData.map((origin) => {
-                const GetPrevIds = ToDosData.WeeklyToDos.map((data) => data.contentsId);
-
-                if(GetPrevIds.includes(origin.ContentsId) || !watch("WeeklySelect").includes(origin.ContentsId)){
-                    return null;
-                } else {
-                    const NewData: I_WeeklyToDoData = {
-                        contentsId: origin.ContentsId,
-                        contentsNm: origin.ContentsNm,
-                        IsDone: false,
-                        contentsUnit: origin.Units
-                    };
-                    return NewData;
-                }
-            }).filter((data) => data !== null);
-
-            const UpdateData = WeeklyToDoSort({
-                WeeklyToDoDatas: [...PrevData, ...NewToDoData]
-            });
-
+        if(SelectTarget.length === 0){
             setToDosData({
-                WeeklyToDos: UpdateData,
+                WeeklyToDos: [],
                 BossToDos: ToDosData.BossToDos
             });
-            setCategory("");
+        } else {
+            const UpdateWeeklyToDos = SelectTarget.map((data) => {
+                const GetWeeklyToDoData = ToDosData.WeeklyToDos.find((tododata) => tododata.contentsId === data.weeklyId);
+
+                if(!GetWeeklyToDoData){
+                    const Format: I_WeeklyToDoData = {
+                        contentsId: data.weeklyId,
+                        contentsNm: data.weeklyNm,
+                        contentsUnit: data.weeklyUnits,
+                        IsDone: false
+                    };
+                    return Format;
+                } else {
+                    const UpdateData: I_WeeklyToDoData = {
+                        contentsId: data.weeklyId,
+                        contentsNm: data.weeklyNm,
+                        contentsUnit: data.weeklyUnits,
+                        IsDone: GetWeeklyToDoData.IsDone
+                    };
+                    return UpdateData;
+                }
+            });
+            setToDosData({
+                WeeklyToDos: UpdateWeeklyToDos,
+                BossToDos: ToDosData.BossToDos
+            });
         }
+        setCategory("");
     };
 
-    useEffect(() => console.log(watch("WeeklySelect")), [watch("WeeklySelect")])
+    const DefaultSetting = () => {
+        if(ToDosData.WeeklyToDos.length <= 0) return;
+        const PrevWeeklyToDos = ToDosData.WeeklyToDos.map((tododata) => {
+            const Format: I_SelectTarget = {
+                weeklyId: String(tododata.contentsId),
+                weeklyNm: tododata.contentsNm,
+                weeklyUnits: tododata.contentsUnit
+            };
+
+            return Format;
+        });
+
+        setSelectTarget(PrevWeeklyToDos);
+    };
+
+    useEffect(() => console.log(watch("WeeklySelect")), [watch("WeeklySelect")]);
+    useEffect(() => console.log(SelectTarget), [SelectTarget]);
+    useEffect(() => DefaultSetting(), []);
 
     return (
         <FormContainer>
@@ -109,14 +128,20 @@ export default function WeeklyForms({ToDosData, setToDosData, setCategory}: I_Ad
                     <UnitsBox 
                         titles={"주간 컨텐츠 / 계정 단위"}
                         contentsdata={AccountWeeklys}
+                        SelectTargets={SelectTarget}
+                        setSelectTargets={setSelectTarget}
                     />
                     <UnitsBox 
                         titles="아케인리버 주간 컨텐츠"
                         contentsdata={ArcaneWeeklys}
+                        SelectTargets={SelectTarget}
+                        setSelectTargets={setSelectTarget}
                     />
                     <UnitsBox 
                         titles="주간 컨텐츠 / 캐릭터 별"
                         contentsdata={CharWeeklys}
+                        SelectTargets={SelectTarget}
+                        setSelectTargets={setSelectTarget}
                     />
                     <button>저장</button>
                 </WeeklyForm>

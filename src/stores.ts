@@ -55,11 +55,18 @@ export const MapleToDoDataStore = create<I_MapleToDoDataStore>((set) => ({
 }));
 */
 
+const AccountWeeklysData: I_WeeklyToDos[] = [
+    {ContentsId: "account01", IsDone: false, Units: "account"},
+    {ContentsId: "account02", IsDone: false, Units: "account"},
+    {ContentsId: "account03", IsDone: false, Units: "account"},
+    {ContentsId: "account04", IsDone: false, Units: "account"}
+];
+
 export const MapleToDoDataStore = create<I_MapleToDoDataStore>()(
     persist((set, get) => ({
         CharToDos: [] as I_CharToDos[],
         Bookmarks: [] as I_Bookmark[],
-        AccountWeeklys: [] as I_WeeklyToDos[],
+        AccountWeeklys: AccountWeeklysData,
         UpdateCharToDos: (newCharToDosData) => set({CharToDos: newCharToDosData}),
         UpdateBookmarks: (newBookmarkData) => set({Bookmarks: newBookmarkData}),
         UpdateAccWeeklys: (newAccWeeklysData) => set({AccountWeeklys: newAccWeeklysData})

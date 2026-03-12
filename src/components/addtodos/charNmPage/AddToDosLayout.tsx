@@ -1,6 +1,6 @@
 "use client"
 
-import { I_Bookmark, Categories, I_CharToDos, MapleToDoDataStore } from "@/stores";
+import { I_Bookmark, Categories, I_CharToDos, MapleToDoDataStore, I_WeeklyToDos, I_BossToDos } from "@/stores";
 import { useEffect, useState } from "react";
 import styled from "styled-components";
 import WeeklyForms from "./WeeklyForm/WeeklyForms";
@@ -82,7 +82,9 @@ export default function AddToDosLayout({charNm, charLv, charClass, charImg, worl
 
     const [NowCategory, setNowCategory] = useState("");
 
-    //const {MapleToDoData, setMapleToDoData} = useStore(MapleToDoDataStore);
+    const {
+        CharToDos, Bookmarks, UpdateCharToDos, UpdateBookmarks
+    } = useStore(MapleToDoDataStore);
 
     const CategoryChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
         const {currentTarget: {value}} = event;
@@ -95,6 +97,16 @@ export default function AddToDosLayout({charNm, charLv, charClass, charImg, worl
     };
 
     const SavedCharToDo = () => {
+        /**
+         * 1). 캐릭터 todo store 저장
+         *  - 기존 저장 데이터 있으면 덮어쓰기
+         *  - 없는 경우만 새로 쓰기
+         *  - 수정 form에서도 쓴다는 것을 가정하고 로직 작성
+         * 
+         * 2). 북마크 캐릭터 데이터 저장
+         *  - 캐릭터와 관련된 데이터가 항상 고정은 아니기에
+         *  - 캐릭터 todo 수정 시, 북마크 데이터도 갱신할 것
+         */
         const NewBookmark: I_Bookmark = {
             charNm: charNm,
             charLV: charLv,
@@ -102,6 +114,50 @@ export default function AddToDosLayout({charNm, charLv, charClass, charImg, worl
             charImg: charImg,
             worldNm: worldNm
         };
+
+        const IsSubmits = CharToDos.findIndex((data) => data.charNm === charNm);
+
+        if(IsSubmits === -1){
+            const WeeklysConvert = ToDos.WeeklyToDos.map((weeklys) => {
+                if(weeklys.contentsId === "" || weeklys.contentsUnit === "") null;
+                const format: I_WeeklyToDos = {
+                    ContentsId: String(weeklys.contentsId),
+                    Units: weeklys.contentsUnit,
+                    IsDone: weeklys.IsDone,
+                };
+
+                return format;
+            }).filter((data) => data !== null);
+
+            const BossToDoConvert = ToDos.BossToDos.map((boss) => {
+                if(boss.BossId === "" || boss.BossNm === "" || boss.Rank === ""){
+                    return null;
+                } else {
+                    const format: I_BossToDos = {
+                        bossId: String(boss.BossId),
+                        bossNm: String(boss.BossNm),
+                        rankId: String(boss.Rank),
+                        IsDone: boss.IsDone
+                    };
+
+                    return format;
+                }
+            }).filter((data) => data !== null);
+
+            const NewCharToDos: I_CharToDos = {
+                charNm: String(charNm),
+                WeeklyToDos: WeeklysConvert,
+                BossToDos: BossToDoConvert
+            };
+
+            UpdateCharToDos([
+                ...CharToDos, NewCharToDos
+            ]);
+            UpdateBookmarks([
+                ...Bookmarks, NewBookmark
+            ]);
+        } else {}
+        
         setTimeout(() => router.push("/"), 500);
     };
 
