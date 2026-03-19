@@ -7,7 +7,7 @@ export default function CharToDosPage(){
     return (
         <div className={sytles.Wrapper}>
             <CreateNewCharTodo />
-            <BookmarkList></BookmarkList>
+            <BookmarkList />
         </div>
     );
 }

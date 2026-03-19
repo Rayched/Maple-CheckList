@@ -48,12 +48,10 @@ interface I_MapleToDoDataStore {
     UpdateAccWeeklys: (updateValue: I_WeeklyToDos[]) => void; 
 };
 
-/*
-export const MapleToDoDataStore = create<I_MapleToDoDataStore>((set) => ({
-    MapleToDoData: [],
-    setMapleToDoData: (UpdateValue) => set((s) => ({MapleToDoData: [...s.MapleToDoData, UpdateValue]}))
-}));
-*/
+interface I_EditTargetStore {
+    EditTarget: string;
+    setEditTarget: (newValue: string) => void;
+};
 
 const AccountWeeklysData: I_WeeklyToDos[] = [
     {ContentsId: "account01", IsDone: false, Units: "account"},
@@ -80,3 +78,8 @@ export const MapleToDoDataStore = create<I_MapleToDoDataStore>()(
         })
     })
 );
+
+export const EditTargetStore = create<I_EditTargetStore>((set) => ({
+    EditTarget: "",
+    setEditTarget: (newValue) => set({EditTarget: newValue})
+}))

@@ -10,7 +10,7 @@ interface I_ShowToDosDataProps {
 };
 
 interface I_UnitsBox {
-    isaccounts: boolean;
+    isaccounts: string;
 };
 
 interface I_BossRankbox {
@@ -52,7 +52,7 @@ const WeeklyItem = styled(FormItem)`
 
 const UnitsBox = styled.div<I_UnitsBox>`
     color: white;
-    background-color: ${(props) => props.isaccounts ? "#aa3355" : "#319DBC"};
+    background-color: ${(props) => props.isaccounts === "1" ? "#aa3355" : "#319DBC"};
     font-weight: bold;
     margin-right: 5px;
     padding: 4px;
@@ -110,8 +110,8 @@ export default function ShowToDosData({ToDosData}: I_ShowToDosDataProps){
                                     return (
                                         <WeeklyItem key={data.contentsId}>
                                             <div className="contentsNm">{data.contentsNm}</div>
-                                            {data.contentsUnit === "account" ? <UnitsBox isaccounts={true}>계정</UnitsBox> : null} 
-                                            {data.contentsUnit === "character" ? <UnitsBox isaccounts={false}>캐릭터</UnitsBox> : null}
+                                            {data.contentsUnit === "account" ? <UnitsBox isaccounts="1">계정</UnitsBox> : null} 
+                                            {data.contentsUnit === "character" ? <UnitsBox isaccounts="0">캐릭터</UnitsBox> : null}
                                         </WeeklyItem>
                                     );
                                 })

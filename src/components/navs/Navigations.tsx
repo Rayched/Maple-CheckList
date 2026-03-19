@@ -81,6 +81,7 @@ const SidebarWrapper = styled.div`
     right: 0;
     position: fixed;
     background-color: rgba(0, 0, 0, 0.8);
+    z-index: 2;
 `;
 
 const PathData: PathDataTypes[] = [

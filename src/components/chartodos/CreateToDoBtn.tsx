@@ -1,8 +1,10 @@
 "use client"
 
+import { MapleToDoDataStore } from "@/stores";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 import styled from "styled-components";
+import { useStore } from "zustand";
 
 const SearchBar = styled.div`
     display: flex;
@@ -47,6 +49,7 @@ const AddBtn = styled.div`
 
 export default function CreateNewCharTodo(){
     const routers = useRouter();
+    const {Bookmarks, CharToDos} = useStore(MapleToDoDataStore);
     const [InputText, setInputText] = useState("");
 
     const onChangeEventListener = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -55,8 +58,15 @@ export default function CreateNewCharTodo(){
     }
 
     const Redirect_addtodos = () => {
+        const BookmarkCheck = Bookmarks.find((bookmark) => bookmark.charNm === InputText);
+        const CharToDoCheck = CharToDos.find((chartodo) => chartodo.charNm === InputText);
+
         if(InputText === ""){
             alert("캐릭터 명을 입력하지 않았습니다.");
+            return;
+        } else if(BookmarkCheck || CharToDoCheck){
+            alert(`'${InputText}/LV ${BookmarkCheck?.charLV}/${BookmarkCheck?.charClass}'\n해당 캐릭터의 메할일은 이미 존재합니다.`)
+            setInputText("");
             return;
         } else {
             routers.push(`/addtodos/${InputText}`);
