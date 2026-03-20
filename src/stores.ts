@@ -1,6 +1,7 @@
 import { loadComponents } from "next/dist/server/load-components";
 import { create } from "zustand";
 import { createJSONStorage, persist } from "zustand/middleware";
+import { WeeklyContentsData } from "./game_datas/contentsData";
 
 type CategoryType = {
     categoryId: string;
@@ -17,6 +18,7 @@ export interface I_Bookmark {
 
 export interface I_WeeklyToDos {
     ContentsId: string;
+    ContentsNm: string;
     IsDone: boolean;
     Units: string;
 };
@@ -43,6 +45,7 @@ interface I_MapleToDoDataStore {
     CharToDos: I_CharToDos[],
     Bookmarks: I_Bookmark[],
     AccountWeeklys: I_WeeklyToDos[],
+    
     UpdateCharToDos: (updateValue: I_CharToDos[]) => void;
     UpdateBookmarks: (updateValue: I_Bookmark[]) => void;
     UpdateAccWeeklys: (updateValue: I_WeeklyToDos[]) => void; 
@@ -53,12 +56,19 @@ interface I_EditTargetStore {
     setEditTarget: (newValue: string) => void;
 };
 
-const AccountWeeklysData: I_WeeklyToDos[] = [
-    {ContentsId: "account01", IsDone: false, Units: "account"},
-    {ContentsId: "account02", IsDone: false, Units: "account"},
-    {ContentsId: "account03", IsDone: false, Units: "account"},
-    {ContentsId: "account04", IsDone: false, Units: "account"}
-];
+const AccountWeeklysData = WeeklyContentsData.map((data) => {
+    if(data.Units === "account"){
+        const Convert: I_WeeklyToDos = {
+            ContentsId: data.ContentsId,
+            ContentsNm: data.ContentsNm,
+            IsDone: false,
+            Units: data.Units
+        };
+        return Convert;
+    } else {
+        return null
+    }
+}).filter((data) => data !== null);
 
 export const MapleToDoDataStore = create<I_MapleToDoDataStore>()(
     persist((set, get) => ({

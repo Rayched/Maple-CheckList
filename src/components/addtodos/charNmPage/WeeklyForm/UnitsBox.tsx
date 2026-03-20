@@ -49,7 +49,7 @@ const ChildrenBox = styled.div`
 const WeeklyItem = styled(FormItem)``;
 
 export default function UnitsBox({titles, contentsdata, SelectTargets, setSelectTargets}: I_UnitsBoxProps){
-    const {register, watch} = useFormContext<I_FormValue>();
+    const {register} = useFormContext<I_FormValue>();
     const [isShow, setShow] = useState(false);
 
     const CheckedEventListener = ({weeklyId, weeklyNm, contentsUnit, isChecked}: I_CheckedEventListener) => {

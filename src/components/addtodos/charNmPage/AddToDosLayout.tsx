@@ -122,6 +122,7 @@ export default function AddToDosLayout({charNm, charLv, charClass, charImg, worl
                 if(weeklys.contentsId === "" || weeklys.contentsUnit === "") null;
                 const format: I_WeeklyToDos = {
                     ContentsId: String(weeklys.contentsId),
+                    ContentsNm: weeklys.contentsNm,
                     Units: weeklys.contentsUnit,
                     IsDone: weeklys.IsDone,
                 };

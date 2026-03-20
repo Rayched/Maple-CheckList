@@ -31,7 +31,9 @@ export default async function CharToDosPage({params}: I_CharToDosPage){
                 charimgurl={CharData.character_image}
                 worldname={CharData.world_name}
             />
-            <Charpage_ToDoList />
+            <Charpage_ToDoList 
+                charname={CharData.character_name}
+            />
         </div>
     );
 }

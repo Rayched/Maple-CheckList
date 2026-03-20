@@ -1,6 +1,6 @@
 "use client"
 
-import { WorldDatas } from "@/game_datas/contentsData";
+import { ClassDatas, WorldDatas } from "@/game_datas/contentsData";
 import styled from "styled-components";
 
 /**
@@ -19,11 +19,12 @@ interface I_NowCharData {
 const NowCharDataContainer = styled.div`
     width: 85%;
     height: 20%;
+    max-height: 200px;
     display: flex;
     flex-direction: row;
     align-items: center;
     justify-content: space-between;
-    border-bottom: 2px solid black;
+    border-bottom: 2px solid gray;
 
     .charimage {
         width: 50%;
@@ -63,6 +64,7 @@ const NowCharData_Icons = styled.img`
 
 export default function NowCharData({charname, charclass, charimgurl, charlevel, charExpRate, worldname}: I_NowCharData){
     const GetWorldId = WorldDatas.find((data) => data.worldNm === worldname);
+    const GetClassData = ClassDatas.find((data) => data.class_fullNm === charclass);
 
     return (
         <NowCharDataContainer>
@@ -79,7 +81,7 @@ export default function NowCharData({charname, charclass, charimgurl, charlevel,
                     <span>{` (${charExpRate}%)`}</span>
                 </div>
                 <div className="chardatas">
-                    <NowCharData_Icons src={`/imgs/logo/icons.png`} />
+                    <NowCharData_Icons src={`/imgs/class_icons/${GetClassData?.class_category}.png`} />
                     <span>{charclass}</span>
                 </div>
             </NowCharData_chardatabox>

@@ -1,10 +1,15 @@
 "use client";
 
-import { Categories } from "@/stores";
+import { Categories, MapleToDoDataStore } from "@/stores";
 import { useState } from "react";
 import styled from "styled-components";
-import WeeklyToDoList from "./weeklytodos";
-import BossToDoList from "./bosstodos";
+import WeeklyToDoList from "./weeklytodolist";
+import BossToDoList from "./bosstodolist";
+import { useStore } from "zustand";
+
+interface I_Charpage_todolist {
+    charname?: string;
+};
 
 const Container = styled.div`
     width: 100%;
@@ -24,12 +29,18 @@ const CategorySelect = styled.select`
     text-align: center;
 `;
 
-const ToDoListContainer = styled.div``;
+const ToDoListContainer = styled.div`
+    width: 95%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+`;
 
-export default function Charpage_ToDoList(){
+export default function Charpage_ToDoList({charname}: I_Charpage_todolist){
     const CategoryData = Categories;
 
     const [NowCategory, setNowCategory] = useState<String>("category00");
+    const CharToDoData = useStore(MapleToDoDataStore).CharToDos.find((data) => data.charNm === charname);
 
     const CategoryChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
         const {
@@ -57,8 +68,22 @@ export default function Charpage_ToDoList(){
                 }
             </CategorySelect>
             <ToDoListContainer>
-                { NowCategory === Categories[0].categoryId ? <WeeklyToDoList /> : null}
-                { NowCategory === Categories[1].categoryId ? <BossToDoList /> : null}
+                { 
+                    NowCategory === Categories[0].categoryId ? (
+                        <WeeklyToDoList 
+                            charname={CharToDoData?.charNm}
+                            WeeklyToDoDatas={CharToDoData?.WeeklyToDos}
+                        /> 
+                    ): null
+                }
+                { 
+                    NowCategory === Categories[1].categoryId ? (
+                        <BossToDoList 
+                            charname={CharToDoData?.charNm}
+                            BossToDoDatas={CharToDoData?.BossToDos}
+                        />
+                    ): null
+                }
             </ToDoListContainer>
         </Container>
     );
