@@ -1,4 +1,4 @@
-import { I_BossToDoData, I_WeeklyToDoData } from "@/components/addtodos/charNmPage/AddToDosLayout";
+import { I_BossToDoData, I_WeeklyToDoData } from "@/components/pages/addtodos/charNmPage/AddToDosLayout";
 
 interface I_BossToDoSortProps {
     BossToDoDatas: I_BossToDoData[];

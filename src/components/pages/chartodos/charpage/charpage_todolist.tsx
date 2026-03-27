@@ -6,12 +6,13 @@ import styled from "styled-components";
 import WeeklyToDoList from "./weeklytodolist";
 import BossToDoList from "./bosstodolist";
 import { useStore } from "zustand";
+import { ToDoList_Container, ToDoList_Mains, ToDoList_SelectBox } from "../../commons/todolist_commons";
 
 interface I_Charpage_todolist {
     charname?: string;
 };
 
-const Container = styled.div`
+const Container = styled(ToDoList_Container)`
     width: 100%;
     margin-top: 5px;
     display: flex;
@@ -19,7 +20,7 @@ const Container = styled.div`
     align-items: center;
 `;
 
-const CategorySelect = styled.select`
+const CategorySelect = styled(ToDoList_SelectBox)`
     display: block;
     width: 70%;
     min-width: 200px;
@@ -29,7 +30,7 @@ const CategorySelect = styled.select`
     text-align: center;
 `;
 
-const ToDoListContainer = styled.div`
+const ToDoLists = styled(ToDoList_Mains)`
     width: 95%;
     display: flex;
     flex-direction: column;
@@ -67,7 +68,7 @@ export default function Charpage_ToDoList({charname}: I_Charpage_todolist){
                     })
                 }
             </CategorySelect>
-            <ToDoListContainer>
+            <ToDoLists>
                 { 
                     NowCategory === Categories[0].categoryId ? (
                         <WeeklyToDoList 
@@ -84,7 +85,7 @@ export default function Charpage_ToDoList({charname}: I_Charpage_todolist){
                         />
                     ): null
                 }
-            </ToDoListContainer>
+            </ToDoLists>
         </Container>
     );
 }

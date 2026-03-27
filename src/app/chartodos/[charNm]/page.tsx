@@ -1,8 +1,8 @@
 import { GetCharData, GetOcids } from "@/game_datas/Fetchs";
 import { redirect } from "next/navigation";
 import styles from "../../../styles/chartodos.module.css";
-import NowCharData from "@/components/chartodos/charpage/CharDataBox";
-import Charpage_ToDoList from "@/components/chartodos/charpage/charpage_todolist";
+import Charpage_ToDoList from "@/components/pages/chartodos/charpage/charpage_todolist";
+import CharDataBox from "@/components/pages/commons/CharDataBox";
 
 interface I_CharToDosPage {
     params: {
@@ -23,7 +23,7 @@ export default async function CharToDosPage({params}: I_CharToDosPage){
 
     return (
         <div className={styles.chartodos_charpage_wrapper}>
-            <NowCharData 
+            <CharDataBox 
                 charname={CharData?.character_name}
                 charlevel={CharData.character_level}
                 charExpRate={CharData.character_exp_rate}

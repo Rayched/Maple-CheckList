@@ -1,0 +1,21 @@
+.todoedits_wrapper {
+    width: 100dvw;
+    height: 90vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.todoedits_charactercard {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 80%;
+    max-width: 400px;
+    height: 100%;
+    max-height: 600px;
+    color: black;
+    background-color: rgb(220, 221, 225);
+    border: 1px solid black;
+    border-radius: 8px;
+}

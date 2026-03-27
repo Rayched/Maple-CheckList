@@ -5,7 +5,7 @@
 .Wrapper {
     display: flex;
     flex-direction: column;
-    width: 100%;
+    width: 100dvw;
     margin-top: 10px;
     align-items: center;
 }

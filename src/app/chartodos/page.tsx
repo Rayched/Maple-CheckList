@@ -1,7 +1,7 @@
 
-import BookmarkList from "@/components/chartodos/BookmarkList";
+import BookmarkList from "@/components/pages/chartodos/BookmarkList";
 import sytles from "../../styles/chartodos.module.css";
-import CreateNewCharTodo from "@/components/chartodos/CreateToDoBtn";
+import CreateNewCharTodo from "@/components/pages/chartodos/CreateToDoBtn";
 
 export default function CharToDosPage(){
     return (

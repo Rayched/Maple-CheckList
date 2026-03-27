@@ -59,15 +59,46 @@ export default function BookmarkList(){
     const {Bookmarks} = useStore(MapleToDoDataStore);
     const {EditTarget, setEditTarget} = useStore(EditTargetStore);
 
-    const [InnerWidth, setInnerWidth] = useState(window.innerWidth);
+    const [InnerWidth, setInnerWidth] = useState(0);
 
+    //viewport-width 크기를 조정하는 function
+    //grid-template-column의 값을 조정함
+    //pc에선 2/2/2, 모바일에선 1/1/1/1/1/1 식으로 나오게 하기 위함
     const ResizeEventListener = () => {
         setInnerWidth(window.innerWidth);
+    };
+
+    /**
+     * Edittarget state가 전역 상태이기 때문에
+     * 편집바가 활성화된 상태에서 다른 tab으로 갔다가 넘어와도
+     * 사라지지 않고, 남아있게 됨
+     * 이러한 이슈를 방지하기 위해 만든 function
+     * 처음 한번 랜더링될 때, edittarget의 값이 "" 아닌 경우에
+     * ""로 초기화하는 역할을 수행
+     */
+    const EditTargetValueReset = () => {
+        if(EditTarget !== ""){
+            setEditTarget("");
+        } else {
+            return;
+        }
     }
+
+    useEffect(() => {
+        if(InnerWidth === 0){
+            ResizeEventListener();
+        } else {
+            return;
+        }
+    }, []);
 
     useEffect(() => {
         addEventListener("resize", ResizeEventListener);
     }, [InnerWidth]);
+
+    useEffect(() => {
+        EditTargetValueReset();
+    }, [])
 
     return (
         <BookmarkListContainer now_width={String(InnerWidth)}>

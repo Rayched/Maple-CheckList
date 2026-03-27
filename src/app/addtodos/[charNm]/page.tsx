@@ -1,8 +1,8 @@
-import CharacterBox from "@/components/addtodos/charNmPage/CharacterBox";
+import CharacterBox from "@/components/pages/addtodos/charNmPage/CharacterBox";
 import { GetCharData, GetOcids } from "@/game_datas/Fetchs";
 import { redirect } from "next/navigation";
 import styles from "../../../styles/addtodos.module.css";
-import AddToDosLayout from "@/components/addtodos/charNmPage/AddToDosLayout";
+import AddToDosLayout from "@/components/pages/addtodos/charNmPage/AddToDosLayout";
 
 interface I_AddtodosNestedPage {
     params: {
