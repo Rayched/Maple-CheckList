@@ -35,6 +35,7 @@ const ToDoLists = styled(ToDoList_Mains)`
     display: flex;
     flex-direction: column;
     align-items: center;
+    overflow: hidden;
 `;
 
 export default function Charpage_ToDoList({charname}: I_Charpage_todolist){

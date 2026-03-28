@@ -18,7 +18,24 @@ interface I_Rankbox {
     bordercolor?: string;
 };
 
-const Container = styled(ToDoListContainer)``;
+const Container = styled(ToDoListContainer)`
+    width: 85%;
+    min-width: 300px;
+    max-width: 350px;
+    max-height: 270px;
+    padding-top: 5px;
+    padding-bottom: 5px;
+    margin-top: 10px;
+    background-color: rgb(149, 165, 166);
+    border-radius: 10px;
+
+    overflow-y: auto;
+    scroll-snap-type: y mandatory;
+    scroll-snap-align: start;
+    scroll-behavior: smooth;
+    scrollbar-width: none;
+    scroll-snap-stop: normal;
+`;
 
 const BossToDoItem = styled(ToDoItem)`
     justify-content: space-between;
