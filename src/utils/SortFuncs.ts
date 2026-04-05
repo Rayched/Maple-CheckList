@@ -1,18 +1,19 @@
-import { I_BossToDoData, I_WeeklyToDoData } from "@/components/pages/addtodos/AddToDosLayout";
+
+import { I_BossToDos, I_WeeklyToDos } from "@/stores/CharToDoStore";
 
 interface I_BossToDoSortProps {
-    BossToDoDatas: I_BossToDoData[];
+    BossToDoDatas: I_BossToDos[];
 };
 
 interface I_WeeklyToDoSortProps {
-    WeeklyToDoDatas: I_WeeklyToDoData[];
+    WeeklyToDoDatas: I_WeeklyToDos[];
 };
 
 export function BossToDoSort({BossToDoDatas}: I_BossToDoSortProps){
     const ToDoSortOutput = BossToDoDatas.sort((a, b) => {
-        if(String(a.BossId) > String(b.BossId)){
+        if(String(a.contentsId) > String(b.contentsId)){
             return 1;
-        } else if(String(a.BossId) < String(b.BossId)){
+        } else if(String(a.contentsId) < String(b.contentsId)){
             return -1;
         } else {
             return 0;
@@ -23,7 +24,7 @@ export function BossToDoSort({BossToDoDatas}: I_BossToDoSortProps){
 };
 
 export function WeeklyToDoSort({WeeklyToDoDatas}: I_WeeklyToDoSortProps){
-    const WeeklySorts = (Contents: I_WeeklyToDoData[]) => {
+    const WeeklySorts = (Contents: I_WeeklyToDos[]) => {
         const Outputs = Contents.sort((a, b) => {
             if(String(a.contentsId) > String(b.contentsId)){
                 return 1;

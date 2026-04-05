@@ -1,0 +1,30 @@
+/*
+* '/addtodos' page css style
+*/
+
+/*layout.tsx css style's*/
+.layout_wrapper {
+    width: 100dvw;
+    height: 90dvh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+/*page.tsx css style*/
+.addtodos_pagewrapper {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 90%;
+    height: 90%;
+    min-width: 330px;
+    max-width: 350px;
+    margin-top: 5px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    border-radius: 8px;
+    color: black;
+    background-color: rgb(220, 221, 225);
+}

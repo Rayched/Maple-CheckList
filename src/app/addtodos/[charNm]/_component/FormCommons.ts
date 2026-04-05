@@ -3,14 +3,10 @@
 import styled from "styled-components";
 
 export const FormContainer = styled.div`
-    width: 100%;
-    margin: 5px 0px;
-    min-height: 50px;
+    
     background-color: darkgray;
-    border-radius: 8px;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
+    
+    
 `;
 
 export const Forms = styled.form`
@@ -62,5 +58,53 @@ export const CloseToggleBar = styled.div`
         display: flex;
         align-items: center;
         justify-content: flex-end;
+    };
+`;
+
+//FormCommons 신버전 styled's
+
+export const NewFormContainer = styled.div`
+    width: 100%;
+    height: 100%;
+    min-height: 330px;
+    max-height: 350px;
+    margin: 5px 0px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    border-radius: 8px;
+    color: black;
+    background-color: rgb(189, 195, 199);
+    overflow: hidden;
+`;
+
+export const FormHeader = styled.div`
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    height: 5%;
+    min-height: 30px;
+    max-height: 35px;
+    color: black;
+    background-color: rgb(116, 125, 140);
+    font-weight: bold;
+    font-size: 15px;
+    border-top-right-radius: inherit;
+    border-top-left-radius: inherit;
+`;
+
+export const FormSliderBox = styled.div`
+    width: 90%;
+    height: 90%;
+    min-height: 270px;
+    max-height: 280px;
+    margin-top: 3px;
+    padding: 10px 0px;
+    overflow-y: auto;
+    scroll-snap-type: y mandatory;
+    scroll-behavior: smooth;
+    &::-webkit-scrollbar {
+        width: 0px;
     };
 `;

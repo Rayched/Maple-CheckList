@@ -5,6 +5,7 @@ import styled from "styled-components";
 import { useStore } from "zustand";
 import BookmarkCard from "./BookmarkCard";
 import { useEffect, useState } from "react";
+import { BookmarkStore } from "@/stores/BookmarkStore";
 
 interface I_BookmarkListContainer {
     now_width: string;
@@ -56,7 +57,8 @@ const EditWrapper = styled.div`
 `;
 
 export default function BookmarkList(){
-    const {Bookmarks} = useStore(MapleToDoDataStore);
+    //const {Bookmarks} = useStore(MapleToDoDataStore);
+    const {Bookmarks} = useStore(BookmarkStore);
     const {EditTarget, setEditTarget} = useStore(EditTargetStore);
 
     const [InnerWidth, setInnerWidth] = useState(0);
@@ -107,11 +109,11 @@ export default function BookmarkList(){
                     return (
                         <BookmarkCard 
                             key={`bookmarkcard_${idx}`}
-                            charNm={bookmarkdata.charNm}
-                            charLV={bookmarkdata.charLV}
-                            charClass={bookmarkdata.charClass}
-                            charImg={bookmarkdata.charImg}
-                            worldNm={bookmarkdata.worldNm}
+                            charNm={bookmarkdata.charname}
+                            charLV={bookmarkdata.charlevel}
+                            charClass={bookmarkdata.charclass}
+                            charImg={bookmarkdata.charimgurl}
+                            worldNm={bookmarkdata.worldname}
                         />
                     );
                 })

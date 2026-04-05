@@ -1,5 +1,5 @@
 
-import styles from "../../styles/addtodos.module.css";
+import styles from "./_style/addtodos.module.css";
 
 interface I_AddToDosLayout {
     children: React.ReactNode
@@ -7,7 +7,7 @@ interface I_AddToDosLayout {
 
 export default function AddToDosLayout({children}: I_AddToDosLayout){
     return (
-        <div className={styles.Wrapper}>
+        <div className={styles.layout_wrapper}>
             {children}
         </div>
     );

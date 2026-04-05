@@ -1,8 +1,8 @@
-import CharacterBox from "@/components/pages/addtodos/CharacterBox";
 import { GetCharData, GetOcids } from "@/game_datas/Fetchs";
 import { redirect } from "next/navigation";
-import styles from "../../../styles/addtodos.module.css";
-import AddToDosLayout from "@/components/pages/addtodos/AddToDosLayout";
+import styles from "../_style/addtodos.module.css";
+import AddToDosLayout from "@/app/addtodos/[charNm]/_component/AddToDosLayout";
+import CharDataBox from "@/components/pages/commons/CharDataBox";
 
 interface I_AddtodosNestedPage {
     params: {
@@ -23,13 +23,14 @@ export default async function AddtodosNestedPage({params}: I_AddtodosNestedPage)
     console.log(Ocids.ocid);
 
     return (
-        <div className={styles.AddtodosPage}>
-            <CharacterBox 
-                charNm={CharData.character_name}
-                charLV={CharData.character_level}
-                charClass={CharData.character_class}
-                worldNm={CharData.world_name}
-                charImg={CharData.character_image}
+        <div className={styles.addtodos_pagewrapper}>
+            <CharDataBox 
+                charname={CharData?.character_name}
+                charlevel={CharData.character_level}
+                charExpRate={CharData.character_exp_rate}
+                charclass={CharData.character_class}
+                charimgurl={CharData.character_image}
+                worldname={CharData.world_name}
             />
             {
                 CharData ? (

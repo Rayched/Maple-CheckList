@@ -186,8 +186,7 @@ export const BossContentsData: I_BossContents[] = [
     },
     {
         BossId: "boss17",
-        BossNm: "진 힐라",
-        SubName: "진힐라",
+        BossNm: "진힐라",
         Ranks: [
             {rankId: "Normal",rankNm: "노말", price: 74900000},
             {rankId: "Hard",rankNm: "하드", price: 112000000},
@@ -272,6 +271,7 @@ export const BossContentsData: I_BossContents[] = [
     {
         BossId: "boss26",
         BossNm: "유피테르",
+        SubName: "유피",
         Ranks: [
             {rankId: "Normal", rankNm: "노말", price: 1700000000},
             {rankId: "Hard", rankNm: "하드", price: 5100000000}
