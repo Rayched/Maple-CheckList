@@ -19,33 +19,9 @@ const BookmarkListContainer = styled.div<I_BookmarkListContainer>`
     place-items: center;
     gap: 20px 10px;
     width: 100%;
-    max-width: 500px;
+    min-width: 520px;
+    max-width: 530px;
     margin: 0, auto;
-
-    &:nth-child(1){
-        grid-column: 1;
-        grid-row: 1;
-    };
-    &:nth-child(2){
-        grid-column: 2;
-        grid-row: 1;
-    };
-    &:nth-child(3){
-        grid-column: 1;
-        grid-row: 2;
-    };
-    &:nth-child(4){
-        grid-column: 2;
-        grid-row: 2;
-    };
-    &:nth-child(5){
-        grid-column: 1;
-        grid-row: 3;
-    };
-    &:nth-child(1){
-        grid-column: 2;
-        grid-row: 3;
-    };
 `;
 
 const EditWrapper = styled.div`

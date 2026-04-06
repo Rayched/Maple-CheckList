@@ -17,6 +17,7 @@
     flex-direction: column;
     align-items: center;
     width: inherit;
+    overflow: hidden;
 }
 
 .chartodos_charname_pagewrapper {
