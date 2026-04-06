@@ -1,7 +1,5 @@
 "use client"
 
-import BookmarkList from "@/components/pages/chartodos/BookmarkList";
-import CreateNewCharTodo from "@/components/pages/chartodos/CreateToDoBtn";
 import { useEffect, useState } from "react";
 import styled from "styled-components";
 import M_BookmarkList from "./_bookmarklists/M_BookmarkList";
