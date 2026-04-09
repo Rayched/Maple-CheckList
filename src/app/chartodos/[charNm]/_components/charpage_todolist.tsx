@@ -6,7 +6,8 @@ import styled from "styled-components";
 import WeeklyToDoList from "./weeklytodolist";
 import BossToDoList from "./bosstodolist";
 import { useStore } from "zustand";
-import { ToDoList_Container, ToDoList_Mains, ToDoList_SelectBox } from "../../commons/todolist_commons";
+import { ToDoList_Container, ToDoList_Mains, ToDoList_SelectBox } from "../../../../components/pages/commons/todolist_commons";
+import { CharToDoStore } from "@/stores/CharToDoStore";
 
 interface I_Charpage_todolist {
     charname?: string;
@@ -42,8 +43,7 @@ export default function Charpage_ToDoList({charname}: I_Charpage_todolist){
     const CategoryData = Categories;
 
     const [NowCategory, setNowCategory] = useState<String>("category00");
-    const CharToDoData = useStore(MapleToDoDataStore).CharToDos.find((data) => data.charNm === charname);
-
+    const CharToDoData = useStore(CharToDoStore).chartodos.find((data) => data.charname === charname);
     const CategoryChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
         const {
             currentTarget: {value}
@@ -73,16 +73,16 @@ export default function Charpage_ToDoList({charname}: I_Charpage_todolist){
                 { 
                     NowCategory === Categories[0].categoryId ? (
                         <WeeklyToDoList 
-                            charname={CharToDoData?.charNm}
-                            WeeklyToDoDatas={CharToDoData?.WeeklyToDos}
+                            charname={CharToDoData?.charname}
+                            WeeklyToDoDatas={CharToDoData?.weeklyToDos}
                         /> 
                     ): null
                 }
                 { 
                     NowCategory === Categories[1].categoryId ? (
                         <BossToDoList 
-                            charname={CharToDoData?.charNm}
-                            BossToDoDatas={CharToDoData?.BossToDos}
+                            charname={CharToDoData?.charname}
+                            BossToDoDatas={CharToDoData?.bossToDos}
                         />
                     ): null
                 }

@@ -1,7 +1,10 @@
 "use client"
 
 import { ClassDatas, WorldDatas } from "@/game_datas/contentsData";
+import { BookmarkStore } from "@/stores/BookmarkStore";
+import { useEffect } from "react";
 import styled from "styled-components";
+import { useStore } from "zustand";
 
 /**
  * '/chartodos/[charNm]', char data box components
@@ -69,6 +72,25 @@ export default function CharDataBox({charname, charclass, charimgurl, charlevel,
     const GetWorldId = WorldDatas.find((data) => data.worldNm === worldname);
     const GetClassData = ClassDatas.find((data) => data.class_fullNm === charclass);
 
+    const {Bookmarks, EditBookmarks} = useStore(BookmarkStore);
+
+    //Bookmark data 최신화 logic
+    useEffect(() => {
+        const TargetData = Bookmarks.find((data) => data.charname === charname);
+
+        if(!TargetData) return console.log("bookmark data 조회 실패");
+
+        if(!charname || !charclass || !charlevel || !charimgurl || !worldname) return console.log("fetch data is undefined");
+            
+        EditBookmarks({
+            charname: charname,
+            charclass: charclass,
+            charlevel: charlevel,
+            charimgurl: charimgurl,
+            worldname: worldname
+        });
+    }, []);
+
     return (
         <Container>
             <div className="charimage">
@@ -84,7 +106,7 @@ export default function CharDataBox({charname, charclass, charimgurl, charlevel,
                     <span>{` (${charExpRate}%)`}</span>
                 </div>
                 <div className="chardatas">
-                    <DataBox_Icons src={`/imgs/class_icons/${GetClassData?.class_category}.png`} />
+                    <DataBox_Icons src={`/imgs/job_icons/${GetClassData?.class_category}.png`} />
                     <span>{charclass}</span>
                 </div>
             </DataBox>

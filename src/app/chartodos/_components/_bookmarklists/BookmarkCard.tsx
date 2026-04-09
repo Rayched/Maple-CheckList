@@ -1,6 +1,6 @@
 "use client"
 
-import { WorldDatas } from "@/game_datas/contentsData";
+import { ClassDatas, WorldDatas } from "@/game_datas/contentsData";
 import { BookmarkStore } from "@/stores/BookmarkStore";
 import { CharToDoStore } from "@/stores/CharToDoStore";
 import { ChartodosPage_ModeStore } from "@/stores/ModeStore";
@@ -143,8 +143,12 @@ const CharDataBox = styled.div`
         }
 
         #charclass {
-            min-width: 100px;
+            min-width: 80px;
             justify-content: flex-end;
+            
+            span {
+                margin-left: 5px;
+            }
         }
     };
 `;
@@ -156,6 +160,7 @@ function BookmarkCard({charname, charclass, charimgurl, charlevel, worldname}: I
 
     const router = useRouter();
     const GetWorldId = WorldDatas.find((worlds) => worlds.worldNm === worldname);
+    const GetClassData = ClassDatas.find((data) => data.class_fullNm === charclass);
 
     //'ShowEditBarBtn' click event listener
     const ShowEditBarBtnClickEvent = () => {
@@ -221,7 +226,10 @@ function BookmarkCard({charname, charclass, charimgurl, charlevel, worldname}: I
                     </div>
                     <div className="charclassdata">
                         <div className="charclassdata-child" id="level">{`LV.${charlevel}`}</div>
-                        <div className="charclassdata-child" id="charclass">{`${charclass}`}</div>
+                        <div className="charclassdata-child" id="charclass">
+                            <img src={`/imgs/job_icons/${GetClassData?.class_category}.png`} />
+                            <span>{`${charclass}`}</span>
+                        </div>
                     </div>
                 </CharDataBox>
             </Card_Bodys>

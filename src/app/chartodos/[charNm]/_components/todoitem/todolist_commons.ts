@@ -1,5 +1,9 @@
 import styled from "styled-components";
 
+interface I_ToDoItemProps {
+    todochecked: string;
+};
+
 export const ToDoListContainer = styled.div`
     width: 100%;
     height: 100%;
@@ -8,7 +12,7 @@ export const ToDoListContainer = styled.div`
     align-items: center;
 `;
 
-export const ToDoItem = styled.div`
+export const ToDoItem = styled.div<I_ToDoItemProps>`
     width: 80%;
     margin: 5px 0px;
     padding: 5px 3px;
@@ -16,7 +20,7 @@ export const ToDoItem = styled.div`
     flex-direction: row;
     align-items: center;
     color: black;
-    background-color: white;
+    background-color: ${(props) => props.todochecked === "true" ? "rgb(116, 125, 140)" : "white"};
     border-radius: 10px;
     box-shadow: 1px 2px rgba(0, 0, 0, 0.5);
 

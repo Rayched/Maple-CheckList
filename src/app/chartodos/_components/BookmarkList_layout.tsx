@@ -42,7 +42,7 @@ const EditWrapper = styled.div`
  */
 
 function CharToDosBookmarkList_layout(){
-    const [V_Width, setV_Width] = useState<number>(window.innerWidth);
+    const [V_Width, setV_Width] = useState(0);
     const {EditTarget, setEditTarget} = useStore(ChartodosPage_ModeStore);
 
     useEffect(() => {
@@ -53,8 +53,12 @@ function CharToDosBookmarkList_layout(){
     }, [V_Width]);
 
     useEffect(() => {
-        console.log(V_Width);
-    }, [V_Width]);
+        if(typeof window !== "undefined"){
+            setV_Width(window.innerWidth);
+        } else {
+            return;
+        }
+    }, []);
 
     return (
         <Wrapper>
