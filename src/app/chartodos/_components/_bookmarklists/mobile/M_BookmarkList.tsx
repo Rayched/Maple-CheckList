@@ -217,6 +217,7 @@ function M_BookmarkList(){
                                         drag="x"
                                         dragConstraints={{left: -100, right: 100}}
                                         dragElastic={0.2}
+                                        dragSnapToOrigin={Bookmarks.length === 1 ? true : false}
                                         onDragEnd={DragEventListener}
                                     >
                                         <M_BookmarkCard 
