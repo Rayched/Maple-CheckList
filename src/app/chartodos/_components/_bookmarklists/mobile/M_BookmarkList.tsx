@@ -177,9 +177,13 @@ function M_BookmarkList(){
         <Container>
             <BookmarkListHeader>
                 <span key={"header-title"}>캐릭터 목록</span>
-                <span key={"header-charlist"}>
-                    {`( ${NowIndex + 1} / ${Bookmarks.length} )`}
-                </span>
+                {
+                    Bookmarks.length !== 0 ? (
+                        <span key={"header-charlist"}>
+                            {`( ${NowIndex + 1} / ${Bookmarks.length} )`}
+                        </span>
+                    ): null
+                }
             </BookmarkListHeader>
             <SliderBox>
                 <AnimatePresence custom={IsLeftDrag} mode="wait">
