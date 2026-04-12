@@ -6,9 +6,11 @@ import {styled} from "styled-components";
 import { useStore } from "zustand";
 import { ToDoItem, ToDoListContainer } from "./todoitem/todolist_commons";
 import { CharToDoStore, I_WeeklyToDos } from "@/stores/CharToDoStore";
+import { OcidConfirms } from "@/components/pages/commons/OcidConfirm";
 
 interface I_WeeklyToDoList {
     charname?: string;
+    ocid: string;
     WeeklyToDoDatas?: I_WeeklyToDos[];
 };
 
@@ -29,7 +31,7 @@ const WeeklyToDoItem = styled(ToDoItem)`
     }
 `;
 
-function WeeklyToDoList({charname, WeeklyToDoDatas}: I_WeeklyToDoList){
+function WeeklyToDoList({charname, ocid, WeeklyToDoDatas}: I_WeeklyToDoList){
     const {chartodos, accWeeklyToDos, editCharToDo, updateAccWeeklyToDos} = useStore(CharToDoStore);
 
     const {register} = useForm<I_FormValue>({
@@ -42,7 +44,7 @@ function WeeklyToDoList({charname, WeeklyToDoDatas}: I_WeeklyToDoList){
     const AccWeeklyUpdate = ({targetId, targetNm, isChecked}: I_WeeklyUpdateProps) => {
         if(!charname) return console.log("charname의 값이 undefined일수도 있습니다.");
 
-        const idx = chartodos.findIndex((data) => data.charname === charname);
+        const idx = chartodos.findIndex((data) => data.ocid === ocid || data.charname === charname);
         const GetAccWeeklyData = accWeeklyToDos.find((data) => data.contentsId === targetId || data.contentsNm === targetNm);
 
         if(idx === -1){
@@ -52,6 +54,8 @@ function WeeklyToDoList({charname, WeeklyToDoDatas}: I_WeeklyToDoList){
             console.log("accWeeklyToDos data를 가져오지 못했습니다.")
         } else {
             //todoitem checkbox check 한 경우
+            const ocidcheck = OcidConfirms({prevOcid: chartodos[idx].ocid, newOcid: ocid});
+
             const UpdateWeeklyToDoData = chartodos[idx].weeklyToDos.map((data) => {
                 if(data.contentsId !== targetId){
                     return data;
@@ -74,6 +78,7 @@ function WeeklyToDoList({charname, WeeklyToDoDatas}: I_WeeklyToDoList){
             });
 
             editCharToDo({
+                ocid: ocidcheck ? chartodos[idx].ocid : ocid,
                 charname: chartodos[idx].charname,
                 weeklyToDos: UpdateWeeklyToDoData,
                 bossToDos: chartodos[idx].bossToDos
@@ -83,13 +88,16 @@ function WeeklyToDoList({charname, WeeklyToDoDatas}: I_WeeklyToDoList){
 
     //캐릭터 단위 주간 컨텐츠 todo event Listener
     const CharWeeklyUpdate = ({targetId, targetNm, isChecked}: I_WeeklyUpdateProps) => {
-        const idx = chartodos.findIndex((data) => data.charname === charname);
+        const idx = chartodos.findIndex((data) => data.ocid === ocid || data.charname === charname);
 
         if(idx === -1){
             console.log(`'${charname}'의 메할일을 찾지 못했습니다.`);
             return;
         } else {
-            const UpdateWeeklyToDo = chartodos[idx].weeklyToDos.map((data) => {
+            const TargetData = chartodos[idx];
+            const ocidCheck = OcidConfirms({prevOcid: TargetData.ocid, newOcid: ocid});
+
+            const UpdateWeeklyToDo = TargetData.weeklyToDos.map((data) => {
                 if(data.contentsId !== targetId){
                     return data;
                 } else {
@@ -105,9 +113,10 @@ function WeeklyToDoList({charname, WeeklyToDoDatas}: I_WeeklyToDoList){
             });
 
             editCharToDo({
-                charname: chartodos[idx].charname,
+                ocid: ocidCheck ? TargetData.ocid : ocid,
+                charname: TargetData.charname,
                 weeklyToDos: UpdateWeeklyToDo,
-                bossToDos: chartodos[idx].bossToDos
+                bossToDos: TargetData.bossToDos
             });
         }
     }

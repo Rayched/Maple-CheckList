@@ -35,6 +35,7 @@ export default async function AddtodosNestedPage({params}: I_AddtodosNestedPage)
             {
                 CharData ? (
                     <AddToDosLayout 
+                        ocid={Ocids.ocid}
                         charNm={CharData?.character_name}
                         charLv={CharData?.character_level}
                         charClass={CharData.character_class}

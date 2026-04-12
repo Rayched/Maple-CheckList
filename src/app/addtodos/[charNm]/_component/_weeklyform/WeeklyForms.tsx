@@ -1,11 +1,9 @@
 "use client"
 
 import { WeeklyContentsData } from "@/game_datas/contentsData";
-import { FormHeader, FormSliderBox, NewFormContainer } from "../FormCommons";
+import { FormHeader, FormSliderBox, FormContainer } from "../../../../../components/commons/FormCommons";
 import { FormProvider, useForm } from "react-hook-form";
 import {styled} from "styled-components";
-import { useEffect, useState } from "react";
-import { WeeklyToDoSort } from "@/utils/SortFuncs";
 import { I_WeeklyToDos } from "@/stores/CharToDoStore";
 import WeeklyFormItems from "./WeeklyFormItems";
 
@@ -25,7 +23,7 @@ export interface I_SelectTarget {
     weeklyUnits: string;
 };
 
-const Container = styled(NewFormContainer)``;
+const Container = styled(FormContainer)``;
 const BoxHeader = styled(FormHeader)``;
 const SliderBox = styled(FormSliderBox)``;
 

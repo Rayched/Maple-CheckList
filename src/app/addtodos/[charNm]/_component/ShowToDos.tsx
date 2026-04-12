@@ -1,10 +1,9 @@
-import { useState } from "react";
+
 import styled from "styled-components";
-import { FormSliderBox, NewFormContainer } from "./FormCommons";
-import { CharToDoStore, I_BossToDos, I_WeeklyToDos } from "@/stores/CharToDoStore";
+import { FormSliderBox, FormContainer } from "../../../../components/commons/FormCommons";
+import { I_BossToDos, I_WeeklyToDos } from "@/stores/CharToDoStore";
 import ShowWeeklyToDos from "./_showtodos/ShowWeeklyToDos";
 import ShowBossToDos from "./_showtodos/ShowBossToDos";
-import { useStore } from "zustand";
 
 interface I_ShowToDosDataProps {
     WeeklyToDos: I_WeeklyToDos[];
@@ -19,7 +18,7 @@ const Container = styled.div`
     height: 100%;
 `;
 
-const ToDoItemList = styled(NewFormContainer)`
+const ToDoItemList = styled(FormContainer)`
     min-height: 280px;
     max-height: 300px;
     display: flex;

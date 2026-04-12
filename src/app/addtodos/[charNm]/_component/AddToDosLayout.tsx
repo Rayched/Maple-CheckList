@@ -12,6 +12,7 @@ import WeeklyForms from "./_weeklyform/WeeklyForms";
 import BossForms from "./_bossform/BossForms";
 
 interface I_AddToDosLayout {
+    ocid?: string;
     charNm?: string;
     charLv?: number;
     charClass?: string;
@@ -59,7 +60,7 @@ const SaveBtn = styled.div`
     background-color: darkgray;
 `;
 
-export default function AddToDosLayout({charNm, charLv, charClass, charImg, worldNm}: I_AddToDosLayout){
+export default function AddToDosLayout({ocid, charNm, charLv, charClass, charImg, worldNm}: I_AddToDosLayout){
     const CategoryData = Categories;
     const router = useRouter();
 
@@ -91,7 +92,7 @@ export default function AddToDosLayout({charNm, charLv, charClass, charImg, worl
                 router.push("/chartodos")
             }, 1000);
         } else {
-            if(!charNm || !charLv || !charImg || !charClass || !worldNm){
+            if(!charNm || !charLv || !charImg || !charClass || !worldNm || !ocid){
                 alert("api data error");
                 return;
             } else {
@@ -103,6 +104,7 @@ export default function AddToDosLayout({charNm, charLv, charClass, charImg, worl
                     worldname: worldNm
                 };
                 const NewCharToDo: I_CharToDo = {
+                    ocid: ocid,
                     charname: charNm,
                     weeklyToDos: WeeklyToDoData,
                     bossToDos: BossToDoData

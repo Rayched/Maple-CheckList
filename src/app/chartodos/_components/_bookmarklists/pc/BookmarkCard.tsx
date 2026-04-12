@@ -8,7 +8,7 @@ import { useRouter } from "next/navigation";
 import styled from "styled-components";
 import { useStore } from "zustand";
 
-interface I_BookmarkCardProps {
+export interface I_BookmarkCardProps {
     charname?: string;
     charclass?: string;
     charlevel?: number;
@@ -27,10 +27,11 @@ const Container = styled.div`
     flex-direction: column;
     align-items: center;
     border-radius: 10px;
-    background-color: white;
+    background-color: rgb(241, 242, 246);
+    box-shadow: 2px 2px rgba(0, 0, 0, 0.3);
 
     &:hover {
-        background-color: rgb(241, 242, 246);
+        background-color: rgb(223, 228, 234);
     }
 `;
 
@@ -50,7 +51,7 @@ const EditBar = styled.div`
     display: flex;
     flex-direction: column;
     align-items: center;
-    background-color: rgb(241, 242, 246);
+    background-color: rgb(223, 230, 233);
     position: absolute;
     top: 25px;
     right: 5px;

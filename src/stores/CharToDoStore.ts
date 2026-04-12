@@ -19,6 +19,7 @@ export interface I_BossToDos {
 
 export interface I_CharToDo {
     charname: string;
+    ocid: string;
     weeklyToDos: I_WeeklyToDos[];
     bossToDos: I_BossToDos[];
 };

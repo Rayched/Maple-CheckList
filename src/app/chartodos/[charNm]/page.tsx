@@ -33,6 +33,7 @@ export default async function CharToDosPage({params}: I_CharToDosPage){
             />
             <Charpage_ToDoList 
                 charname={CharData.character_name}
+                ocid={!Ocids.ocid ? "" : Ocids.ocid}
             />
         </div>
     );

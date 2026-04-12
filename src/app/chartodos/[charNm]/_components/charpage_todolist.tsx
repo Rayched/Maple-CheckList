@@ -11,6 +11,7 @@ import { CharToDoStore } from "@/stores/CharToDoStore";
 
 interface I_Charpage_todolist {
     charname?: string;
+    ocid: string;
 };
 
 const Container = styled(ToDoList_Container)`
@@ -39,11 +40,21 @@ const ToDoLists = styled(ToDoList_Mains)`
     overflow: hidden;
 `;
 
-export default function Charpage_ToDoList({charname}: I_Charpage_todolist){
+export default function Charpage_ToDoList({charname, ocid}: I_Charpage_todolist){
     const CategoryData = Categories;
 
     const [NowCategory, setNowCategory] = useState<String>("category00");
-    const CharToDoData = useStore(CharToDoStore).chartodos.find((data) => data.charname === charname);
+
+    const CharToDoData = useStore(CharToDoStore).chartodos.find((data) => {
+        if(data.ocid === ocid){
+            return data;
+        } else if(data.charname === charname){
+            return data;
+        } else {
+            return undefined;
+        }
+    });
+
     const CategoryChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
         const {
             currentTarget: {value}
@@ -74,6 +85,7 @@ export default function Charpage_ToDoList({charname}: I_Charpage_todolist){
                     NowCategory === Categories[0].categoryId ? (
                         <WeeklyToDoList 
                             charname={CharToDoData?.charname}
+                            ocid={ocid}
                             WeeklyToDoDatas={CharToDoData?.weeklyToDos}
                         /> 
                     ): null
@@ -82,6 +94,7 @@ export default function Charpage_ToDoList({charname}: I_Charpage_todolist){
                     NowCategory === Categories[1].categoryId ? (
                         <BossToDoList 
                             charname={CharToDoData?.charname}
+                            ocid={ocid}
                             BossToDoDatas={CharToDoData?.bossToDos}
                         />
                     ): null

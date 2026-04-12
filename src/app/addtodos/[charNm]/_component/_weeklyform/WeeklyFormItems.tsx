@@ -5,6 +5,7 @@ import styled from "styled-components";
 import { I_FormValue } from "./WeeklyForms";
 import React from "react";
 import { WeeklyToDoSort } from "@/utils/SortFuncs";
+import { FormItem } from "@/components/commons/FormCommons";
 
 interface I_WeeklyFormItemsProps {
     WeeklyItemsTitle: string;
@@ -45,16 +46,12 @@ const Container = styled.div`
     };
 `;
 
-const FormItems = styled.div`
+const FormItems = styled(FormItem)`
     width: 100%;
     height: 5%;
     min-height: 25px;
     margin: 3px 0px;
-    display: flex;
-    flex-direction: row;
-    align-items: center;
-    background-color: rgb(241, 242, 246);
-    border-radius: 8px;
+    padding: 3px 2px;
 
     input {
         width: 16px;

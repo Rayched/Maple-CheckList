@@ -8,9 +8,11 @@ import { RankColorInfos } from "@/game_datas/bossrank_colordata";
 import { CharToDoStore, I_BossToDos } from "@/stores/CharToDoStore";
 import { useForm } from "react-hook-form";
 import { useStore } from "zustand";
+import { OcidConfirms } from "@/components/pages/commons/OcidConfirm";
 
 interface I_BossToDoList {
     charname?: string;
+    ocid: string;
     BossToDoDatas?: I_BossToDos[];
 };
 
@@ -80,8 +82,9 @@ const Rankbox = styled.div<I_Rankbox>`
     margin: 0px 5px;
 `;
 
-function BossToDoList({BossToDoDatas, charname}: I_BossToDoList){
+function BossToDoList({BossToDoDatas, charname, ocid}: I_BossToDoList){
     const {chartodos, editCharToDo} = useStore(CharToDoStore);
+
     const {register} = useForm<I_FormValue>({
         defaultValues: {
             checkedValues: []
@@ -89,13 +92,16 @@ function BossToDoList({BossToDoDatas, charname}: I_BossToDoList){
     });
 
     const BossToDoUpdate = ({bossId, bossNm, isChecked}: I_BossToDoUpdateProps) => {
-        const idx = chartodos.findIndex((data) => data.charname === charname);
+        const idx = chartodos.findIndex((data) => data.ocid === ocid || data.charname === charname);
 
         if(idx === -1){
             console.log(`${charname}의 메할일 데이터를 찾지 못했습니다.`);
             return;
         } else {
-            const NewBossToDoData = chartodos[idx].bossToDos.map((data) => {
+            const TargetData = chartodos[idx];
+            const ocidCheck = OcidConfirms({prevOcid: TargetData.ocid, newOcid: ocid});
+
+            const NewBossToDoData = TargetData.bossToDos.map((data) => {
                 if(data.contentsId !== bossId && data.contentsNm !== bossNm){
                     return data;
                 } else {
@@ -127,8 +133,9 @@ function BossToDoList({BossToDoDatas, charname}: I_BossToDoList){
             });
 
             editCharToDo({
-                charname: chartodos[idx].charname,
-                weeklyToDos: chartodos[idx].weeklyToDos,
+                ocid: ocidCheck ? TargetData.ocid : ocid,
+                charname: TargetData.charname,
+                weeklyToDos: TargetData.weeklyToDos,
                 bossToDos: NewBossToDoData
             })
         }

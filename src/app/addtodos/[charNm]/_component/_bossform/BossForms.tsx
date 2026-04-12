@@ -6,7 +6,7 @@ import { BossToDoSort } from "@/utils/SortFuncs";
 import BossFormItemdata from "./BossFormItemdata";
 import { RankSelectBox, SingleRankBox } from "./BossFormRankBox";
 import { I_BossToDos } from "@/stores/CharToDoStore";
-import { FormHeader, FormSliderBox, NewFormContainer } from "../FormCommons";
+import { FormHeader, FormSliderBox, FormContainer, FormItem } from "../../../../../components/commons/FormCommons";
 
 interface I_BossFormProps {
     BossToDoData: I_BossToDos[];
@@ -18,7 +18,7 @@ export interface I_BossFormValue {
     BossSelect: string[];
 };
 
-const Container = styled(NewFormContainer)``;
+const Container = styled(FormContainer)``;
 const BoxHeader = styled(FormHeader)``;
 const Scrollbox = styled(FormSliderBox)`
     width: 95%;
@@ -27,18 +27,13 @@ const Scrollbox = styled(FormSliderBox)`
     align-items: center;
 `;
 
-const FormItem = styled.div`
+const BossFormItem = styled(FormItem)`
     width: 95%;
     height: 10%;
-    min-height: 25px;
-    max-height: 30px;
-    margin: 5px 0px;
-    padding: 3px 2px;
-    border-radius: 10px;
-    background-color: white;
-    display: flex;
-    flex-direction: row;
-    align-items: center;
+    min-height: 30px;
+    max-height: 32px;
+    padding: 4px 2px;
+    margin: 3px 0px;
     justify-content: space-between;
 `;
 
@@ -52,6 +47,7 @@ export default function BossForms({BossToDoData, setBossToDoData, setCategory}: 
         }
     });
     const {watch} = FormMethods;
+
     return (
         <Container>
             <BoxHeader>주간 보스 목록 {`(${BossToDoData.length} / 12)`}</BoxHeader>
@@ -60,8 +56,9 @@ export default function BossForms({BossToDoData, setBossToDoData, setCategory}: 
                     {
                         BossData.map((data) => {
                             const IsAdds = BossToDoData.find((todo) => todo.contentsId === data.BossId || todo.contentsNm === data.BossNm);
+
                             return (
-                                <FormItem key={data.BossId}>
+                                <BossFormItem key={data.BossId}>
                                     <BossFormItemdata 
                                         bossid={data.BossId}
                                         bossNm={data.BossNm}
@@ -93,7 +90,7 @@ export default function BossForms({BossToDoData, setBossToDoData, setCategory}: 
                                             }
                                         </RanksBox>)
                                     }
-                                </FormItem>
+                                </BossFormItem>
                             );
                         })
                     }

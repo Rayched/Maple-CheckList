@@ -14,6 +14,10 @@ interface I_SearchTarget {
     worldname: string;
 };
 
+interface I_BookmarkListProps {
+    bookmarklength: string;
+};
+
 const Container = styled.div`
     width: 90%;
     height: 100%;
@@ -86,14 +90,14 @@ const BookmarkList_UtilButton = styled.div`
     justify-content: center;
 `;
 
-const BookmarkList = styled.div`
+const BookmarkList = styled.div<I_BookmarkListProps>`
     width: 100%;
     min-width: 500px;
     max-width: 550px;
     min-height: 350px;
     margin-top: 5px;
     display: grid;
-    grid-template-columns: repeat(2, 1fr);
+    grid-template-columns: ${(props) => props.bookmarklength === "1" ? "repeat(1, 1fr)" : "repeat(2, 1fr)"};
     place-items: center;
     gap: 20px 10px;
 
@@ -151,7 +155,7 @@ export default function P_BookmarkList(){
     const AddBtnClickEvent = () => {
         const SearchParams = window.prompt("추가하실 캐릭터 명을 입력해주세요.", "");
 
-        if(SearchParams === ""){
+        if(SearchParams === "" || SearchParams === null){
             alert("캐릭터 명을 입력하지 않았습니다.");
             return;
         } else {
@@ -209,7 +213,7 @@ export default function P_BookmarkList(){
             </ButtonListBox>
             {
                 !SearchMode && (
-                    <BookmarkList>
+                    <BookmarkList bookmarklength={Bookmarks.length <= 1 ? "1" : "0"}>
                         {
                             Bookmarks.map((data, idx) => {
                                 return (

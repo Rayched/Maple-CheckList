@@ -2,7 +2,6 @@
 
 import { styled } from "styled-components";
 import { ToDoList_Container, ToDoList_SelectBox } from "../commons/todolist_commons";
-import { useForm } from "react-hook-form";
 import { Categories, MapleToDoDataStore } from "@/stores";
 import { useEffect, useState } from "react";
 import ShowEditToDos from "./ShowToDos";
@@ -31,8 +30,6 @@ export default function EditToDoList({charname}: {charname?: string}){
         Bookmarks, UpdateBookmarks
     } = useStore(MapleToDoDataStore);
     const [EditToDoDatas, setEditToDoDatas] = useState<I_EditToDoDatas>();
-
-    const {} = useForm();
 
     const Category_change = (event: React.ChangeEvent<HTMLSelectElement>) => {
         const {currentTarget: {value}} = event;

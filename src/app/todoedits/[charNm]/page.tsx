@@ -1,7 +1,7 @@
 import CharDataBox from "@/components/pages/commons/CharDataBox";
 import { GetCharData, GetOcids } from "@/game_datas/Fetchs";
 import { redirect } from "next/navigation";
-import styles from "../../../styles/todoedits.module.css";
+import styles from "../_styles/todoedits.module.css";
 import EditToDoList from "@/components/pages/todoedits/EditToDoList";
 
 interface I_ToDoEditsPage {
@@ -23,7 +23,7 @@ async function ToDoEditsPage({params}: I_ToDoEditsPage){
     }
 
     return (
-        <div className={styles.todoedits_wrapper}>
+        <div className={styles.todoedits_page_wrapper}>
             <div className={styles.todoedits_charactercard}>
                 <CharDataBox 
                     charname={chardatas.character_name}

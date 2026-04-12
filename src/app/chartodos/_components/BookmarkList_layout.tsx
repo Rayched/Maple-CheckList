@@ -2,8 +2,8 @@
 
 import { useEffect, useState } from "react";
 import styled from "styled-components";
-import M_BookmarkList from "./_bookmarklists/M_BookmarkList";
-import P_BookmarkList from "./_bookmarklists/P_BookmarkList";
+import M_BookmarkList from "./_bookmarklists/mobile/M_BookmarkList";
+import P_BookmarkList from "./_bookmarklists/pc/P_BookmarkList";
 import { ChartodosPage_ModeStore } from "@/stores/ModeStore";
 import { useStore } from "zustand";
 
