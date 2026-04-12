@@ -72,6 +72,19 @@ const SlideItem = styled(motion.div)`
     border-radius: 8px;
 `;
 
+const BookmarkEmptyGuideMessage = styled.div`
+    font-size: 17px;
+    font-weight: bold;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+
+    span {
+        margin: 3px 0px;
+    }
+`;
+
 const UtilBtnList = styled.div`
     width: 90%;
     height: 20%;
@@ -186,6 +199,14 @@ function M_BookmarkList(){
                 }
             </BookmarkListHeader>
             <SliderBox>
+                {
+                    Bookmarks.length === 0 ? (
+                        <BookmarkEmptyGuideMessage>
+                            <span>{`'메할일 추가' 버튼을 클릭해서`}</span>
+                            <span>{`메할일을 추가해주세요.`}</span>
+                        </BookmarkEmptyGuideMessage>
+                    ) : null 
+                }
                 <AnimatePresence custom={IsLeftDrag} mode="wait">
                     {
                         Bookmarks.map((data, idx) => {
