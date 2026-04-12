@@ -129,12 +129,12 @@ function WeeklyToDoList({charname, ocid, WeeklyToDoDatas}: I_WeeklyToDoList){
                         const AccWeeklyData = accWeeklyToDos.find((weekly) => weekly.contentsId === data.contentsId);
 
                         return (
-                            <WeeklyToDoItem key={data.contentsId} todochecked={AccWeeklyData?.ToDoDone && data.ToDoDone ? "true" : "false"}>
+                            <WeeklyToDoItem key={data.contentsId} todochecked={AccWeeklyData?.ToDoDone ? "true" : "false"}>
                                 <input 
                                     type="checkbox" 
                                     value={data.contentsId}
                                     data-contentsname={data.contentsNm}
-                                    defaultChecked={AccWeeklyData?.ToDoDone && data.ToDoDone ? true : false}
+                                    defaultChecked={AccWeeklyData?.ToDoDone ? true : false}
                                     {...register("WeeklyToDoSelect", {
                                         onChange: (event: React.ChangeEvent<HTMLInputElement>) => {
                                             const {
