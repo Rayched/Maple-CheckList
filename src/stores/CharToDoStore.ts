@@ -27,7 +27,7 @@ export interface I_CharToDo {
 interface I_updateAccWeeklyToDos {
     contentsId: string;
     contentsNm?: string;
-    ToDoDone: boolean;
+    tododone: boolean;
 };
 
 interface I_ChartodoStore {
@@ -36,7 +36,7 @@ interface I_ChartodoStore {
     addNewCharToDo: (NewToDo: I_CharToDo) => void;
     editCharToDo: (EditToDo: I_CharToDo) => void;
     deleteCharToDo: (targetNm: string) => void;
-    updateAccWeeklyToDos: ({contentsId, contentsNm, ToDoDone}: I_updateAccWeeklyToDos) => void
+    updateAccWeeklyToDos: ({contentsId, contentsNm, tododone}: I_updateAccWeeklyToDos) => void
 };
 
 const GetAccWeeklyContentsData = WeeklyContentsData.map((data) => {
@@ -105,7 +105,7 @@ export const CharToDoStore = create<I_ChartodoStore>()(
                 }
             }
         }),
-        updateAccWeeklyToDos: ({contentsId, contentsNm, ToDoDone}) => set((state) => {
+        updateAccWeeklyToDos: ({contentsId, contentsNm, tododone}) => set((state) => {
             const idx = state.accWeeklyToDos.findIndex((data) => data.contentsId === contentsId || data.contentsNm === contentsNm);
 
             if(idx === -1){
@@ -119,7 +119,7 @@ export const CharToDoStore = create<I_ChartodoStore>()(
                     contentsId: Targets.contentsId,
                     contentsNm: Targets.contentsNm,
                     contentsUnit: Targets.contentsUnit,
-                    ToDoDone: ToDoDone
+                    ToDoDone: tododone
                 };
 
                 return {

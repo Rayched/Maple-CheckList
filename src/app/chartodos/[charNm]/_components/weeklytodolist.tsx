@@ -16,6 +16,7 @@ interface I_WeeklyToDoList {
 
 interface I_FormValue {
     WeeklyToDoSelect: string[];
+    AccWeeklyToDoSelect: string[];
 };
 
 interface I_WeeklyUpdateProps {
@@ -54,6 +55,7 @@ function WeeklyToDoList({charname, ocid, WeeklyToDoDatas}: I_WeeklyToDoList){
             console.log("accWeeklyToDos data를 가져오지 못했습니다.")
         } else {
             //todoitem checkbox check 한 경우
+            console.log("accWeeklyToDos data 가져오기 성공")
             const ocidcheck = OcidConfirms({prevOcid: chartodos[idx].ocid, newOcid: ocid});
 
             const UpdateWeeklyToDoData = chartodos[idx].weeklyToDos.map((data) => {
@@ -74,7 +76,7 @@ function WeeklyToDoList({charname, ocid, WeeklyToDoDatas}: I_WeeklyToDoList){
             updateAccWeeklyToDos({
                 contentsId: GetAccWeeklyData.contentsId,
                 contentsNm: GetAccWeeklyData.contentsNm,
-                ToDoDone: isChecked ? true: false
+                tododone: isChecked ? true : false
             });
 
             editCharToDo({
@@ -128,21 +130,23 @@ function WeeklyToDoList({charname, ocid, WeeklyToDoDatas}: I_WeeklyToDoList){
                     if(data.contentsUnit === "account"){
                         const AccWeeklyData = accWeeklyToDos.find((weekly) => weekly.contentsId === data.contentsId);
 
+                        if(!AccWeeklyData) return null;
+
                         return (
                             <WeeklyToDoItem key={data.contentsId} todochecked={AccWeeklyData?.ToDoDone ? "true" : "false"}>
                                 <input 
                                     type="checkbox" 
                                     value={data.contentsId}
                                     data-contentsname={data.contentsNm}
-                                    defaultChecked={AccWeeklyData?.ToDoDone ? true : false}
-                                    {...register("WeeklyToDoSelect", {
+                                    defaultChecked={AccWeeklyData.ToDoDone}
+                                    {...register("AccWeeklyToDoSelect", {
                                         onChange: (event: React.ChangeEvent<HTMLInputElement>) => {
                                             const {
                                                 currentTarget: {value},
                                                 target: {checked, dataset:{contentsname}}
                                             } = event;
 
-                                            if(!contentsname) return;
+                                            if(!contentsname) return console.log("contentsname props is undefined")
 
                                             AccWeeklyUpdate({
                                                 targetId: value,
