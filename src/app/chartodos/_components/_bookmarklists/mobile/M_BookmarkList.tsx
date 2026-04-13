@@ -4,11 +4,13 @@ import styled from "styled-components";
 import { BookmarkList_Commons } from "../BookmarkList_commons";
 import { useStore } from "zustand";
 import { BookmarkStore } from "@/stores/BookmarkStore";
-import BookmarkCard from "../pc/BookmarkCard";
 import { useEffect, useRef, useState } from "react";
-import { AnimatePresence, isDragging, motion, MotionValue, PanInfo, useMotionValue, useMotionValueEvent, useTransform } from "framer-motion";
+import { AnimatePresence, motion, PanInfo } from "framer-motion";
 import M_BookmarkCard from "./M_BookmarkCard";
 import { useRouter } from "next/navigation";
+import { EditTargetStore } from "@/stores";
+import { BookmarkCard_Commons } from "../BookmarkCard_commons";
+import { CharToDoStore } from "@/stores/CharToDoStore";
 
 const Container = styled(BookmarkList_Commons.BookmarkListContainer)`
     width: 98%;
@@ -93,6 +95,7 @@ const UtilBtnList = styled.div`
     flex-direction: row;
     align-items: center;
     justify-content: space-between;
+    position: relative;
 `;
 
 const UtilBtnContainer = styled.div`
@@ -120,8 +123,40 @@ const UtilBtnContainer = styled.div`
     }
 `;
 
+const EditBar = styled(BookmarkCard_Commons.EditBarContainer)`
+    width: 17%;
+    max-width: 70px;
+    height: 60%;
+    max-height: 70px;
+    position: absolute;
+    top: -53px;
+    right: 60px;
+`;
+
+const EditBtn = styled(BookmarkCard_Commons.EditBtnlayout)`
+    width: 90%;
+    height: 50%;
+
+    &:nth-child(1){
+        border-bottom: 2px solid black;
+        border-bottom-left-radius: 0px;
+        border-bottom-right-radius: 0px;
+    }
+`;
+
+const EditWrapper = styled.div`
+    width: 100dvw;
+    height: 100dvh;
+    display: flex;
+    align-items: center;
+    position: fixed;
+`;
+
 function M_BookmarkList(){
-    const {Bookmarks} = useStore(BookmarkStore);
+    const {Bookmarks, DeleteBookmark} = useStore(BookmarkStore);
+    const {deleteCharToDo} = useStore(CharToDoStore);
+
+    const {EditTarget, setEditTarget} = useStore(EditTargetStore);
 
     const [NowIndex, setNowIndex] = useState(0);
     const [IsLeftDrag, setIsLeftDrag] = useState(false);
@@ -186,6 +221,46 @@ function M_BookmarkList(){
         }
     };
 
+    //메뉴버튼 클릭 event listener
+    /**
+     * '편집/삭제' 버튼이 담긴 Editbar render
+     * (render할 때 참고할 state value setting)
+     */
+    const MenuBtnClick = () => {
+        const TargetName = Bookmarks[NowIndex].charname;
+
+        if(TargetName === ""){
+            return;
+        } else {
+            setEditTarget(TargetName);
+        }
+    };
+
+    //Editbar, delete btn event listener
+    const DeleteBtnEventListener = () => {
+        const {charname, charlevel, worldname, charclass} = Bookmarks[NowIndex];
+
+        const confirm = window.confirm(
+            `'${charname}/${worldname}/Lv.${charlevel}/${charclass}'\n해당 캐릭터 카드를 삭제하겠습니까?\n(해당 캐릭터의 메할일 및 북마크가 삭제 됩니다.)`
+        );
+
+        if(!confirm){
+            setEditTarget("");
+            return;
+        } else {
+            deleteCharToDo(charname);
+            DeleteBookmark(charname);
+            alert("삭제 완료");
+        }
+    };
+
+    //Editbar, editbtn event listener
+    const Redirect_ToDoEditPage = () => {
+        const Targetname = Bookmarks[NowIndex].charname;
+
+        router.push(`/todoedits/${Targetname}`);
+    };
+
     return (
         <Container>
             <BookmarkListHeader>
@@ -247,7 +322,15 @@ function M_BookmarkList(){
                     <div className="utilbtn_label">메할일 추가</div>
                 </UtilBtnContainer>
                 <UtilBtnContainer>
-                    <div className="utilbtn">
+                    {
+                        (EditTarget !== "" && EditTarget === Bookmarks[NowIndex].charname) ? (
+                            <EditBar>
+                                <EditBtn key={"editbar-editbtn"} onClick={Redirect_ToDoEditPage}>편집</EditBtn>
+                                <EditBtn key={"editbar-delbtn"} onClick={DeleteBtnEventListener}>삭제</EditBtn>
+                            </EditBar>
+                        ) : null
+                    }
+                    <div className="utilbtn" onClick={MenuBtnClick}>
                         <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 640" fill="#ffffff" width={"25"} height={"25"}>
                             <path d="M96 320C96 289.1 121.1 264 152 264C182.9 264 208 289.1 208 320C208 350.9 182.9 376 152 376C121.1 376 96 350.9 96 320zM264 320C264 289.1 289.1 264 320 264C350.9 264 376 289.1 376 320C376 350.9 350.9 376 320 376C289.1 376 264 350.9 264 320zM488 264C518.9 264 544 289.1 544 320C544 350.9 518.9 376 488 376C457.1 376 432 350.9 432 320C432 289.1 457.1 264 488 264z"/>
                         </svg>
@@ -255,6 +338,9 @@ function M_BookmarkList(){
                     <div className="utilbtn_label">메뉴</div>
                 </UtilBtnContainer>
             </UtilBtnList>
+            {
+                EditTarget !== "" ? (<EditWrapper onClick={() => setEditTarget("")}></EditWrapper>) : null
+            }
         </Container>
     );
 };

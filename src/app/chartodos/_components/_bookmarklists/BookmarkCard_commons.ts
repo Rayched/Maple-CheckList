@@ -80,6 +80,25 @@ const CardDataBox = styled.div`
     };
 `;
 
+const EditBarContainer = styled.div`
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    background-color: rgb(223, 230, 233);
+    position: absolute;
+    z-index: 2;
+    border-radius: 8px;
+    box-shadow: 2px 3px 2px rgba(0, 0, 0, 0.5);
+`;
+
+const EditBtnlayout = styled.div`
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 8px;
+    font-size: 14px;
+`;
+
 export const BookmarkCard_Commons = {
-    CardBody, ImageBox, CardDataBox
+    CardBody, ImageBox, CardDataBox, EditBarContainer, EditBtnlayout
 };
