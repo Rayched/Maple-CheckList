@@ -211,7 +211,7 @@ export default function P_BookmarkList(){
                 <BookmarkList_UtilButton className="utilBtn" onClick={AddBtnClickEvent}>메할일 추가</BookmarkList_UtilButton>
                 {!SearchMode && (<BookmarkList_UtilButton className="utilBtn" onClick={SearchBtnClick}>메할일 검색</BookmarkList_UtilButton>)}
                 {SearchMode && (<BookmarkList_UtilButton className="cancelBtn" onClick={SearchCancelBtnClick}>검색 취소</BookmarkList_UtilButton>)}
-                <ToDoResetBtn />
+                <ToDoResetBtn accessplatform="0"/>
             </ButtonListBox>
             {
                 !SearchMode && (

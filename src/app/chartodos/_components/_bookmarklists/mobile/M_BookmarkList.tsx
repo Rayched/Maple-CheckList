@@ -11,6 +11,7 @@ import { useRouter } from "next/navigation";
 import { EditTargetStore } from "@/stores";
 import { BookmarkCard_Commons } from "../BookmarkCard_commons";
 import { CharToDoStore } from "@/stores/CharToDoStore";
+import ToDoResetBtn from "@/components/ToDoResetBtn";
 
 const Container = styled(BookmarkList_Commons.BookmarkListContainer)`
     width: 98%;
@@ -121,16 +122,23 @@ const UtilBtnContainer = styled.div`
     .utilbtn_label {
         font-size: 14px;
     }
+
+    #resetbtnlabel {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+    };
 `;
 
 const EditBar = styled(BookmarkCard_Commons.EditBarContainer)`
-    width: 17%;
+    width: 20%;
     max-width: 70px;
-    height: 60%;
-    max-height: 70px;
+    height: 75%;
+    max-height: 85px;
     position: absolute;
-    top: -53px;
-    right: 60px;
+    top: -65px;
+    right: 28px;
 `;
 
 const EditBtn = styled(BookmarkCard_Commons.EditBtnlayout)`
@@ -321,6 +329,13 @@ function M_BookmarkList(){
                         </svg>
                     </div>
                     <div className="utilbtn_label">메할일 추가</div>
+                </UtilBtnContainer>
+                <UtilBtnContainer>
+                    <ToDoResetBtn accessplatform="1" />
+                    <div className="utilbtn_label" id="resetbtnlabel">
+                        <span>완료 기록</span>
+                        <span>초기화</span>
+                    </div>
                 </UtilBtnContainer>
                 <UtilBtnContainer>
                     {
