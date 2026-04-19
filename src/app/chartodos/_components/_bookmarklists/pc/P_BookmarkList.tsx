@@ -5,6 +5,7 @@ import { useStore } from "zustand";
 import BookmarkCard from "./BookmarkCard";
 import { ChartodosPage_ModeStore } from "@/stores/ModeStore";
 import { useState } from "react";
+import ToDoResetBtn from "@/components/ToDoResetBtn";
 
 interface I_SearchTarget {
     charname: string;
@@ -47,7 +48,7 @@ const Titles = styled.div`
 `;
 
 const ButtonListBox = styled.div`
-    width: 50%;
+    width: 70%;
     height: 5%;
     margin: 10px 0px;
     display: flex;
@@ -210,6 +211,7 @@ export default function P_BookmarkList(){
                 <BookmarkList_UtilButton className="utilBtn" onClick={AddBtnClickEvent}>메할일 추가</BookmarkList_UtilButton>
                 {!SearchMode && (<BookmarkList_UtilButton className="utilBtn" onClick={SearchBtnClick}>메할일 검색</BookmarkList_UtilButton>)}
                 {SearchMode && (<BookmarkList_UtilButton className="cancelBtn" onClick={SearchCancelBtnClick}>검색 취소</BookmarkList_UtilButton>)}
+                <ToDoResetBtn />
             </ButtonListBox>
             {
                 !SearchMode && (

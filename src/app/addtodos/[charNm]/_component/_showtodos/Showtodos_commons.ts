@@ -5,8 +5,7 @@ import styled from "styled-components";
 
 const ItemListContainer = styled.div`
     width: 100%;
-    height: 45%;
-    min-height: 200px;
+    min-height: 150px;
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -28,7 +27,6 @@ const ItemListTitle = styled.div`
 
 const ItemListBox = styled.div`
     width: 100%;
-    height: 90%;
     display: flex;
     flex-direction: column;
     align-items: center;

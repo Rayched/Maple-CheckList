@@ -37,6 +37,7 @@ interface I_ChartodoStore {
     editCharToDo: (EditToDo: I_CharToDo) => void;
     deleteCharToDo: (targetNm: string) => void;
     updateAccWeeklyToDos: ({contentsId, contentsNm, tododone}: I_updateAccWeeklyToDos) => void
+    DoneRecordReset: () => void;
 };
 
 const GetAccWeeklyContentsData = WeeklyContentsData.map((data) => {
@@ -129,6 +130,65 @@ export const CharToDoStore = create<I_ChartodoStore>()(
                         ...state.accWeeklyToDos.slice(idx + 1)
                     ]
                 };
+            }
+        }),
+        //메할일 완료 기록 초기화 action
+        DoneRecordReset: () => set((state) => {
+            const GetChartodos = state.chartodos.map((chartodo) => {
+                const GetWeeklyToDos = chartodo.weeklyToDos.map((weekly) => {
+                    if(weekly.ToDoDone){
+                        const UpdateValue: I_WeeklyToDos = {
+                            contentsId: weekly.contentsId,
+                            contentsNm: weekly.contentsNm,
+                            ToDoDone: false,
+                            contentsUnit: weekly.contentsUnit
+                        };
+
+                        return UpdateValue;
+                    } else {
+                        return weekly;
+                    }
+                });
+
+                const GetBossToDos = chartodo.bossToDos.map((bosstodo) => {
+                    if(bosstodo.ToDoDone){
+                        const UpdateValue: I_BossToDos = {
+                            contentsId: bosstodo.contentsId,
+                            contentsNm: bosstodo.contentsNm,
+                            bossrank: bosstodo.bossrank,
+                            ToDoDone: false
+                        };
+
+                        return UpdateValue;
+                    } else {
+                        return bosstodo;
+                    }
+                });
+
+                return {
+                    charname: chartodo.charname,
+                    ocid: chartodo.ocid,
+                    weeklyToDos: GetWeeklyToDos,
+                    bossToDos: GetBossToDos
+                } as I_CharToDo;
+            });
+
+            const GetAccWeeklyToDos = state.accWeeklyToDos.map((accweekly) => {
+                if(accweekly.ToDoDone){
+                    return {
+                        contentsId: accweekly.contentsId,
+                        contentsNm: accweekly.contentsNm,
+                        ToDoDone: false,
+                        contentsUnit: accweekly.contentsUnit
+                    } as I_WeeklyToDos;
+                } else {
+                    return accweekly;
+                }
+            });
+
+            return {
+                chartodos: GetChartodos,
+                accWeeklyToDos: GetAccWeeklyToDos
             }
         })
     }), {

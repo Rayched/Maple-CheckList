@@ -2,7 +2,7 @@ import CharDataBox from "@/components/pages/commons/CharDataBox";
 import { GetCharData, GetOcids } from "@/game_datas/Fetchs";
 import { redirect } from "next/navigation";
 import styles from "../_styles/todoedits.module.css";
-import EditToDoList from "@/components/pages/todoedits/EditToDoList";
+import EditToDoList from "../_component/EditToDoList";
 
 interface I_ToDoEditsPage {
     params: {
@@ -16,6 +16,7 @@ async function ToDoEditsPage({params}: I_ToDoEditsPage){
     const chardatas = await GetCharData(ocids?.ocid);
 
     if(!ocids || !chardatas){
+        console.log("character data 가져오기 실패");
         redirect("/chartodos");
     } else {
         console.log(ocids.ocid);
@@ -24,19 +25,18 @@ async function ToDoEditsPage({params}: I_ToDoEditsPage){
 
     return (
         <div className={styles.todoedits_page_wrapper}>
-            <div className={styles.todoedits_charactercard}>
-                <CharDataBox 
-                    charname={chardatas.character_name}
-                    charlevel={chardatas.character_level}
-                    charclass={chardatas.character_class}
-                    charExpRate={chardatas.character_exp_rate}
-                    charimgurl={chardatas.character_image}
-                    worldname={chardatas.world_name}
-                />
-                <EditToDoList 
-                    charname={chardatas.character_name}
-                />
-            </div>
+            <CharDataBox 
+                charname={chardatas.character_name}
+                charlevel={chardatas.character_level}
+                charclass={chardatas.character_class}
+                charExpRate={chardatas.character_exp_rate}
+                charimgurl={chardatas.character_image}
+                worldname={chardatas.world_name}
+            />
+            <EditToDoList 
+                charname={chardatas.character_name}
+                ocids={ocids.ocid}
+            />
         </div>
     );
 };
