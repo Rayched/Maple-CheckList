@@ -8,7 +8,7 @@ import { RankColorInfos } from "@/game_datas/bossrank_colordata";
 import { CharToDoStore, I_BossToDos } from "@/stores/CharToDoStore";
 import { useForm } from "react-hook-form";
 import { useStore } from "zustand";
-import { OcidConfirms } from "@/components/pages/commons/OcidConfirm";
+import { OcidConfirms } from "@/utils/OcidConfirm";
 
 interface I_BossToDoList {
     charname?: string;

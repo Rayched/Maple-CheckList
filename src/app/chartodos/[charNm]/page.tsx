@@ -2,7 +2,7 @@ import { GetCharData, GetOcids } from "@/game_datas/Fetchs";
 import { redirect } from "next/navigation";
 import styles from "../_styles/chartodos.module.css"
 import Charpage_ToDoList from "./_components/charpage_todolist"
-import CharDataBox from "@/components/pages/commons/CharDataBox";
+import CharDataBox from "@/components/CharDataBox";
 
 interface I_CharToDosPage {
     params: {

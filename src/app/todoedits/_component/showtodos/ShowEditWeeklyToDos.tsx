@@ -7,6 +7,7 @@ interface I_ShowEditWeeklyToDosProps {
 };
 
 const Container = styled(ShowToDos_Commons.ItemListContainer)``;
+
 const Titles = styled(ShowToDos_Commons.ItemListTitle)`
     border-top-right-radius: inherit;
     border-top-left-radius: inherit;

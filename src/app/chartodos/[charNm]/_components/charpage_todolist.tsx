@@ -6,7 +6,7 @@ import styled from "styled-components";
 import WeeklyToDoList from "./weeklytodolist";
 import BossToDoList from "./bosstodolist";
 import { useStore } from "zustand";
-import { ToDoList_Container, ToDoList_Mains, ToDoList_SelectBox } from "../../../../components/pages/commons/todolist_commons";
+import { ToDoList_Container, ToDoList_Mains, ToDoList_SelectBox } from "../../../../components/commons/todolist_commons";
 import { CharToDoStore } from "@/stores/CharToDoStore";
 
 interface I_Charpage_todolist {

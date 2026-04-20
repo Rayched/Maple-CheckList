@@ -1,4 +1,4 @@
-import CharDataBox from "@/components/pages/commons/CharDataBox";
+import CharDataBox from "@/components/CharDataBox";
 import { GetCharData, GetOcids } from "@/game_datas/Fetchs";
 import { redirect } from "next/navigation";
 import styles from "../_styles/todoedits.module.css";

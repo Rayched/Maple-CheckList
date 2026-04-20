@@ -31,9 +31,9 @@ const Container = styled.div`
 
     .charimage {
         width: 50%;
-        max-width: 200px;
+        max-width: 180px;
         height: 60%;
-        max-height: 350px;
+        max-height: 200px;
         display: flex;
         align-items: center;
         justify-content: center;

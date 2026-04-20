@@ -1,6 +1,6 @@
 "use client"
 
-import { ToDoList_Container, ToDoList_Mains, ToDoList_SelectBox } from "@/components/pages/commons/todolist_commons";
+import { ToDoList_Container, ToDoList_Mains, ToDoList_SelectBox } from "@/components/commons/todolist_commons";
 import { Categories } from "@/stores";
 import { BookmarkStore } from "@/stores/BookmarkStore";
 import { CharToDoStore, I_BossToDos, I_WeeklyToDos } from "@/stores/CharToDoStore";
@@ -20,17 +20,25 @@ interface I_EditToDoListProps {
 const Container = styled(ToDoList_Container)``;
 const CategorySelect = styled(ToDoList_SelectBox)``;
 const ToDosContainer = styled(ToDoList_Mains)`
-    height: 90%;
-    max-width: 350px;
-    min-height: 330px;
-    max-height: 350px;
+    width: 90%;
+    height: 80%;
     overflow: hidden;
 `;
 
 const ToDoSaveBtn = styled.div`
-    border: 2px solid black;
-    border-radius: 8px;
+    width: 100px;
+    height: 35px;
     padding: 3px 4px;
+    margin-top: 5px;
+    color: white;
+    background-color: rgb(116, 125, 140);
+    border: 2px solid rgb(87, 96, 111);
+    font-weight: bold;
+    font-size: 17px;
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
 `;
 
 function EditToDoList({charname, ocids}: I_EditToDoListProps){

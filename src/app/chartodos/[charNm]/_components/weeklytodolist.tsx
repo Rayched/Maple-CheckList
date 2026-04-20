@@ -6,7 +6,7 @@ import {styled} from "styled-components";
 import { useStore } from "zustand";
 import { ToDoItem, ToDoListContainer } from "./todoitem/todolist_commons";
 import { CharToDoStore, I_WeeklyToDos } from "@/stores/CharToDoStore";
-import { OcidConfirms } from "@/components/pages/commons/OcidConfirm";
+import { OcidConfirms } from "@/utils/OcidConfirm";
 
 interface I_WeeklyToDoList {
     charname?: string;

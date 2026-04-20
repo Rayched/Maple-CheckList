@@ -35,6 +35,10 @@ interface I_SingleRankBoxProps {
     border_color?: string;
 };
 
+interface I_BossFormItemProps {
+    isfullcount: string;
+};
+
 const Container = styled(FormContainer)``;
 const Titles = styled(FormHeader)``;
 
@@ -45,7 +49,17 @@ const ScrollBox = styled(FormSliderBox)`
     align-items: center;
 `;
 
-const BossFormItem = styled(FormItem)`
+const BossFormItemBox = styled.div`
+    width: 98%;
+    padding: 5px 0px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    border: 2px solid black;
+    border-radius: 5px;
+`;
+
+const BossFormItem = styled(FormItem)<I_BossFormItemProps>`
     width: 95%;
     height: 10%;
     min-height: 30px;
@@ -53,12 +67,14 @@ const BossFormItem = styled(FormItem)`
     padding: 4px 2px;
     margin: 3px 0px;
     justify-content: space-between;
+    background-color: ${(props) => props.isfullcount === "1" ? "rgb(116, 125, 140)" : "rgb(241, 242, 246)"};
+    border: 2px solid ${(props) => props.isfullcount === "1" ? "rgb(116, 125, 140)" : "black"};
 
     .FormDataBox {
         display: flex;
         flex-direction: row;
         align-items: center;
-        width: 45%;
+        width: 50%;
         height: 100%;
         min-width: 100px;
         max-width: 150px;
@@ -75,8 +91,10 @@ const BossFormItem = styled(FormItem)`
         };
 
         .bossnamebox {
-            font-size: 16.5px;
+            font-size: 15px;
             font-weight: bold;
+            text-decoration: ${(props) => props.isfullcount === "1" ? "line-through" : "none"};
+            text-decoration-thickness: 2px;
         };
     };
 
@@ -181,76 +199,78 @@ export default function EditBossToDos({EditBossToDoDatas, setEditBossToDoDatas, 
         <Container>
             <Titles>주간 보스 목록 {`(${EditBossToDoDatas.length} / 12)`}</Titles>
             <ScrollBox>
-                {
-                    ContentsData.map((data) => {
-                        const isAdds = EditBossToDoDatas?.find((todos) => todos.contentsId === data.BossId || todos.contentsNm === data.BossNm);
+                <BossFormItemBox>
+                    {
+                        ContentsData.map((data) => {
+                            const isAdds = EditBossToDoDatas?.find((todos) => todos.contentsId === data.BossId || todos.contentsNm === data.BossNm);
 
-                        const ColorData = RankColorInfos.find((color) => color.rankId === data.Ranks[0].rankId);
+                            const ColorData = RankColorInfos.find((color) => color.rankId === data.Ranks[0].rankId);
 
-                        return (
-                            <BossFormItem key={data.BossId}>
-                                <div className="FormDataBox">
-                                    <input 
-                                        type="checkbox"
-                                        value={data.BossId}
-                                        data-bossname={data.BossNm}
-                                        data-defaultrank={isAdds ? isAdds.bossrank : data.Ranks[0].rankId}
-                                        defaultChecked={isAdds ? true : false}
-                                        disabled={!isAdds && EditBossToDoDatas.length >= 12 ? true : false}
-                                        {...register("selectTarget", {
-                                            onChange: (e: React.ChangeEvent<HTMLInputElement>) => {
-                                                const {
-                                                    currentTarget: {value},
-                                                    target: {
-                                                        checked,
-                                                        dataset: {bossname, defaultrank}
-                                                    }
-                                                } = e;
+                            return (
+                                <BossFormItem key={data.BossId} isfullcount={!isAdds && EditBossToDoDatas.length >= 12 ? "1" : "0"}>
+                                    <div className="FormDataBox">
+                                        <input 
+                                            type="checkbox"
+                                            value={data.BossId}
+                                            data-bossname={data.BossNm}
+                                            data-defaultrank={isAdds ? isAdds.bossrank : data.Ranks[0].rankId}
+                                            defaultChecked={isAdds ? true : false}
+                                            disabled={!isAdds && EditBossToDoDatas.length >= 12 ? true : false}
+                                            {...register("selectTarget", {
+                                                onChange: (e: React.ChangeEvent<HTMLInputElement>) => {
+                                                    const {
+                                                        currentTarget: {value},
+                                                        target: {
+                                                            checked,
+                                                            dataset: {bossname, defaultrank}
+                                                        }
+                                                    } = e;
 
-                                                CheckedEvent({
-                                                    bossid: value,
-                                                    bossname: bossname,
-                                                    defaultRank: defaultrank,
-                                                    ischecked: checked
-                                                });
-                                            }
-                                        })}
-                                    />
-                                    <img src={`/imgs/boss_monsters/${data.BossId}.png`} />
-                                    <div className="bossnamebox">{!data.SubName ? data.BossNm : data.SubName}</div>
-                                </div>
-                                <div className="RankDataBox">
-                                    {
-                                        isAdds && data.Ranks.length <= 1 ? (
-                                            <SingleRankBox textcolor={ColorData?.fontColor} bgcolor={ColorData?.bgColor} border_color={ColorData?.borderColor}>
-                                                {data.Ranks[0].rankId.slice(0, 1)}
-                                            </SingleRankBox>
-                                        ): null
-                                    }
-                                    {
-                                        isAdds && data.Ranks.length > 1 ? (
-                                            <RankSelectBox
-                                                key={`${data.BossId}_rankselect`} 
-                                                defaultValue={`${data.BossId}_${isAdds.bossrank}`}
-                                                onChange={RankChangeEvent}
-                                            >
-                                                {
-                                                    data.Ranks.map((rank, idx) => {
-                                                        return (
-                                                            <option key={`${data.BossId}_rank${idx}`} value={`${data.BossId}_${rank.rankId}`}>
-                                                                {rank.rankNm}
-                                                            </option>
-                                                        );
-                                                    })
+                                                    CheckedEvent({
+                                                        bossid: value,
+                                                        bossname: bossname,
+                                                        defaultRank: defaultrank,
+                                                        ischecked: checked
+                                                    });
                                                 }
-                                            </RankSelectBox>
-                                        ) : null
-                                    }
-                                </div>
-                            </BossFormItem>
-                        );
-                    })
-                }
+                                            })}
+                                        />
+                                        <img src={`/imgs/boss_monsters/${data.BossId}.png`} />
+                                        <div className="bossnamebox">{!data.SubName ? data.BossNm : data.SubName}</div>
+                                    </div>
+                                    <div className="RankDataBox">
+                                        {
+                                            isAdds && data.Ranks.length <= 1 ? (
+                                                <SingleRankBox textcolor={ColorData?.fontColor} bgcolor={ColorData?.bgColor} border_color={ColorData?.borderColor}>
+                                                    {data.Ranks[0].rankId.slice(0, 1)}
+                                                </SingleRankBox>
+                                            ): null
+                                        }
+                                        {
+                                            isAdds && data.Ranks.length > 1 ? (
+                                                <RankSelectBox
+                                                    key={`${data.BossId}_rankselect`} 
+                                                    defaultValue={`${data.BossId}_${isAdds.bossrank}`}
+                                                    onChange={RankChangeEvent}
+                                                >
+                                                    {
+                                                        data.Ranks.map((rank, idx) => {
+                                                            return (
+                                                                <option key={`${data.BossId}_rank${idx}`} value={`${data.BossId}_${rank.rankId}`}>
+                                                                    {rank.rankNm}
+                                                                </option>
+                                                            );
+                                                        })
+                                                    }
+                                                </RankSelectBox>
+                                            ) : null
+                                        }
+                                    </div>
+                                </BossFormItem>
+                            );
+                        })
+                    }
+                </BossFormItemBox>
             </ScrollBox>
         </Container>
     );

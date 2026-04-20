@@ -38,10 +38,9 @@ export const FormHeader = styled.div`
 export const FormSliderBox = styled.div`
     width: 90%;
     height: 90%;
-    min-height: 270px;
-    max-height: 280px;
+    min-height: 280px;
+    max-height: 300px;
     margin-top: 3px;
-    padding: 10px 0px;
     overflow-y: auto;
     scroll-snap-type: y mandatory;
     scroll-behavior: smooth;

@@ -27,27 +27,54 @@ const Container = styled(FormContainer)``;
 const Titles = styled(FormHeader)``;
 
 const ScrollBox = styled(FormSliderBox)`
-    height: 80%;
-    min-height: 150px;
-    max-height: 220px;
+    width: 95%;
+    height: 85%;
+    min-height: 250px;
+    max-height: 260px;
+    padding: 10px 0px;
 `;
 
 const WeeklyFormItemBox = styled.div`
     width: 100%;
-    min-height: 150px;
-    margin: 2px 0px;
+    min-height: 180px;
     display: flex;
     flex-direction: column;
     align-items: center;
 
     .formitemtitle {
-        width: 90%;
-        padding-bottom: 5px;
-        margin-top: 3px;
+        width: 95%;
+        padding: 5px 0px;
         text-align: center;
-        border-bottom: 2px solid black;
+        border: 2px solid black;
         font-weight: bold;
+        border-top-right-radius: inherit;
+        border-top-left-radius: inherit;
     };
+
+    .formitembodys {
+        width: 95%;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        border-color: black;
+        border-style: solid;
+        border-left-width: 2px;
+        border-right-width: 2px;
+        border-bottom-width: 2px;
+        border-bottom-right-radius: inherit;
+        border-bottom-left-radius: inherit;
+    };
+
+    &:nth-child(1){
+        margin-top: 3px;
+        border-top-left-radius: 5px;
+        border-top-right-radius: 5px;
+    }
+
+    &:nth-child(2){
+        border-bottom-left-radius: 5px;
+        border-bottom-right-radius: 5px;
+    }
 `;
 
 const WeeklyFormItem = styled(FormItem)`
@@ -132,6 +159,7 @@ export default function EditWeeklyToDos({EditWeeklyToDosData, setEditWeeklyToDos
             <ScrollBox>
                 <WeeklyFormItemBox key={"arcaneriver_weeklycontents"}>
                     <div className="formitemtitle">아케인리버 주간 컨텐츠</div>
+                    <div className="formitembodys">
                     {
                         ArcaneContentsData.map((data) => {
                             const isAdds = EditWeeklyToDosData?.find((todos) => todos.contentsId === data.ContentsId);
@@ -161,37 +189,40 @@ export default function EditWeeklyToDos({EditWeeklyToDosData, setEditWeeklyToDos
                             );
                         })
                     }
+                    </div>
                 </WeeklyFormItemBox>
                 <WeeklyFormItemBox key={"weeklycontents"}>
                     <div className="formitemtitle">주간 컨텐츠</div>
-                    {
-                        WeeklyData.map((data) => {
-                            const isAdds = EditWeeklyToDosData?.find((todos) => todos.contentsId === data.ContentsId);
-                            return (
-                                <WeeklyFormItem key={data.ContentsId}>
-                                    <input 
-                                        type="checkbox"
-                                        value={data.ContentsId}
-                                        defaultChecked={isAdds ? true : false}
-                                        {...register("weekly_select", {
-                                            onChange: (e: React.ChangeEvent<HTMLInputElement>) => {
-                                                const {
-                                                    currentTarget: {value},
-                                                    target: {checked}
-                                                } = e;
+                    <div className="formitembodys">
+                        {
+                            WeeklyData.map((data) => {
+                                const isAdds = EditWeeklyToDosData?.find((todos) => todos.contentsId === data.ContentsId);
+                                return (
+                                    <WeeklyFormItem key={data.ContentsId}>
+                                        <input 
+                                            type="checkbox"
+                                            value={data.ContentsId}
+                                            defaultChecked={isAdds ? true : false}
+                                            {...register("weekly_select", {
+                                                onChange: (e: React.ChangeEvent<HTMLInputElement>) => {
+                                                    const {
+                                                        currentTarget: {value},
+                                                        target: {checked}
+                                                    } = e;
 
-                                                UpdateWeeklyToDoDatas({
-                                                    contentsId: value,
-                                                    ischecked: checked
-                                                });
-                                            }
-                                        })}
-                                    />
-                                    <span>{data.ContentsNm}</span>
-                                </WeeklyFormItem>
-                            );
-                        })
-                    }
+                                                    UpdateWeeklyToDoDatas({
+                                                        contentsId: value,
+                                                        ischecked: checked
+                                                    });
+                                                }
+                                            })}
+                                        />
+                                        <span>{data.ContentsNm}</span>
+                                    </WeeklyFormItem>
+                                );
+                            })
+                        }
+                    </div>
                 </WeeklyFormItemBox>
             </ScrollBox>
         </Container>

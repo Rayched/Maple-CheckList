@@ -15,13 +15,13 @@ const Container = styled.div`
     flex-direction: column;
     align-items: center;
     width: 100%;
-    height: 100%;
+    height: 90%;
 `;
 
 const ToDoItemList = styled(FormContainer)`
     min-height: 300px;
-    max-height: none;
     justify-content: center;
+    overflow: hidden;
 
     .TodosEmptyMessage {
         font-size: 18px;
@@ -30,6 +30,8 @@ const ToDoItemList = styled(FormContainer)`
 `;
 
 const ToDoItemScrollBox = styled(FormSliderBox)`
+    min-height: 250px;
+    max-height: 300px;
     padding: 0px;
     border-radius: 8px;
     border: 2px solid rgb(116, 125, 140);
