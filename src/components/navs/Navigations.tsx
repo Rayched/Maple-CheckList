@@ -95,7 +95,7 @@ const SidebarWrapper = styled.div`
 
 const PathData: PathDataTypes[] = [
     {pathValue: "/chartodos", pathNm: "메할일 목록"},
-    {pathValue: "/incomes", pathNm: "주간 수익"}
+    {pathValue: "/incomes", pathNm: "결정 수익"}
 ];
 
 export default function Navigations(){
@@ -150,7 +150,7 @@ export default function Navigations(){
                 { 
                     !IsHide ? (
                         <SidebarWrapper>
-                            <Sidebar pathData={PathData} setStateFn={() => setHide((s) => !s)} />
+                            <Sidebar pathData={PathData} setStateFn={() => setHide((prev) => !prev)} />
                         </SidebarWrapper>
                     ): null
                 }
