@@ -1,0 +1,9 @@
+/*결정 수익 페이지 (/income), css style's*/
+
+.Wrapper {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 100%;
+    height: 94%;
+}

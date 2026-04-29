@@ -49,7 +49,7 @@ const LinkBox = styled.ul`
     flex-direction: column;
     align-items: center;
     width: 95%;
-    height: 50%;
+    height: auto;
     margin-top: 10px;
     background-color: rgb(220, 221, 225);
 `;
@@ -70,7 +70,16 @@ const LinkItem = styled.li`
     .pathNm {
         z-index: 2;
         margin-left: 5px;
+        padding: 3px 2px;
+        width: 80%;
     };
+`;
+
+const BookmarkListOpenBtn = styled(motion.div)`
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
 `;
 
 const CharToDosURLBox = styled(LinkItem)`
@@ -101,15 +110,15 @@ const CharToDoPathItem = styled.div<I_CharToDoPathItemProps>`
     justify-content: space-between;
     font-size: 15px;
     font-weight: normal;
-    background-color: ${(props) => props.ismatchs === "1" ? "white" : "rgb(220, 221, 225)"};
-
+    
     img {
         width: 16px;
         height: 16px;
     };
 
     .chardatabox {
-        width: 50%;
+        width: 80%;
+        min-width: 50px;
         display: flex;
         flex-direction: row;
         align-items: center;
@@ -174,9 +183,9 @@ export default function Sidebar({pathData, setStateFn}: SidebarProps){
             </CloseBtn>
             <LinkBox>
                 <CharToDosURLBox key={"chartodos_urlbox"}>
-                    <div className="pathitem" key={`chartodos`} onClick={() => LinkClicked(pathData[0].pathValue)}>
-                        <span className="pathNm">{pathData[0].pathNm}</span>
-                        <span className="bmklistbtn" onClick={() => setBmkListClose((prev) => !prev)}>
+                    <div className="pathitem" key={`chartodos`}>
+                        <div className="pathNm" onClick={() => LinkClicked(pathData[0].pathValue)}>{pathData[0].pathNm}</div>
+                        <BookmarkListOpenBtn onClick={() => setBmkListClose((prev) => !prev)}>
                            {isBmkListClose ? (
                                 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 384 512" width="20" height="20">
                                     <path d="M169.4 137.4c12.5-12.5 32.8-12.5 45.3 0l160 160c12.5 12.5 12.5 32.8 0 45.3s-32.8 12.5-45.3 0L192 205.3 54.6 342.6c-12.5 12.5-32.8 12.5-45.3 0s-12.5-32.8 0-45.3l160-160z"/>
@@ -186,7 +195,7 @@ export default function Sidebar({pathData, setStateFn}: SidebarProps){
                                 <path d="M169.4 374.6c12.5 12.5 32.8 12.5 45.3 0l160-160c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0L192 306.7 54.6 169.4c-12.5-12.5-32.8-12.5-45.3 0s-12.5 32.8 0 45.3l160 160z"/>
                             </svg>
                            )}
-                        </span>
+                        </BookmarkListOpenBtn>
                     </div>
                     {
                         isBmkListClose && (Bookmarks.map((data, idx) => {
@@ -216,7 +225,6 @@ export default function Sidebar({pathData, setStateFn}: SidebarProps){
                 </CharToDosURLBox>
                 <LinkItem key={`incomes_path`} onClick={() => LinkClicked(pathData[1].pathValue)}>
                     <div className="pathNm">{pathData[1].pathNm}</div>
-                    {NowPath === pathData[1].pathValue ? <div className="urlmatchicon">◀</div> : null}
                 </LinkItem>
             </LinkBox>
         </Container>

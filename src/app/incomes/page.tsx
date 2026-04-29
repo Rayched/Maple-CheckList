@@ -1,6 +1,10 @@
-import styles from "../../styles/incomes.module.css"
+import IncomeContainer from "./_components/IncomeContainer";
+import styles from "./_styles/incomes.module.css"
+
 export default function IncomesPage(){
     return (
-        <div className={styles.Wrapper}>주간 수익</div>
+        <div className={styles.Wrapper}>
+            <IncomeContainer />
+        </div>
     );
 }
