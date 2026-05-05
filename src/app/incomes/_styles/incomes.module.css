@@ -1,9 +1,27 @@
 /*결정 수익 페이지 (/income), css style's*/
 
-.Wrapper {
+.income_layout {
     display: flex;
     flex-direction: column;
     align-items: center;
+    width: 100dvw;
+    height: 90dvh;
+}
+
+.income_loading {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
     width: 100%;
-    height: 94%;
+    height: 100%;
+    font-weight: bold;
+    font-size: 18px;
+}
+
+.income_page_wrapper {
+   display: flex;
+   flex-direction: column;
+   align-items: center;
+   width: 100%;
 }
