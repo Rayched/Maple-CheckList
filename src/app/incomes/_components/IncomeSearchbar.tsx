@@ -2,10 +2,11 @@
 
 import { BookmarkStore, I_BookmarkData } from "@/stores/BookmarkStore";
 import styles from "../_styles/incomeSearchbar.module.css";
-import { useState } from "react";
+import React, { useState } from "react";
 import { useStore } from "zustand";
 import styled from "styled-components";
 import { WorldDatas } from "@/game_datas/contentsData";
+import { useRouter } from "next/navigation";
 
 interface I_Targets {
     charname: string;
@@ -14,6 +15,10 @@ interface I_Targets {
     charimgurl: string;
     worldId?: string;
 };
+
+interface I_TargetDeleteProps {
+    event: React.MouseEvent<HTMLDivElement>|React.TouchEvent<HTMLDivElement>;
+}; 
 
 const Searchoutputs = styled.div`
     width: 100%;
@@ -26,6 +31,7 @@ const Searchoutputs = styled.div`
     flex-direction: row;
     align-items: center;
     justify-content: space-between;
+    cursor: pointer;
 
     .charimage {
         width: 30%;
@@ -37,7 +43,7 @@ const Searchoutputs = styled.div`
     }
 
     .chardatabox {
-        width: 70%;
+        width: 40%;
         height: 100%;
         display: flex;
         flex-direction: column;
@@ -52,50 +58,82 @@ const Searchoutputs = styled.div`
             align-items: center;
             justify-content: flex-start;
         };
-    }
+    };
+
+    .redirectbtn {
+        width: 10%;
+        height: 100%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    };
+
+    .textbox {
+        width: 90%;
+        height: 100%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-weight: bold;
+        font-size: 17px;
+    };
 `;
 
 export default function IncomeSearchBar(){
     const [SearchName, setSearchName] = useState("");
     const [ShowSearchOutput, setShowSearchOutput] = useState(false);
-    const [Targets, setTargets] = useState<I_Targets|null>(null);
+    const [Targets, setTargets] = useState<I_Targets>();
 
     const {Bookmarks} = useStore(BookmarkStore);
+
+    const router = useRouter();
 
     const onChangeEvent = (e: React.ChangeEvent<HTMLInputElement>) => {
         const {
             currentTarget: {value}
         } = e;
- 
-        if(value === ""){
-            setShowSearchOutput(false);
-            setTargets(null);
-        } else {
-            setShowSearchOutput(true);
 
-            const idx = Bookmarks.findIndex((data) => data.charname === value);
-
-            if(idx === -1){
-                setTargets(null);
-            } else {
-                const GetWorldId = WorldDatas.find((data) => data.worldNm === Bookmarks[idx].worldname)?.worldId;
-
-                setTargets({
-                    charname: Bookmarks[idx].charname,
-                    charlevel: Bookmarks[idx].charlevel,
-                    charimgurl: Bookmarks[idx].charimgurl,
-                    charclass: Bookmarks[idx].charclass,
-                    worldId: GetWorldId
-                });
-            }
-        }
-        
         setSearchName(value);
+        setShowSearchOutput(true)
+
+        if(value.length === 0){
+            setShowSearchOutput(false);
+            setTargets(undefined);
+            return;
+        }
+
+        const FindTargetData = Bookmarks.find((data) => data.charname === value);
+
+        if(!FindTargetData){
+            setTargets(undefined);
+            return;
+        } else {
+            const GetWorldData = WorldDatas.find((world) => world.worldNm === FindTargetData.worldname);
+
+            if(!GetWorldData) return;
+
+            const NewTargetData: I_Targets = {
+                charname: FindTargetData.charname,
+                charclass: FindTargetData.charclass,
+                charlevel: FindTargetData.charlevel,
+                worldId: GetWorldData.worldId,
+                charimgurl: FindTargetData.charimgurl
+            };
+            setShowSearchOutput(true);
+            setTargets(NewTargetData);
+        }
     };
 
-    const TargetDelete = () => {
-        setShowSearchOutput(false);
-        setTargets(null);
+    const TargetDelete = (e: React.MouseEvent<HTMLDivElement>|React.TouchEvent<HTMLDivElement>) => {
+        if(e.target === e.currentTarget){
+            setShowSearchOutput(false);
+        } else {
+            return;
+        }
+    };
+
+    const onClickRedirectBtn = () => {
+        router.push(`/incomes/editincomes/${SearchName}`);
     };
 
     return (
@@ -118,7 +156,7 @@ export default function IncomeSearchBar(){
                 ) : null
             }
             {
-                ShowSearchOutput && Targets ? (
+                ShowSearchOutput ? (
                     <div className={styles.searchoutput_wrapper} onClick={TargetDelete}>
                         <div className={styles.searchoutput_container}>
                             <div className={styles.searchoutput_searchbar}>
@@ -131,21 +169,39 @@ export default function IncomeSearchBar(){
                                     type="text" 
                                     placeholder="캐릭터 이름을 입력해주세요." 
                                     value={SearchName}
-                                    readOnly
+                                    onChange={onChangeEvent}
                                 />
                             </div>
-                            <Searchoutputs>
-                                <img src={Targets.charimgurl} className="charimage" />
-                                <div className="chardatabox">
-                                    <div className="chardata">
-                                        <img src={`/imgs/worlds/${Targets.worldId}.png`} />
-                                        <span>{Targets.charname}</span>
-                                    </div>
-                                    <div className="chardata">
-                                        {`LV.${Targets.charlevel} / ${Targets.charclass}`}
-                                    </div>
-                                </div>
-                            </Searchoutputs>
+                            {
+                                Targets ? (
+                                    <Searchoutputs onClick={onClickRedirectBtn}>
+                                        <img src={Targets?.charimgurl} className="charimage" />
+                                        <div className="chardatabox">
+                                            <div className="chardata">
+                                                <img src={`/imgs/worlds/${Targets?.worldId}.png`} />
+                                                <span>{Targets?.charname}</span>
+                                            </div>
+                                            <div className="chardata">
+                                                {`LV.${Targets?.charlevel} / ${Targets?.charclass}`}
+                                            </div>
+                                        </div>
+                                        <span className="redirectbtn">
+                                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" width={"14"} height={"14"}>
+                                                <path d="M502.6 278.6c12.5-12.5 12.5-32.8 0-45.3l-160-160c-12.5-12.5-32.8-12.5-45.3 0s-12.5 32.8 0 45.3L402.7 224 32 224c-17.7 0-32 14.3-32 32s14.3 32 32 32l370.7 0-105.4 105.4c-12.5 12.5-12.5 32.8 0 45.3s32.8 12.5 45.3 0l160-160z"/>
+                                            </svg>
+                                        </span>
+                                    </Searchoutputs>
+                                ) : (
+                                    <Searchoutputs onClick={onClickRedirectBtn}>
+                                        <div className="textbox">캐릭터 추가</div>
+                                        <span className="redirectbtn">
+                                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" width={"14"} height={"14"}>
+                                                <path d="M502.6 278.6c12.5-12.5 12.5-32.8 0-45.3l-160-160c-12.5-12.5-32.8-12.5-45.3 0s-12.5 32.8 0 45.3L402.7 224 32 224c-17.7 0-32 14.3-32 32s14.3 32 32 32l370.7 0-105.4 105.4c-12.5 12.5-12.5 32.8 0 45.3s32.8 12.5 45.3 0l160-160z"/>
+                                            </svg>
+                                        </span>
+                                    </Searchoutputs>
+                                )
+                            }
                         </div>
                     </div>
                 ) : null
