@@ -12,7 +12,7 @@ export interface I_WeeklyContents {
     //계정 or 캐릭터 단위 표기
 };
 
-interface I_RankType {
+export interface I_RankType {
     rankId: string;
     rankNm: string;
     price: number;

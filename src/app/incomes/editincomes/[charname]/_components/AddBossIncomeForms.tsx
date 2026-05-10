@@ -1,5 +1,6 @@
 "use client"
 
+import { SingleRankBox } from "@/app/addtodos/[charNm]/_component/_bossform/BossFormRankBox";
 import { FormSliderBox } from "@/components/commons/FormCommons";
 import { BossContentsData } from "@/game_datas/contentsData";
 import { CharToDoStore, I_BossToDos } from "@/stores/CharToDoStore";
@@ -7,10 +8,27 @@ import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import styled from "styled-components";
 import { useStore } from "zustand";
+import RankSelectBtns from "./RankSelect_Radio";
+import RankSelect_TypeRadio from "./RankSelect_Radio";
 
 interface I_AddBossIncomeFormsProps {
     charname?: string;
     ocid?: string;
+};
+
+interface I_ToDoItemProps {
+    min_height: string;
+};
+
+export interface I_BossToDoData {
+    bossid: string;
+    bossname: string;
+    bossrank: string;
+    price: number;
+};
+
+interface I_FormValue {
+    BossToDoCheckbox: string[];
 };
 
 const Container = styled.div`
@@ -68,13 +86,14 @@ const ToDoList = styled.div`
     };
 `;
 
-const ToDoItem = styled.div`
-    width: 100%;
+const ToDoItem = styled.div<I_ToDoItemProps>`
+    width: 95%;
     height: 30%;
-    min-height: 80px;
+    min-height: ${(props) => props.min_height};
     padding: 2px 3px;
-    margin: 2px 0px;
+    margin: 3px 0px;
     background-color: white;
+    border: 2px solid rgb(209, 216, 224);
     border-radius: 8px;
     display: flex;
     flex-direction: row;
@@ -98,23 +117,14 @@ const ToDoItem = styled.div`
         };
     };
 
-    .bossranks {
-        width: 40%;
+    .RankAndMembers {
+        width: 70%;
         height: 100%;
         display: flex;
-        flex-direction: column;
-        align-items: flex-start;
-        justify-content: center;
+        flex-direction: row;
+        align-items: center;
+        justify-content: flex-end;
     };
-
-    .membercountbox {
-        width: 30%;
-        height: 100%;
-        display: flex;
-        flex-direction: column;
-        align-items: flex-start;
-        justify-content: center;
-    }
 `;
 
 const SubmitButton = styled.button`
@@ -130,22 +140,58 @@ export default function AddBossIncomeForms({charname, ocid}: I_AddBossIncomeForm
     const {chartodos} = useStore(CharToDoStore);
     const ContentsData = BossContentsData;
 
-    const {register} = useForm();
+    const FormMethods = useForm<I_FormValue>({
+        defaultValues: {
+            BossToDoCheckbox: []
+        }
+    });
 
-    const [TargetData, setTargetData] = useState<string[]>();
+    const {register, watch} = FormMethods;
+
+    const [BossToDoData, setBossToDoData] = useState<I_BossToDoData[]>();
+    const MemberCountArr = [1, 2, 3, 4, 5, 6];
 
     useEffect(() => {
         const CharToDoCheck = chartodos.find((data) => data.ocid === ocid || data.charname === charname);
 
         if(!CharToDoCheck){
             return;
+        } else if(CharToDoCheck.bossToDos.length <= 0){
+            return;
         } else {
             const NewTargetData = CharToDoCheck.bossToDos.map((data) => {
-                const Values = `${data.contentsId}_${data.bossrank}`;
-                return Values;
+                const OriginData = BossContentsData.find((bossdata) => bossdata.BossId === data.contentsId);
+
+                if(!OriginData){
+                    return {
+                        bossid: data.contentsId,
+                        bossname: data.contentsNm,
+                        bossrank: data.bossrank,
+                        price: 0
+                    } as I_BossToDoData
+                } else {
+                    const GetPriceData = OriginData.Ranks.find((rank) => rank.rankId === data.bossrank);
+
+                    if(!GetPriceData){
+                        return {
+                            bossid: data.contentsId, 
+                            bossname: data.contentsNm, 
+                            bossrank: data.bossrank, 
+                            price: 0
+                        } as I_BossToDoData;
+                    } else {
+                        const Convert: I_BossToDoData = {
+                            bossid: OriginData.BossId,
+                            bossname: OriginData.BossNm,
+                            bossrank: data.bossrank,
+                            price: GetPriceData.price
+                        };
+                        return Convert;
+                    }
+                }
             });
 
-            setTargetData(NewTargetData);
+            setBossToDoData(NewTargetData);
         }
     }, []);
 
@@ -156,41 +202,75 @@ export default function AddBossIncomeForms({charname, ocid}: I_AddBossIncomeForm
                 <ToDoList>
                     {
                         ContentsData.map((data) => {
-                            return (
-                                <ToDoItem key={data.BossId}>
-                                    <div className="bossdatabox">
-                                        <img src={`/imgs/boss_monsters/${data.BossId}.png`} />
-                                        <span>{!data.SubName ? `${data.BossNm}` : `${data.SubName}`}</span>
-                                    </div>
-                                    <div className="bossranks">
+                            if(data.Ranks.length <= 1){
+                                /**minheight=> 45 */
+                                return (
+                                    <ToDoItem key={data.BossId} min_height="45px">
+                                        <div className="bossdatabox">
+                                            <input 
+                                                type="checkbox" 
+                                                value={data.BossId} 
+                                                {...register("BossToDoCheckbox")}
+                                            />
+                                            <img src={`/imgs/boss_monsters/${data.BossId}.png`} />
+                                        </div>
                                         {
-                                            data.Ranks.map((ranks) => {
-                                                return (
-                                                    <div key={`${data.BossId}_${ranks.rankId}`}>
-                                                        <input 
-                                                            type="checkbox" 
-                                                            key={`${data.BossId}_${ranks.rankId}`}
-                                                            value={`${data.BossId}_${ranks.rankId}`}
-                                                        />
-                                                        <label>{ranks.rankId.slice(0, 1)}</label>
-                                                    </div>
-                                                );
-                                            })
+                                            watch("BossToDoCheckbox").includes(data.BossId) ? (
+                                                <div className="RankAndMembers">
+                                                    <SingleRankBox 
+                                                        rankid={data.Ranks[0].rankId}
+                                                        rankNm={data.Ranks[0].rankNm}
+                                                    />
+                                                    <select key={`${data.BossId}_memberSelect`}>
+                                                        {
+                                                            MemberCountArr.map((value) => {
+                                                                return (
+                                                                    <option key={`num_${value}`}>{value}</option>
+                                                                );
+                                                            })
+                                                        }
+                                                    </select>
+                                                </div>
+                                            ): null
                                         }
-                                    </div>
-                                    <div className="membercountbox">
-                                        <select key={`${data.BossId}_memberscount`}>
-                                            <option>파티원 수</option>
-                                            <option>1</option>
-                                            <option>2</option>
-                                            <option>3</option>
-                                            <option>4</option>
-                                            <option>5</option>
-                                            <option>6</option>
-                                        </select>
-                                    </div>
-                                </ToDoItem>
-                            );
+                                    </ToDoItem>
+                                );
+                            } else {
+                                /**minheight 80px */
+                                return (
+                                    <ToDoItem key={data.BossId} min_height="80px">
+                                        <div className="bossdatabox">
+                                            <input 
+                                                type="checkbox" 
+                                                value={data.BossId} 
+                                                {...register("BossToDoCheckbox")}
+                                            />
+                                            <img src={`/imgs/boss_monsters/${data.BossId}.png`} />
+                                        </div>
+                                        {
+                                            watch("BossToDoCheckbox").includes(data.BossId) ? (
+                                                <div className="RankAndMembers">
+                                                    <RankSelect_TypeRadio 
+                                                        StateData={BossToDoData}
+                                                        setStateFn={setBossToDoData}
+                                                        bossid={data.BossId}
+                                                        RanksData={data.Ranks}
+                                                    />
+                                                    <select key={`${data.BossId}_memberSelect`}>
+                                                        {
+                                                            MemberCountArr.map((value) => {
+                                                                return (
+                                                                    <option key={`num_${value}`}>{value}</option>
+                                                                );
+                                                            })
+                                                        }
+                                                    </select>
+                                                </div>
+                                            ): null
+                                        }
+                                    </ToDoItem>
+                                );
+                            }
                         })
                     }
                 </ToDoList>
