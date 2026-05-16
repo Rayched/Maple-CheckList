@@ -2,7 +2,7 @@
 
 import { styled } from "styled-components"
 import { ToDoItem, ToDoListContainer } from "./todoitem/todolist_commons";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { BossContentsData } from "@/game_datas/contentsData";
 import { RankColorInfos } from "@/game_datas/bossrank_colordata";
 import { CharToDoStore, I_BossToDos } from "@/stores/CharToDoStore";
@@ -33,17 +33,45 @@ interface I_FormValue {
     checkedValues: string[];
 };
 
-const Container = styled(ToDoListContainer)`
+const Container = styled.div`
     width: 85%;
-    min-width: 300px;
-    max-width: 350px;
-    max-height: 270px;
-    padding-top: 5px;
-    padding-bottom: 5px;
-    margin-top: 10px;
-    background-color: rgb(149, 165, 166);
+    height: 100%;
+    min-width: 280px;
+    max-width: 340px;
+    min-height: 300px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
     border-radius: 10px;
+    background-color: rgb(149, 165, 166);
+`;
 
+const Titles = styled.div`
+    width: 100%;
+    height: 5%;
+    min-height: 30px;
+    color: white;
+    background-color: black;
+    border-top-right-radius: inherit;
+    border-top-left-radius: inherit;
+    font-size: 16.5px;
+    font-weight: bold;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    .bossclearcountbox {
+        margin-left: 2px;
+    }
+`;
+
+const ScrollBox = styled(ToDoListContainer)`
+    width: 85%;
+    min-width: 280px;
+    max-width: 330px;
+    min-height: 250px;
+    max-height: 270px;
+    
     overflow-y: auto;
     scroll-snap-type: y mandatory;
     scroll-snap-align: start;
@@ -84,12 +112,32 @@ const Rankbox = styled.div<I_Rankbox>`
 
 function BossToDoList({BossToDoDatas, charname, ocid}: I_BossToDoList){
     const {chartodos, editCharToDo} = useStore(CharToDoStore);
+    const [ClearCount, setClearCount] = useState(0);
 
     const {register} = useForm<I_FormValue>({
         defaultValues: {
             checkedValues: []
         }
     });
+
+    const BossItemCheckBox_CheckedEvent = () => {
+        const idx = chartodos.findIndex((data) => data.ocid === ocid);
+
+        if(idx === -1){
+            return;
+        } else {
+            const TargetData = chartodos[idx].bossToDos;
+
+            const GetClearCountData = TargetData.filter((data) => data.ToDoDone === true);
+
+            if(GetClearCountData.length <= 0){
+                return;
+            } else {
+                setClearCount(GetClearCountData.length);
+            }
+        }
+    };
+
 
     const BossToDoUpdate = ({bossId, bossNm, isChecked}: I_BossToDoUpdateProps) => {
         const idx = chartodos.findIndex((data) => data.ocid === ocid || data.charname === charname);
@@ -143,54 +191,63 @@ function BossToDoList({BossToDoDatas, charname, ocid}: I_BossToDoList){
 
     return (
         <Container>
-            {
-                BossToDoDatas?.map((data) => {
-                    const BossLittleNm= BossContentsData.find((origin) => origin.BossId === data.contentsId|| origin.BossNm === data.contentsNm)?.SubName;
-                    const RankColor = RankColorInfos.find((colors) => colors.rankId === data.bossrank);
+            <Titles>
+                주간 보스 목록
+                <span className="bossclearcountbox">
+                    {!BossToDoDatas ? `( 0` : `( ${BossToDoDatas.filter((data) => data.ToDoDone === true).length}`}
+                    {` / ${BossToDoDatas?.length} )`}
+                </span>
+            </Titles>
+            <ScrollBox>
+                {
+                    BossToDoDatas?.map((data) => {
+                        const BossLittleNm= BossContentsData.find((origin) => origin.BossId === data.contentsId|| origin.BossNm === data.contentsNm)?.SubName;
+                        const RankColor = RankColorInfos.find((colors) => colors.rankId === data.bossrank);
 
-                    return (
-                        <BossToDoItem key={data.contentsId} todochecked={data.ToDoDone ? "true" : "false"}>
-                            <input 
-                                type="checkbox" 
-                                value={data.contentsId}
-                                data-contentsname={data.contentsNm}
-                                defaultChecked={data.ToDoDone ? true : false}
-                                {...register("checkedValues", {
-                                    onChange: (e: React.ChangeEvent<HTMLInputElement>) => {
-                                        const {
-                                            currentTarget: {value},
-                                            target: {
-                                                dataset: {contentsname},
-                                                checked
-                                            }
-                                        } = e;
+                        return (
+                            <BossToDoItem key={data.contentsId} todochecked={data.ToDoDone ? "true" : "false"}>
+                                <input 
+                                    type="checkbox" 
+                                    value={data.contentsId}
+                                    data-contentsname={data.contentsNm}
+                                    defaultChecked={data.ToDoDone ? true : false}
+                                    {...register("checkedValues", {
+                                        onChange: (e: React.ChangeEvent<HTMLInputElement>) => {
+                                            const {
+                                                currentTarget: {value},
+                                                target: {
+                                                    dataset: {contentsname},
+                                                    checked
+                                                }
+                                            } = e;
 
-                                        if(!contentsname) return;
+                                            if(!contentsname) return;
 
-                                        BossToDoUpdate({
-                                            bossId: value,
-                                            bossNm: contentsname,
-                                            isChecked: checked ? true : false
-                                        });
-                                    }
-                                })}
-                            />
-                            <span className="bossname">
-                                <img src={`/imgs/boss_monsters/${data.contentsId}.png`} />
-                                {!BossLittleNm ? data.contentsNm : BossLittleNm}
-                            </span>
-                            <Rankbox 
-                                textcolor={RankColor?.fontColor} 
-                                bgcolor={RankColor?.bgColor} 
-                                bordercolor={RankColor?.borderColor}
-                                todochecked={data.ToDoDone ? "true" : "false"}
-                            >
-                                {data.bossrank.slice(0, 1)}
-                            </Rankbox>
-                        </BossToDoItem>
-                    );
-                })
-            }
+                                            BossToDoUpdate({
+                                                bossId: value,
+                                                bossNm: contentsname,
+                                                isChecked: checked ? true : false
+                                            });
+                                        }
+                                    })}
+                                />
+                                <span className="bossname">
+                                    <img src={`/imgs/boss_monsters/${data.contentsId}.png`} />
+                                    {!BossLittleNm ? data.contentsNm : BossLittleNm}
+                                </span>
+                                <Rankbox 
+                                    textcolor={RankColor?.fontColor} 
+                                    bgcolor={RankColor?.bgColor} 
+                                    bordercolor={RankColor?.borderColor}
+                                    todochecked={data.ToDoDone ? "true" : "false"}
+                                >
+                                    {data.bossrank.slice(0, 1)}
+                                </Rankbox>
+                            </BossToDoItem>
+                        );
+                    })
+                }
+            </ScrollBox>
         </Container>
     );
 };

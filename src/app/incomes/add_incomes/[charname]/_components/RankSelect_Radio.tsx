@@ -4,8 +4,8 @@ import { I_RankType } from "@/game_datas/contentsData";
 import { I_BossToDoData } from "./AddBossIncomeForms";
 
 interface I_RankSelect_TypeRadio_Props {
-    StateData?: I_BossToDoData[];
-    setStateFn: React.Dispatch<React.SetStateAction<I_BossToDoData[]|undefined>>;
+    StateData: I_BossToDoData[];
+    setStateFn: React.Dispatch<React.SetStateAction<I_BossToDoData[]>>;
     bossid: string;
     RanksData: I_RankType[];
 };

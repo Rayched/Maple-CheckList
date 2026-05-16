@@ -133,7 +133,7 @@ export default function IncomeSearchBar(){
     };
 
     const onClickRedirectBtn = () => {
-        router.push(`/incomes/editincomes/${SearchName}`);
+        router.push(`/incomes/add_incomes/${SearchName}`);
     };
 
     return (
