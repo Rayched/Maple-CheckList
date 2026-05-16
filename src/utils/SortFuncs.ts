@@ -1,4 +1,5 @@
 
+import { I_BossIncomeData } from "@/app/incomes/add_incomes/[charname]/_components/AddBossIncomeForms";
 import { I_BossToDos, I_WeeklyToDos } from "@/stores/CharToDoStore";
 
 interface I_BossToDoSortProps {
@@ -8,6 +9,10 @@ interface I_BossToDoSortProps {
 interface I_WeeklyToDoSortProps {
     WeeklyToDoDatas: I_WeeklyToDos[];
 };
+
+interface I_IncomeDataSortProps {
+    IncomeDatas: I_BossIncomeData[];
+}; 
 
 export function BossToDoSort({BossToDoDatas}: I_BossToDoSortProps){
     const ToDoSortOutput = BossToDoDatas.sort((a, b) => {
@@ -48,3 +53,20 @@ export function WeeklyToDoSort({WeeklyToDoDatas}: I_WeeklyToDoSortProps){
     return [...AccountFilter, ...CharFilter];
 }
 
+/**
+ * '/incomes' page, data sort function
+ */
+
+export function IncomeDataSort({IncomeDatas}: I_IncomeDataSortProps){
+    const ToDoSortOutput = IncomeDatas.sort((a, b) => {
+        if(String(a.bossid) > String(b.bossid)){
+            return 1;
+        } else if(String(a.bossid) < String(b.bossid)){
+            return -1;
+        } else {
+            return 0;
+        }
+    });
+
+    return ToDoSortOutput;
+}
