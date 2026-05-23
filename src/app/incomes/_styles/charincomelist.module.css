@@ -1,0 +1,118 @@
+/*<CharIncomeList />, 정적 컴포넌트 css style's*/
+
+/*flexbox css code 중복 제거 (styled-components 용)*/
+.flexbox_type_row {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+}
+
+.flexbox_type_column {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.charincomelist_wrapper {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+}
+
+.charincomelistbox {
+    width: 95%;
+    height: 90%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-between;
+    background-color: lightgray;
+    border-radius: 10px;
+}
+
+.charincomelistbox_titles {
+    width: 100%;
+    height: 10%;
+    max-height: 40px;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+    color: white;
+    background-color: black;
+    font-weight: bold;
+    border-top-right-radius: inherit;
+    border-top-left-radius: inherit;
+
+    h4 {
+        margin-left: 10px;
+    }
+}
+
+.editmodebtn {
+    width: 40px;
+    height: 20px;
+    margin-right: 5px;
+    color: black;
+    background-color: gray;
+    border: 2px solid gray;
+    border-radius: 5px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.charincomelist_mains {
+    width: 100%;
+    height: 75%;
+    min-height: 350px;
+    padding: 5px 0px;
+    margin: 10px 0px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+
+    overflow-y: auto;
+    scroll-snap-type: y mandatory;
+    scroll-behavior: smooth;
+    &::-webkit-scrollbar {
+        width: 0px;
+    };
+}
+
+.IncomesTotal_container {
+    width: 100%;
+    height: 10%;
+    max-height: 50px;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+    color: white;
+    background-color: black;
+    border-bottom-left-radius: inherit;
+    border-bottom-right-radius: inherit;
+
+    .IncomesTotal_titles {
+        width: 20%;
+        height: 100%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-weight: bold;
+        font-size: 17px;
+    };
+
+    .IncomesTotal_bodys {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        width: 70%;
+        height: 100%;
+        font-weight: bold;
+        font-size: 17px;
+    };
+}

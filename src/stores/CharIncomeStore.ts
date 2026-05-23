@@ -17,6 +17,8 @@ export interface I_IncomeData {
 
 export interface I_CharIncomeData {
     charname: string;
+    charimgurl: string;
+    worldId: string;
     ocid: string;
     incomeData: I_IncomeData[];
 };
@@ -24,6 +26,7 @@ export interface I_CharIncomeData {
 interface I_CharIncomeStore {
    CharIncomeDatas: I_CharIncomeData[];
    AddNewCharIncomeData: (NewData: I_CharIncomeData) => void;
+   DeleteCharIncomeData: (ocid: string) => void;
 };
 
 export const CharIncomeStore = create<I_CharIncomeStore>()(
@@ -33,6 +36,23 @@ export const CharIncomeStore = create<I_CharIncomeStore>()(
             return {
                 CharIncomeDatas: [...state.CharIncomeDatas, NewData]
             };
+        }),
+        DeleteCharIncomeData: (ocid) => set((state) => {
+            const TargetIdx = state.CharIncomeDatas.findIndex((chardata) => chardata.ocid === ocid);
+
+            if(TargetIdx === -1){
+                console.log("Cannont find target index");
+                return {
+                    CharIncomeDatas: [...state.CharIncomeDatas]
+                };
+            } else {
+                return {
+                    CharIncomeDatas: [
+                        ...state.CharIncomeDatas.slice(0, TargetIdx),
+                        ...state.CharIncomeDatas.slice(TargetIdx + 1)
+                    ]
+                }
+            }
         })
     }), {
         name: "MapleToDo-CharIncomeStore",

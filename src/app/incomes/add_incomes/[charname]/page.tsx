@@ -1,5 +1,4 @@
 import { GetCharData, GetOcids } from "@/game_datas/Fetchs";
-import { redirect } from "next/navigation";
 import styles from "../_styles/EditIncomes.module.css"
 import Link from "next/link";
 import CharDataBox from "@/components/CharDataBox";
@@ -11,7 +10,7 @@ interface I_EditIncomeCharnamePageProps {
     }
 };
 
-export default async function EditIncomeCharnamePage({params}: I_EditIncomeCharnamePageProps){
+export default async function AddNewCharIncomePage({params}: I_EditIncomeCharnamePageProps){
     const {charname} = await params;
 
     const Ocids = await GetOcids(charname);
@@ -54,6 +53,8 @@ export default async function EditIncomeCharnamePage({params}: I_EditIncomeCharn
                             />
                             <AddBossIncomeForms 
                                 charname={CharData?.character_name}
+                                worldname={CharData?.world_name}
+                                charimg={CharData?.character_image}
                                 ocid={Ocids?.ocid}
                             />
                         </div>

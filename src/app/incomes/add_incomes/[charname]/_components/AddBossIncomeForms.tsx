@@ -2,7 +2,7 @@
 
 import { SingleRankBox } from "@/app/addtodos/[charNm]/_component/_bossform/BossFormRankBox";
 import { FormSliderBox } from "@/components/commons/FormCommons";
-import { BossContentsData } from "@/game_datas/contentsData";
+import { BossContentsData, WorldDatas } from "@/game_datas/contentsData";
 import { CharToDoStore, I_BossToDos } from "@/stores/CharToDoStore";
 import React, { useEffect, useState } from "react";
 import { FormProvider, useForm } from "react-hook-form";
@@ -19,6 +19,8 @@ import { useRouter } from "next/navigation";
 interface I_AddBossIncomeFormsProps {
     charname?: string;
     ocid?: string;
+    worldname?: string;
+    charimg?: string;
 };
 
 interface I_ToDoItemProps {
@@ -223,7 +225,7 @@ const GetRankBoxMinHeights = (RanksLength: number) => {
     }
 }
 
-export default function AddBossIncomeForms({charname, ocid}: I_AddBossIncomeFormsProps){
+export default function AddBossIncomeForms({charname, ocid, charimg, worldname}: I_AddBossIncomeFormsProps){
     const CharToDoData = useStore(CharToDoStore).chartodos.find((data) => data.ocid === ocid || data.charname === charname);
     const {CharIncomeDatas, AddNewCharIncomeData} = useStore(CharIncomeStore);
     const ContentsData = BossContentsData;
@@ -304,14 +306,20 @@ export default function AddBossIncomeForms({charname, ocid}: I_AddBossIncomeForm
     };
 
     const SaveCharIncomeData = () => {
-        if(!charname || !ocid) return;
+        if(!charname || !ocid || !charimg || !worldname) return;
 
         const IsDuplicate = CharIncomeDatas.find((data) => data.charname === charname || data.ocid === ocid);
+        const GetWorldData = WorldDatas.find((world) => world.worldNm === worldname);
 
         if(IsDuplicate){
             alert(`'${charname}'의 주간보스 수익 데이터가 존재합니다.`);
             return;
         } else {
+            if(!GetWorldData){
+                console.log('World data를 가져오지 못했습니다.');
+                return;
+            }
+
             const BossIncomeDataConvert = IncomeDatas.map((data) => {
                 const Convert: I_IncomeData = {
                     bossid: data.bossid,
@@ -327,6 +335,8 @@ export default function AddBossIncomeForms({charname, ocid}: I_AddBossIncomeForm
             AddNewCharIncomeData({
                 charname: charname,
                 ocid: ocid,
+                charimgurl: charimg,
+                worldId: GetWorldData.worldId,
                 incomeData: BossIncomeDataConvert
             });
 
