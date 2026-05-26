@@ -44,3 +44,51 @@
     height: 85%;
     display: flex;
 }
+
+/*IncomeSearchBar, CSS Style*/
+
+.searchbar_wrapper {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    position: relative;
+    width: 100%;
+}
+
+.searchbar_forms {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+    width: 70%;
+    height: auto;
+    min-width: 250px;
+    max-width: 340px;
+    min-height: 50px;
+    padding: 2px 4px;
+    margin-top: 2%;
+    background-color: rgb(228, 225, 225);
+    border: 2px solid black;
+    border-radius: 13px;
+
+    .searchbutton {
+        width: 10%;
+        height: 100%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        background-color: inherit;
+        border: 0px;
+    }
+
+    .searchnameinputs {
+        width: 85%;
+        height: 90%;
+        margin-left: 5px;
+        border-width: 0px;
+        color: black;
+        background-color: inherit;
+        font-size: 15px;
+        outline: none;
+    }
+}

@@ -1,5 +1,5 @@
 
-import { I_BossIncomeData } from "@/app/incomes/add_incomes/[charname]/_components/AddBossIncomeForms";
+import { I_BossIncomeData } from "@/app/incomes/add_incomes/_components/AddBossIncomeForms";
 import { I_BossToDos, I_WeeklyToDos } from "@/stores/CharToDoStore";
 
 interface I_BossToDoSortProps {

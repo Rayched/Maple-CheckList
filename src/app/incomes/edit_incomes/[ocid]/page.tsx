@@ -2,24 +2,21 @@ import { GetCharData, GetOcids } from "@/game_datas/Fetchs";
 import styles from "../../_styles/incomechilds.module.css";
 import Link from "next/link";
 import CharDataBox from "@/components/CharDataBox";
-import AddBossIncomeForms from "../_components/AddBossIncomeForms";
 
-interface I_EditIncomeCharnamePageProps {
+interface I_EditCharIncomePageProps {
     params: {
-        charname: string;
+        ocid: string;
     }
 };
+export default async function EditCharIncomePage({params}: I_EditCharIncomePageProps){
+    const {ocid} = await params;
 
-export default async function AddNewCharIncomePage({params}: I_EditIncomeCharnamePageProps){
-    const {charname} = await params;
-
-    const Ocids = await GetOcids(charname);
-    const CharData = await GetCharData(Ocids?.ocid);
+    const CharData = await GetCharData(ocid);
 
     return (
         <div className={styles.wrapper}>
             {
-                !Ocids && !CharData ? (
+                !CharData ? (
                     <div className={styles.errormessagebox}>
                         <div className={styles.errormessagebox_header}>
                             <Link href={'/incomes'}>
@@ -29,8 +26,7 @@ export default async function AddNewCharIncomePage({params}: I_EditIncomeCharnam
                             </Link>
                         </div>
                         <div className={styles.errormessagebox_bodys}>
-                            <h4>입력하신 닉네임을 다시 확인해주세요.</h4>
-                            <h4>입력한 닉네임: {decodeURIComponent(charname)}</h4>
+                            <h4>Nexon Open api, fetch error</h4>
                         </div>
                     </div>
                 ) : (
@@ -44,18 +40,12 @@ export default async function AddNewCharIncomePage({params}: I_EditIncomeCharnam
                         </div>
                         <div className={styles.Container_bodys}>
                             <CharDataBox 
-                                charname={CharData?.character_name}
-                                charclass={CharData?.character_class}
-                                charlevel={CharData?.character_level}
-                                charimgurl={CharData?.character_image}
-                                worldname={CharData?.world_name}
-                                charExpRate={CharData?.character_exp_rate}
-                            />
-                            <AddBossIncomeForms 
-                                charname={CharData?.character_name}
-                                worldname={CharData?.world_name}
-                                charimg={CharData?.character_image}
-                                ocid={Ocids?.ocid}
+                                charname={CharData.character_name}
+                                charclass={CharData.character_class}
+                                charlevel={CharData.character_level}
+                                charimgurl={CharData.character_image}
+                                worldname={CharData.world_name}
+                                charExpRate={CharData.character_exp_rate}
                             />
                         </div>
                     </div>

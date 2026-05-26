@@ -1,211 +1,55 @@
 "use client"
 
-import { BookmarkStore, I_BookmarkData } from "@/stores/BookmarkStore";
-import styles from "../_styles/incomeSearchbar.module.css";
-import React, { useState } from "react";
+import styles from "../_styles/incomes.module.css";
 import { useStore } from "zustand";
-import styled from "styled-components";
-import { WorldDatas } from "@/game_datas/contentsData";
 import { useRouter } from "next/navigation";
+import { useForm } from "react-hook-form";
+import { CharIncomeStore } from "@/stores/CharIncomeStore";
 
-interface I_Targets {
-    charname: string;
-    charclass: string;
-    charlevel: number;
-    charimgurl: string;
-    worldId?: string;
+interface I_FormValue {
+    SearchName: string;
 };
 
-interface I_TargetDeleteProps {
-    event: React.MouseEvent<HTMLDivElement>|React.TouchEvent<HTMLDivElement>;
-}; 
-
-const Searchoutputs = styled.div`
-    width: 100%;
-    height: 40%;
-    min-width: 250px;
-    max-width: 340px;
-    padding: 2px 4px;
-    background-color: inherit;
-    display: flex;
-    flex-direction: row;
-    align-items: center;
-    justify-content: space-between;
-    cursor: pointer;
-
-    .charimage {
-        width: 30%;
-        height: 90%;
-        min-width: 90px;
-        max-width: 100px;
-        min-height: 95px;
-        max-height: 100px;
-    }
-
-    .chardatabox {
-        width: 40%;
-        height: 100%;
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-
-        .chardata {
-            width: 90%;
-            height: 50%;
-            margin: 2px 0px;
-            display: flex;
-            flex-direction: row;
-            align-items: center;
-            justify-content: flex-start;
-        };
-    };
-
-    .redirectbtn {
-        width: 10%;
-        height: 100%;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-    };
-
-    .textbox {
-        width: 90%;
-        height: 100%;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        font-weight: bold;
-        font-size: 17px;
-    };
-`;
-
 export default function IncomeSearchBar(){
-    const [SearchName, setSearchName] = useState("");
-    const [ShowSearchOutput, setShowSearchOutput] = useState(false);
-    const [Targets, setTargets] = useState<I_Targets>();
+    const {register, watch, handleSubmit} = useForm<I_FormValue>({
+        defaultValues: {SearchName: ""}
+    });
 
-    const {Bookmarks} = useStore(BookmarkStore);
+    const {CharIncomeDatas} = useStore(CharIncomeStore);
 
     const router = useRouter();
 
-    const onChangeEvent = (e: React.ChangeEvent<HTMLInputElement>) => {
-        const {
-            currentTarget: {value}
-        } = e;
+    const SubmitEventListener = () => {
+        const SearchNameValues = watch("SearchName");
+        const DuplicateCheck = CharIncomeDatas.find((charincomedata) => charincomedata.charname === SearchNameValues);
 
-        setSearchName(value);
-        setShowSearchOutput(true)
-
-        if(value.length === 0){
-            setShowSearchOutput(false);
-            setTargets(undefined);
+        if(SearchNameValues === ""){
+            alert("캐릭터 명을 입력하지 않았습니다!");
             return;
-        }
-
-        const FindTargetData = Bookmarks.find((data) => data.charname === value);
-
-        if(!FindTargetData){
-            setTargets(undefined);
+        } else if(DuplicateCheck !== undefined){
+            alert(`'${SearchNameValues}'의 주간 수익 데이터가 이미 존재합니다.`);
             return;
         } else {
-            const GetWorldData = WorldDatas.find((world) => world.worldNm === FindTargetData.worldname);
-
-            if(!GetWorldData) return;
-
-            const NewTargetData: I_Targets = {
-                charname: FindTargetData.charname,
-                charclass: FindTargetData.charclass,
-                charlevel: FindTargetData.charlevel,
-                worldId: GetWorldData.worldId,
-                charimgurl: FindTargetData.charimgurl
-            };
-            setShowSearchOutput(true);
-            setTargets(NewTargetData);
+            router.push(`/incomes/add_incomes/${SearchNameValues}`);
         }
-    };
-
-    const TargetDelete = (e: React.MouseEvent<HTMLDivElement>|React.TouchEvent<HTMLDivElement>) => {
-        if(e.target === e.currentTarget){
-            setShowSearchOutput(false);
-        } else {
-            return;
-        }
-    };
-
-    const onClickRedirectBtn = () => {
-        router.push(`/incomes/add_incomes/${SearchName}`);
     };
 
     return (
-        <div className={styles.Wrapper}>
-            {
-                !Targets ? (
-                    <div className={styles.searchbar_container}>
-                        <span>
-                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" width={"20"} height={"20"}>
-                                <path d="M416 208c0 45.9-14.9 88.3-40 122.7L502.6 457.4c12.5 12.5 12.5 32.8 0 45.3s-32.8 12.5-45.3 0L330.7 376C296.3 401.1 253.9 416 208 416 93.1 416 0 322.9 0 208S93.1 0 208 0 416 93.1 416 208zM208 352a144 144 0 1 0 0-288 144 144 0 1 0 0 288z"/>
-                            </svg>
-                        </span>
-                        <input 
-                            type="text" 
-                            placeholder="캐릭터 이름을 입력해주세요." 
-                            value={SearchName}
-                            onChange={onChangeEvent}
-                        />
-                    </div>
-                ) : null
-            }
-            {
-                ShowSearchOutput ? (
-                    <div className={styles.searchoutput_wrapper} onClick={TargetDelete}>
-                        <div className={styles.searchoutput_container}>
-                            <div className={styles.searchoutput_searchbar}>
-                                <span>
-                                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" width={"20"} height={"20"}>
-                                        <path d="M416 208c0 45.9-14.9 88.3-40 122.7L502.6 457.4c12.5 12.5 12.5 32.8 0 45.3s-32.8 12.5-45.3 0L330.7 376C296.3 401.1 253.9 416 208 416 93.1 416 0 322.9 0 208S93.1 0 208 0 416 93.1 416 208zM208 352a144 144 0 1 0 0-288 144 144 0 1 0 0 288z"/>
-                                    </svg>
-                                </span>
-                                <input 
-                                    type="text" 
-                                    placeholder="캐릭터 이름을 입력해주세요." 
-                                    value={SearchName}
-                                    onChange={onChangeEvent}
-                                />
-                            </div>
-                            {
-                                Targets ? (
-                                    <Searchoutputs onClick={onClickRedirectBtn}>
-                                        <img src={Targets?.charimgurl} className="charimage" />
-                                        <div className="chardatabox">
-                                            <div className="chardata">
-                                                <img src={`/imgs/worlds/${Targets?.worldId}.png`} />
-                                                <span>{Targets?.charname}</span>
-                                            </div>
-                                            <div className="chardata">
-                                                {`LV.${Targets?.charlevel} / ${Targets?.charclass}`}
-                                            </div>
-                                        </div>
-                                        <span className="redirectbtn">
-                                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" width={"14"} height={"14"}>
-                                                <path d="M502.6 278.6c12.5-12.5 12.5-32.8 0-45.3l-160-160c-12.5-12.5-32.8-12.5-45.3 0s-12.5 32.8 0 45.3L402.7 224 32 224c-17.7 0-32 14.3-32 32s14.3 32 32 32l370.7 0-105.4 105.4c-12.5 12.5-12.5 32.8 0 45.3s32.8 12.5 45.3 0l160-160z"/>
-                                            </svg>
-                                        </span>
-                                    </Searchoutputs>
-                                ) : (
-                                    <Searchoutputs onClick={onClickRedirectBtn}>
-                                        <div className="textbox">캐릭터 추가</div>
-                                        <span className="redirectbtn">
-                                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" width={"14"} height={"14"}>
-                                                <path d="M502.6 278.6c12.5-12.5 12.5-32.8 0-45.3l-160-160c-12.5-12.5-32.8-12.5-45.3 0s-12.5 32.8 0 45.3L402.7 224 32 224c-17.7 0-32 14.3-32 32s14.3 32 32 32l370.7 0-105.4 105.4c-12.5 12.5-12.5 32.8 0 45.3s32.8 12.5 45.3 0l160-160z"/>
-                                            </svg>
-                                        </span>
-                                    </Searchoutputs>
-                                )
-                            }
-                        </div>
-                    </div>
-                ) : null
-            }
+        <div className={styles.searchbar_wrapper}>
+            <form className={styles.searchbar_forms} onSubmit={handleSubmit(SubmitEventListener)}>
+                <input 
+                    type="text" 
+                    placeholder="캐릭터 이름을 입력해주세요." 
+                    className={styles.searchnameinputs}
+                    autoComplete="off"
+                    {...register("SearchName")}
+                />
+                <button className={styles.searchbutton}>
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" width={"20"} height={"20"}>
+                        <path d="M416 208c0 45.9-14.9 88.3-40 122.7L502.6 457.4c12.5 12.5 12.5 32.8 0 45.3s-32.8 12.5-45.3 0L330.7 376C296.3 401.1 253.9 416 208 416 93.1 416 0 322.9 0 208S93.1 0 208 0 416 93.1 416 208zM208 352a144 144 0 1 0 0-288 144 144 0 1 0 0 288z"/>
+                    </svg>
+                </button>
+            </form>
         </div>
     );
 }
