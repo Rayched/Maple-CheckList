@@ -1,0 +1,177 @@
+/*
+* <AddIncomeForms />, <EditIncomeForms />
+* Common css style's
+*/
+
+.incomeforms_container {
+    width: 85%;
+    height: 80%;
+    min-height: 230px;
+    margin-top: 5px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    background-color: rgb(228, 225, 225);
+    border-radius: 8px;
+    position: relative;
+    overflow: hidden;
+}
+
+.incomeforms_title {
+    width: 100%;
+    height: 8%;
+    color: white;
+    background-color: black;
+    font-weight: bold;
+    border-top-right-radius: inherit;
+    border-top-left-radius: inherit;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    span {
+        margin-left: 5px
+    };
+}
+
+.incomeforms_formcomponents {
+    width: 95%;
+    height: 95%;
+    min-height: 300px;
+    margin-top: 5px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    overflow: hidden;
+}
+
+.incomeforms_todolist {
+    width: 100%;
+    height: 80%;
+    min-height: 285px;
+    max-height: 320px;
+    padding: 2px 0px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    overflow-y: auto;
+    scroll-snap-type: y mandatory;
+    scroll-behavior: smooth;
+    &::-webkit-scrollbar {
+        width: 0px;
+    };
+}
+
+/*incomeforms_todoitem, all css styles*/
+.incomeforms_todoitem {
+    width: 95%;
+    height: 30%;
+    padding: 2px 3px;
+    margin: 3px 0px;
+    border-width: 2px;
+    border-style: solid;
+    border-radius: 8px;
+    font-weight: bold;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+}
+
+.incomeforms_todoitem_bossdatabox {
+    width: 30%;
+    height: 100%;
+    min-width: 80px;
+    margin-left: 3px;
+    display: flex;
+    align-items: center;
+
+    img {
+        width: 22px;
+        height: 22px;
+    };
+
+    span {
+        margin-left: 3px;
+        width: 60%;
+        text-decoration-thickness: 3px;
+    };
+}
+
+.incomeforms_todoitem_bossranks {
+    width: 65%;
+    height: 100%;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+
+    .bossrankbox {
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        justify-content: center;
+        width: 40%;
+        height: 100%;
+    }
+}
+
+.incomeforms_todoitem_countbox {
+    width: 45%;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+
+    .incomeforms_pricedata {
+        width: 100%;
+        height: 43%;
+        font-size: 13px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    };
+}
+
+.incomeforms_todoitem_members {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    height: 45%;
+    margin-top: 3px;
+
+    svg {
+        margin-right: 3px;
+    }
+
+    select {
+        width: 35px;
+        height: 23px;
+        text-align: center;
+        font-weight: bold;
+        border: 2px solid black;
+        border-radius: 3px;
+    }
+}
+
+.incomeforms_todoitem_rankicon {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 17px;
+    height: 17px;
+    padding: 2px;
+    font-size: 16px;
+    font-weight: bold;
+}
+
+.incomeforms_submitbutton {
+    width: 80px;
+    height: 35px;
+    margin-top: 5px;
+    border: 2px solid black;
+    border-radius: 10px;
+    font-weight: bold;
+    font-size: 15px;
+}

@@ -26,6 +26,7 @@ export interface I_CharIncomeData {
 interface I_CharIncomeStore {
    CharIncomeDatas: I_CharIncomeData[];
    AddNewCharIncomeData: (NewData: I_CharIncomeData) => void;
+   EditCharIncomeData: (UpdateData: I_CharIncomeData) => void;
    DeleteCharIncomeData: (ocid: string) => void;
 };
 
@@ -36,6 +37,23 @@ export const CharIncomeStore = create<I_CharIncomeStore>()(
             return {
                 CharIncomeDatas: [...state.CharIncomeDatas, NewData]
             };
+        }),
+        EditCharIncomeData: (UpdateData) => set((state) => {
+            const idx = state.CharIncomeDatas.findIndex((data) => data.charname === UpdateData.charname || data.ocid === UpdateData.ocid);
+
+            if(idx === -1){
+                return {
+                    CharIncomeDatas: [...state.CharIncomeDatas]
+                }
+            } else {
+                return {
+                    CharIncomeDatas: [
+                        ...state.CharIncomeDatas.slice(0, idx),
+                        UpdateData,
+                        ...state.CharIncomeDatas.slice(idx + 1)
+                    ]
+                }
+            }
         }),
         DeleteCharIncomeData: (ocid) => set((state) => {
             const TargetIdx = state.CharIncomeDatas.findIndex((chardata) => chardata.ocid === ocid);

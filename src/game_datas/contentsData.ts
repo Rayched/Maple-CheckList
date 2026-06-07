@@ -138,7 +138,7 @@ export const BossContentsData: I_BossContents[] = [
         Ranks: [
             {rankId: "Normal",rankNm: "노말", price: 17600000},
             {rankId: "Hard",rankNm: "하드", price: 54200000},
-            {rankId: "Extreme", rankNm: "익스트림", price: 0},
+            {rankId: "Extreme", rankNm: "익스트림", price: 604000000},
         ]
     },
     {

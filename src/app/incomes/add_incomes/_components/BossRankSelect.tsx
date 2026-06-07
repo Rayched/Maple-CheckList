@@ -1,7 +1,7 @@
 "use client"
 
-import { I_RankType } from "@/game_datas/contentsData";
-import { I_BossIncomeData, I_FormValue } from "./AddBossIncomeForms";
+import { BossContentsData, I_RankType } from "@/game_datas/contentsData";
+import { I_BossIncomeData, I_FormValue } from "./AddIncomeForms";
 import { useFormContext } from "react-hook-form";
 import { useEffect } from "react";
 import styled from "styled-components";
@@ -18,6 +18,11 @@ interface I_RankIconProps {
     textcolor: string;
     bgcolor: string;
     bordercolor: string;
+};
+
+interface I_RankChangeEventListenerProps {
+    rankId: string;
+    targetId: string;
 };
 
 const RankContainer = styled.div`
@@ -53,7 +58,7 @@ const RankIcon = styled.div<I_RankIconProps>`
 `;
 
 export default function BossRankRadioBox({StateData ,setStateFn, RanksData, bossid}: I_BossRank_Radios){
-    const {watch} = useFormContext<I_FormValue>();
+    const {watch, register, setValue} = useFormContext<I_FormValue>();
 
     const ColorDatas = RankColorInfos.map((color) => {
         const RankIdDatas = RanksData.map((data) => data.rankId);
@@ -65,36 +70,39 @@ export default function BossRankRadioBox({StateData ,setStateFn, RanksData, boss
         }
     }).filter((data) => data !== null);
 
-    const RankChangeEventListener = (e: React.ChangeEvent<HTMLInputElement>) => {
-        const {
-            currentTarget: {value}
-        } = e;
+    const RankChangeEventListener = ({rankId, targetId}: I_RankChangeEventListenerProps) => {
+        const [BossId, BossRank] = targetId.split("_");
 
-        const [TargetId, TargetRank] = value.split("_");
+        const idx = StateData.findIndex((data) => data.bossid === BossId);
+        const TargetData = BossContentsData.find((data) => data.BossId === BossId);
 
-        if(!TargetId || !TargetRank){
-            console.log("input radio value error");
+        if(idx === -1){
+            console.log(`'${BossId}'를 가진 IncomeData를 찾지 못했습니다.`);
+            return;
+        } else if(!TargetData){
+            console.log(`'${BossId}'와 동일한 보스 콘텐츠 데이터를 찾지 못했습니다.`);
             return;
         } else {
-            const Idx = StateData.findIndex((data) => data.bossid === TargetId);
-            const GetPriceData = RanksData.find((data) => data.rankId === TargetRank);
+            const PriceData = TargetData.Ranks.find((data) => data.rankId === rankId);
 
-            if(Idx === -1 || !GetPriceData){
+            if(!PriceData){
+                console.log("Cannot find Rank data");
                 return;
             } else {
                 const UpdateValue: I_BossIncomeData = {
-                    bossid: StateData[Idx].bossid,
-                    bossname: StateData[Idx].bossname,
-                    bossrank: TargetRank,
-                    price: GetPriceData.price,
-                    membercount: StateData[Idx].membercount
+                    bossid: StateData[idx].bossid,
+                    bossname: StateData[idx].bossname,
+                    bossrank: StateData[idx].bossrank,
+                    price: PriceData.price,
+                    membercount: 1
                 };
 
                 setStateFn((prev) => [
-                    ...prev.slice(0, Idx),
+                    ...prev.slice(0, idx),
                     UpdateValue,
-                    ...prev.slice(Idx + 1)
+                    ...prev.slice(idx + 1)
                 ]);
+                setValue(`Membercounts.${BossId}`, 1);
             }
         }
     };
@@ -102,8 +110,8 @@ export default function BossRankRadioBox({StateData ,setStateFn, RanksData, boss
     return (
         <RankContainer key={`${bossid}_ranks`}>
             {
-                RanksData.map((data, idx) => {
-                    const isChecked = watch("BossRankRadios").includes(`${bossid}_${data.rankId}`);
+                RanksData.map((data) => {
+                    const isChecked = watch("BossRankRadios")[`${data.rankId}`];
                     const GetColors = ColorDatas.find((color) => color.rankId === data.rankId);
 
                     if(!GetColors) return null;
@@ -112,10 +120,29 @@ export default function BossRankRadioBox({StateData ,setStateFn, RanksData, boss
                         <RankSelectItem key={`${bossid}_${data.rankId}`}>
                             <input 
                                 type="radio"
-                                name={bossid}
-                                value={`${bossid}_${data.rankId}`}
-                                defaultChecked={isChecked || idx === 0}
-                                onChange={RankChangeEventListener}
+                                data-bossid={`${bossid}_${data.rankId}`}
+                                value={`${data.rankId}`}
+                                defaultChecked={isChecked === data.rankId}
+                                {...register(`BossRankRadios.${bossid}`, {
+                                    onChange: (event: React.ChangeEvent<HTMLInputElement>) => {
+                                        const {
+                                            currentTarget: {value},
+                                            target: {
+                                                dataset: {bossid}
+                                            }
+                                        } = event;
+
+                                        if(!bossid){
+                                            console.log("bossid error");
+                                            return;
+                                        } else {
+                                            RankChangeEventListener({
+                                                rankId: value,
+                                                targetId: bossid
+                                            });
+                                        }
+                                    }
+                                })}
                             />
                             <RankIcon textcolor={GetColors.fontColor} bgcolor={GetColors.bgColor} bordercolor={GetColors.borderColor}>
                                 {data.rankId.slice(0, 1)}

@@ -12,7 +12,9 @@ function IncomeSummit(incomedatas: I_IncomeData[]){
     return Outputs;
 };
 
-const ModifyIncomedata = (Values: string) => {
+export const ModifyIncomedata = (pricedata: number) => {
+    const Values = String(pricedata);
+
     if(Values.length >= 9 && Values.length <= 12){
         const Length = Values.length;
 
@@ -25,14 +27,14 @@ const ModifyIncomedata = (Values: string) => {
     else {
         const Length = Values.length;
 
-        return `${Values.slice(0, Length - 4)}만`;
+        return `${Values.slice(0, Length-4)}만`;
     } 
 };
 
 export default function useGetSummitValues(){
     const [TotalValue, setTotalValue] = useState(0);
     const GetSummitData = ({IncomeDatas}: {IncomeDatas: I_IncomeData[]}) => {
-        const Values = String(IncomeSummit(IncomeDatas));
+        const Values = IncomeSummit(IncomeDatas);
 
         return ModifyIncomedata(Values);
     };
@@ -52,7 +54,7 @@ export default function useGetSummitValues(){
 
         SummitValues.forEach((value) => Outputs += value);
 
-        return ModifyIncomedata(String(Outputs));
+        return ModifyIncomedata(Outputs);
     };
 
     return {

@@ -2,7 +2,8 @@ import { GetCharData, GetOcids } from "@/game_datas/Fetchs";
 import styles from "../../_styles/incomechilds.module.css";
 import Link from "next/link";
 import CharDataBox from "@/components/CharDataBox";
-import AddBossIncomeForms from "../_components/AddBossIncomeForms";
+import AddBossIncomeForms from "../_components/AddIncomeForms";
+
 
 interface I_EditIncomeCharnamePageProps {
     params: {
@@ -51,7 +52,7 @@ export default async function AddNewCharIncomePage({params}: I_EditIncomeCharnam
                                 worldname={CharData?.world_name}
                                 charExpRate={CharData?.character_exp_rate}
                             />
-                            <AddBossIncomeForms 
+                            <AddBossIncomeForms
                                 charname={CharData?.character_name}
                                 worldname={CharData?.world_name}
                                 charimg={CharData?.character_image}

@@ -7,6 +7,7 @@ import { useStore } from "zustand";
 import { useEffect, useState } from "react";
 import IncomeItemBox from "./_charincomelist/Incomeitembox";
 import useGetSummitValues from "@/utils/useGetSummitValues";
+import { useRouter } from "next/navigation";
 
 interface I_DeleteBtnClickEventProps {
     targetId: string;
@@ -145,6 +146,7 @@ export default function CharIncomeList(){
     const [EditMode, setEditMode] = useState(false);
 
     const {SummitData, Totals} = useGetSummitValues();
+    const router = useRouter();
 
     const DeleteBtnClickEvent = ({targetId, targetNm}: I_DeleteBtnClickEventProps) => {
         const DeleteConfirm = window.confirm(`'${targetNm}'의 주간보스 수익 데이터를 삭제하겠습니까?`);
@@ -158,15 +160,22 @@ export default function CharIncomeList(){
     };
 
     const CharIncomeItemClickedEvent = (e: React.MouseEvent<HTMLDivElement>|React.TouchEvent<HTMLDivElement>) => {
-        /**EditMode(편집 버튼 클릭 여부), true인 경우
-         * 작동 X
-         */
         const {
-            detail
+            currentTarget: {
+                dataset: {
+                    ocids,
+                    charname
+                }
+            }
         } = e;
-
-        console.log(detail);
-        setTimeout(() => console.log(detail), 500);
+        if(EditMode){
+            return;
+        } else if(ocids === "" || !ocids || charname === "" || !charname){
+            return;
+        } else {
+            //router.push(`/incomes/edit_incomes/${charname}`);
+            router.push(`/incomes/edit_incomes/${charname}?ocid=${ocids}`);
+        }
     };
 
     useEffect(() => {
@@ -197,7 +206,13 @@ export default function CharIncomeList(){
                         CharIncomeDatas.map((data) => {
                             const incomeSubmit = SummitData({IncomeDatas: data.incomeData});
                             return (
-                                <CharIncomeItem key={`${data.charname}_incomeItem`} className={styles.flexbox_type_row} onClick={CharIncomeItemClickedEvent}>
+                                <CharIncomeItem 
+                                    key={`${data.charname}_incomeItem`} 
+                                    className={styles.flexbox_type_row} 
+                                    onClick={CharIncomeItemClickedEvent}
+                                    data-charname={data.charname}
+                                    data-ocids={data.ocid}
+                                >
                                     <CharInfos className={styles.flexbox_type_column}>
                                         <img src={data.charimgurl} className="character_image"/>
                                         <Charnamebox className={styles.flexbox_type_row}>
