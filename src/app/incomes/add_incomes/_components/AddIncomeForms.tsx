@@ -53,6 +53,7 @@ export default function AddBossIncomeForms({charname, ocid, charimg, worldname}:
     const ContentsData = BossContentsData;
 
     const [IncomeDatas, setIncomeDatas] = useState<I_BossIncomeData[]>([]);
+    const [TotalValues, setTotalValues] = useState(0);
     const MemberCountArr = [1, 2, 3, 4, 5, 6];
 
     const FormMethods = useForm<I_FormValue>({
@@ -215,10 +216,14 @@ export default function AddBossIncomeForms({charname, ocid, charimg, worldname}:
     }, []);
 
     useEffect(() => {
-        if(IncomeDatas.length === 0){
+        let outputs = 0;
+
+        IncomeDatas.forEach((data) => outputs += data.price);
+
+        if(outputs === 0){
             return;
         } else {
-            console.log(IncomeDatas);
+            setTotalValues(outputs);
         }
     }, [IncomeDatas]);
 
@@ -324,6 +329,14 @@ export default function AddBossIncomeForms({charname, ocid, charimg, worldname}:
                             );
                         })
                     }
+                </div>
+                <div className={styles.incomeforms_incometotals}>
+                    <span className={styles.incometotals_title}>총합</span>
+                    <span className={styles.incometotals_values}>
+                        {
+                            TotalValues !== 0 && ModifyIncomedata(TotalValues)
+                        }
+                    </span>
                 </div>
                 <button className={styles.incomeforms_submitbutton}>저장</button>
             </form>
