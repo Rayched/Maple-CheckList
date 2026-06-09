@@ -58,6 +58,7 @@ const SingleRank = styled.div<I_SingleRankProps>`
 export default function EditIncomeList({charname, ocid, charimgurl}: I_EditIncomeListProps){
     const {CharIncomeDatas, EditCharIncomeData} = useStore(CharIncomeStore);
     const [BossIncomeData, setBossIncomeData] = useState<I_BossIncomeData[]>([]);
+    const [TotalValues, setTotalValues] = useState(0);
     const ContentsData = BossContentsData;
 
     const FormMethods = useForm<I_EditFormValue>({
@@ -219,7 +220,18 @@ export default function EditIncomeList({charname, ocid, charimgurl}: I_EditIncom
         }
     }, []);
 
-    useEffect(() => console.log(BossIncomeData), [BossIncomeData]);
+    //결정 수익 총합 state 저장
+    useEffect(() => {
+        let outputs = 0;
+
+        BossIncomeData.forEach((data) => outputs += data.price);
+
+        if(outputs === 0){
+            return;
+        } else {
+            setTotalValues(outputs);
+        }
+    }, [BossIncomeData]);
 
     return (
         <div className={styles.incomeforms_container}>
@@ -336,6 +348,14 @@ export default function EditIncomeList({charname, ocid, charimgurl}: I_EditIncom
                             );
                         })
                     }
+                </div>
+                <div className={styles.incomeforms_incometotals}>
+                    <span className={styles.incometotals_title}>총합</span>
+                    <span className={styles.incometotals_values}>
+                        {
+                            TotalValues !== 0 && ModifyIncomedata(TotalValues)
+                        }
+                    </span>
                 </div>
                 <button className={styles.incomeforms_submitbutton}>저장</button>
             </form>

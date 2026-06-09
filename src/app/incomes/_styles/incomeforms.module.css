@@ -11,7 +11,6 @@
     display: flex;
     flex-direction: column;
     align-items: center;
-    background-color: rgb(228, 225, 225);
     border-radius: 8px;
     position: relative;
     overflow: hidden;
@@ -35,10 +34,9 @@
 }
 
 .incomeforms_formcomponents {
-    width: 95%;
+    width: 100%;
     height: 95%;
     min-height: 300px;
-    margin-top: 5px;
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -47,13 +45,13 @@
 
 .incomeforms_todolist {
     width: 100%;
-    height: 80%;
-    min-height: 285px;
-    max-height: 320px;
-    padding: 2px 0px;
+    height: 70%;
+    min-height: 265px;
+    padding: 5px 0px;
     display: flex;
     flex-direction: column;
     align-items: center;
+    background-color: rgb(228, 225, 225);
     overflow-y: auto;
     scroll-snap-type: y mandatory;
     scroll-behavior: smooth;
@@ -64,7 +62,7 @@
 
 /*incomeforms_todoitem, all css styles*/
 .incomeforms_todoitem {
-    width: 95%;
+    width: 90%;
     height: 30%;
     padding: 2px 3px;
     margin: 3px 0px;
@@ -164,6 +162,29 @@
     padding: 2px;
     font-size: 16px;
     font-weight: bold;
+}
+
+.incomeforms_incometotals {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    font-weight: bold;
+    color: white;
+    background-color: black;
+    width: 100%;
+    height: 8%;
+    border-bottom-left-radius: 8px;
+    border-bottom-right-radius: 8px;
+
+    .incometotals_title {
+        width: 20%;
+        text-align: center;
+    };
+
+    .incometotals_values {
+        width: 70%;
+        text-align: right;
+    }
 }
 
 .incomeforms_submitbutton {
