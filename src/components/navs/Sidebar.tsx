@@ -9,6 +9,7 @@ import { useStore } from "zustand";
 import { BookmarkStore } from "@/stores/BookmarkStore";
 import { ClassDatas, WorldDatas } from "@/game_datas/contentsData";
 import { useEffect, useState } from "react";
+import { BookmarkListToggleStore } from "@/stores/ModeStore";
 
 interface SidebarProps {
     pathData: PathDataTypes[];
@@ -61,6 +62,7 @@ const LinkItem = styled.li`
     justify-content: space-between;
     width: 95%;
     height: 40%;
+    padding-bottom: 5px;
     margin: 5px 0px;
     color: black;
     font-weight: bold;
@@ -103,13 +105,14 @@ const CharToDoPathItem = styled.div<I_CharToDoPathItemProps>`
     max-height: 30px;
     margin-left: 8px;
     margin-top: 3px;
-    padding: 3px 5px;
+    padding: 5px 5px;
     display: flex;
     flex-direction: row;
     align-items: center;
     justify-content: space-between;
     font-size: 15px;
     font-weight: normal;
+    background-color: rgb(235, 230, 230);
     
     img {
         width: 16px;
@@ -126,6 +129,10 @@ const CharToDoPathItem = styled.div<I_CharToDoPathItemProps>`
         span {
             margin: 0px 2px;
         };
+    };
+
+    &:hover {
+        background-color: white;
     };
 `;
 
@@ -154,7 +161,7 @@ export default function Sidebar({pathData, setStateFn}: SidebarProps){
     const NowPath = usePathname();
     const router = useRouter();
     const {Bookmarks} = useStore(BookmarkStore);
-    const [isBmkListClose, setBmkListClose] = useState(false);
+    const {BookmarkListToggleValues, setBookmarkListToggleValues} = useStore(BookmarkListToggleStore);
 
     const LinkClicked = (targetURL: string) => {
         if(NowPath === targetURL){
@@ -164,6 +171,14 @@ export default function Sidebar({pathData, setStateFn}: SidebarProps){
             setStateFn();
         }
     };
+
+    const ToggleBtnClickEvent = () => {
+        if(BookmarkListToggleValues){
+            setBookmarkListToggleValues(false);
+        } else {
+            setBookmarkListToggleValues(true);
+        }
+    }
 
     useEffect(() => console.log(NowPath), [NowPath]);
 
@@ -185,8 +200,9 @@ export default function Sidebar({pathData, setStateFn}: SidebarProps){
                 <CharToDosURLBox key={"chartodos_urlbox"}>
                     <div className="pathitem" key={`chartodos`}>
                         <div className="pathNm" onClick={() => LinkClicked(pathData[0].pathValue)}>{pathData[0].pathNm}</div>
-                        <BookmarkListOpenBtn onClick={() => setBmkListClose((prev) => !prev)}>
-                           {isBmkListClose ? (
+                        <BookmarkListOpenBtn onClick={ToggleBtnClickEvent}>
+                           {
+                            BookmarkListToggleValues ? (
                                 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 384 512" width="20" height="20">
                                     <path d="M169.4 137.4c12.5-12.5 32.8-12.5 45.3 0l160 160c12.5 12.5 12.5 32.8 0 45.3s-32.8 12.5-45.3 0L192 205.3 54.6 342.6c-12.5 12.5-32.8 12.5-45.3 0s-12.5-32.8 0-45.3l160-160z"/>
                                 </svg>
@@ -198,7 +214,7 @@ export default function Sidebar({pathData, setStateFn}: SidebarProps){
                         </BookmarkListOpenBtn>
                     </div>
                     {
-                        isBmkListClose && (Bookmarks.map((data, idx) => {
+                        BookmarkListToggleValues && (Bookmarks.map((data, idx) => {
                             const GetWorldId = WorldDatas.find((world) => world.worldNm === data.worldname)?.worldId;
                             const GetClassData = ClassDatas.find((classdata) => classdata.class_fullNm === data.charclass);
                             const PathValue = `/chartodos/${data.charname}`;

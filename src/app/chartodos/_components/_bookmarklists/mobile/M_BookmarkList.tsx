@@ -165,7 +165,6 @@ function M_BookmarkList(){
     const {deleteCharToDo} = useStore(CharToDoStore);
 
     const [EditTarget, setEditTarget] = useState("");
-    //const {EditTarget, setEditTarget} = useStore(EditTargetStore);
 
     const [NowIndex, setNowIndex] = useState(0);
     const [IsLeftDrag, setIsLeftDrag] = useState(false);

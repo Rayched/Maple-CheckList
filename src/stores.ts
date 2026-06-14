@@ -8,86 +8,15 @@ type CategoryType = {
     categoryNm: string;
 };
 
-export interface I_Bookmark {
-    charNm?: string;
-    charLV?: number;
-    charClass?: string;
-    charImg?: string;
-    worldNm?: string;
-};
-
-export interface I_WeeklyToDos {
-    ContentsId: string;
-    ContentsNm: string;
-    IsDone: boolean;
-    Units: string;
-};
-
-export interface I_BossToDos {
-    bossId: string;
-    bossNm: string;
-    rankId: string;
-    IsDone: boolean;
-}
-
-export interface I_CharToDos {
-    charNm: string;
-    WeeklyToDos: I_WeeklyToDos[];
-    BossToDos: I_BossToDos[];
-};
-
 export const Categories: CategoryType[] = [
     {categoryId: "category00", categoryNm: "주간 컨텐츠"},
     {categoryId: "category01", categoryNm: "주간 보스"}
 ];
 
-interface I_MapleToDoDataStore {
-    CharToDos: I_CharToDos[],
-    Bookmarks: I_Bookmark[],
-    AccountWeeklys: I_WeeklyToDos[],
-    
-    UpdateCharToDos: (updateValue: I_CharToDos[]) => void;
-    UpdateBookmarks: (updateValue: I_Bookmark[]) => void;
-    UpdateAccWeeklys: (updateValue: I_WeeklyToDos[]) => void; 
-};
-
 interface I_EditTargetStore {
     EditTarget: string;
     setEditTarget: (newValue: string) => void;
 };
-
-const AccountWeeklysData = WeeklyContentsData.map((data) => {
-    if(data.Units === "account"){
-        const Convert: I_WeeklyToDos = {
-            ContentsId: data.ContentsId,
-            ContentsNm: data.ContentsNm,
-            IsDone: false,
-            Units: data.Units
-        };
-        return Convert;
-    } else {
-        return null
-    }
-}).filter((data) => data !== null);
-
-export const MapleToDoDataStore = create<I_MapleToDoDataStore>()(
-    persist((set, get) => ({
-        CharToDos: [] as I_CharToDos[],
-        Bookmarks: [] as I_Bookmark[],
-        AccountWeeklys: AccountWeeklysData,
-        UpdateCharToDos: (newCharToDosData) => set({CharToDos: newCharToDosData}),
-        UpdateBookmarks: (newBookmarkData) => set({Bookmarks: newBookmarkData}),
-        UpdateAccWeeklys: (newAccWeeklysData) => set({AccountWeeklys: newAccWeeklysData})
-    }), {
-        name: "Maple-tododatas", 
-        storage: createJSONStorage(() => localStorage),
-        partialize: (state) => ({
-            CharToDos: state.CharToDos,
-            Bookmarks: state.Bookmarks,
-            AccountWeeklys: state.AccountWeeklys
-        })
-    })
-);
 
 export const EditTargetStore = create<I_EditTargetStore>((set) => ({
     EditTarget: "",
