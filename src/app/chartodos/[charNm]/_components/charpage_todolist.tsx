@@ -1,6 +1,6 @@
 "use client";
 
-import { Categories, MapleToDoDataStore } from "@/stores";
+import { Categories } from "@/stores";
 import { useState } from "react";
 import styled from "styled-components";
 import WeeklyToDoList from "./weeklytodolist";

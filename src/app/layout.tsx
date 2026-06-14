@@ -39,6 +39,9 @@ export default function RootLayout({
           <Navigations />
         </header>
         {children}
+        <footer className={styles.rootlayout_footer}>
+          Data Based on NEXON OPEN API
+        </footer>
       </body>
     </html>
   );
