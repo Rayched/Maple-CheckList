@@ -259,6 +259,7 @@ function M_BookmarkList(){
             deleteCharToDo(charname);
             DeleteBookmark(charname);
             alert("삭제 완료");
+            setNowIndex(0);
         }
     };
 

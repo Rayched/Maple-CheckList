@@ -3,12 +3,12 @@
 import { styled } from "styled-components"
 import { ToDoItem, ToDoListContainer } from "./todoitem/todolist_commons";
 import { useEffect, useState } from "react";
-import { BossContentsData } from "@/game_datas/contentsData";
 import { RankColorInfos } from "@/game_datas/bossrank_colordata";
 import { CharToDoStore, I_BossToDos } from "@/stores/CharToDoStore";
 import { useForm } from "react-hook-form";
 import { useStore } from "zustand";
 import { OcidConfirms } from "@/utils/OcidConfirm";
+import { BossContentsData } from "@/game_datas/contentsData";
 
 interface I_BossToDoList {
     charname?: string;

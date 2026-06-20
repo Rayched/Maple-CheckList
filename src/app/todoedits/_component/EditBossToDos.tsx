@@ -3,6 +3,7 @@
 import { FormContainer, FormHeader, FormItem, FormSliderBox } from "@/components/commons/FormCommons";
 import { RankColorInfos } from "@/game_datas/bossrank_colordata";
 import { BossContentsData } from "@/game_datas/contentsData";
+
 import { I_BossToDos } from "@/stores/CharToDoStore";
 import { BossToDoSort } from "@/utils/SortFuncs";
 import React from "react";
