@@ -54,6 +54,8 @@ export default function ToDoResetBtn({accessplatform}: I_ToDoResetBtnProps){
     const {chartodos, DoneRecordReset} = useStore(CharToDoStore);
 
     const ResetBtnClickEvent = () => {
+        if(chartodos.length === 0) return;
+        
         const confirm = window.confirm(`'${chartodos[0].charname}' 포함\n총 ${chartodos.length} 캐릭터의 일정 완료 기록을 초기화 하겠습니까?\n`);
 
         if(!confirm){

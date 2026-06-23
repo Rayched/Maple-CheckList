@@ -12,6 +12,7 @@ import { EditTargetStore } from "@/stores";
 import { BookmarkCard_Commons } from "../BookmarkCard_commons";
 import { CharToDoStore } from "@/stores/CharToDoStore";
 import ToDoResetBtn from "@/components/ToDoResetBtn";
+import { EmptyCardTypeB } from "../../ChartodoEmptyCards";
 
 const Container = styled(BookmarkList_Commons.BookmarkListContainer)`
     width: 98%;
@@ -235,6 +236,8 @@ function M_BookmarkList(){
      * (render할 때 참고할 state value setting)
      */
     const MenuBtnClick = () => {
+        if(Bookmarks.length === 0) return;
+
         const TargetName = Bookmarks[NowIndex].charname;
 
         if(TargetName === ""){
@@ -259,7 +262,10 @@ function M_BookmarkList(){
             deleteCharToDo(charname);
             DeleteBookmark(charname);
             alert("삭제 완료");
+
             setNowIndex(0);
+            setEditTarget("");
+            return;
         }
     };
 
@@ -285,77 +291,80 @@ function M_BookmarkList(){
             <SliderBox>
                 {
                     Bookmarks.length === 0 ? (
-                        <BookmarkEmptyGuideMessage>
-                            <span>{`'메할일 추가' 버튼을 클릭해서`}</span>
-                            <span>{`메할일을 추가해주세요.`}</span>
-                        </BookmarkEmptyGuideMessage>
+                        <EmptyCardTypeB />
                     ) : null 
                 }
-                <AnimatePresence custom={IsLeftDrag} mode="wait">
-                    {
-                        Bookmarks.map((data, idx) => {
-                            if(idx === NowIndex){
-                                return (
-                                    <SlideItem 
-                                        key={`bookmarkcard_${idx}`}
-                                        drag="x"
-                                        dragConstraints={{left: -100, right: 100}}
-                                        dragElastic={0.2}
-                                        dragSnapToOrigin={Bookmarks.length === 1 ? true : false}
-                                        onDragEnd={DragEventListener}
-                                    >
-                                        <M_BookmarkCard 
-                                            charname={data.charname}
-                                            charlevel={data.charlevel}
-                                            charclass={data.charclass}
-                                            charimgurl={data.charimgurl}
-                                            worldname={data.worldname}
-                                            IsLeftDrag={IsLeftDrag}
-                                        />
-                                    </SlideItem>
-                                );
-                            } else {
-                                return null;
+                {
+                    Bookmarks.length !== 0 ? (
+                        <AnimatePresence custom={IsLeftDrag} mode="wait">
+                            {
+                                Bookmarks.map((data, idx) => {
+                                    if(idx === NowIndex){
+                                        return (
+                                            <SlideItem 
+                                                key={`bookmarkcard_${idx}`}
+                                                drag="x"
+                                                dragConstraints={{left: -100, right: 100}}
+                                                dragElastic={0.2}
+                                                dragSnapToOrigin={Bookmarks.length === 1 ? true : false}
+                                                onDragEnd={DragEventListener}
+                                            >
+                                                <M_BookmarkCard 
+                                                    charname={data.charname}
+                                                    charlevel={data.charlevel}
+                                                    charclass={data.charclass}
+                                                    charimgurl={data.charimgurl}
+                                                    worldname={data.worldname}
+                                                    IsLeftDrag={IsLeftDrag}
+                                                />
+                                            </SlideItem>
+                                        );
+                                    } else {
+                                        return null;
+                                    }
+                                })
                             }
-                        })
-                    }
-                </AnimatePresence>
+                        </AnimatePresence>
+                    ) : null
+                }
             </SliderBox>
-            <UtilBtnList>
-                <UtilBtnContainer onClick={AddBtnClickEvent}>
-                    <div className="utilbtn">
-                        <svg xmlns="http://www.w3.org/2000/svg" height="20" width="20" fill="#ffffff" viewBox="0 0 640 640">
-                            <path d="M352 128C352 110.3 337.7 96 320 96C302.3 96 288 110.3 288 128L288 288L128 288C110.3 288 96 302.3 96 320C96 337.7 110.3 352 128 352L288 352L288 512C288 529.7 302.3 544 320 544C337.7 544 352 529.7 352 512L352 352L512 352C529.7 352 544 337.7 544 320C544 302.3 529.7 288 512 288L352 288L352 128z"/>
-                        </svg>
-                    </div>
-                    <div className="utilbtn_label">메할일 추가</div>
-                </UtilBtnContainer>
-                <UtilBtnContainer>
-                    <ToDoResetBtn accessplatform="1" />
-                    <div className="utilbtn_label" id="resetbtnlabel">
-                        <span>완료 기록</span>
-                        <span>초기화</span>
-                    </div>
-                </UtilBtnContainer>
-                <UtilBtnContainer>
-                    {
-                        (EditTarget !== "" && EditTarget === Bookmarks[NowIndex].charname) ? (
-                            <EditBar>
-                                <EditBtn key={"editbar-editbtn"} onClick={Redirect_ToDoEditPage}>편집</EditBtn>
-                                <EditBtn key={"editbar-delbtn"} onClick={DeleteBtnEventListener}>삭제</EditBtn>
-                            </EditBar>
-                        ) : null
-                    }
-                    <div className="utilbtn" onClick={MenuBtnClick}>
-                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 640" fill="#ffffff" width={"25"} height={"25"}>
-                            <path d="M96 320C96 289.1 121.1 264 152 264C182.9 264 208 289.1 208 320C208 350.9 182.9 376 152 376C121.1 376 96 350.9 96 320zM264 320C264 289.1 289.1 264 320 264C350.9 264 376 289.1 376 320C376 350.9 350.9 376 320 376C289.1 376 264 350.9 264 320zM488 264C518.9 264 544 289.1 544 320C544 350.9 518.9 376 488 376C457.1 376 432 350.9 432 320C432 289.1 457.1 264 488 264z"/>
-                        </svg>
-                    </div>
-                    <div className="utilbtn_label">메뉴</div>
-                </UtilBtnContainer>
-            </UtilBtnList>
+                <UtilBtnList>
+                    <UtilBtnContainer onClick={AddBtnClickEvent}>
+                        <div className="utilbtn">
+                            <svg xmlns="http://www.w3.org/2000/svg" height="20" width="20" fill="#ffffff" viewBox="0 0 640 640">
+                                <path d="M352 128C352 110.3 337.7 96 320 96C302.3 96 288 110.3 288 128L288 288L128 288C110.3 288 96 302.3 96 320C96 337.7 110.3 352 128 352L288 352L288 512C288 529.7 302.3 544 320 544C337.7 544 352 529.7 352 512L352 352L512 352C529.7 352 544 337.7 544 320C544 302.3 529.7 288 512 288L352 288L352 128z"/>
+                            </svg>
+                        </div>
+                        <div className="utilbtn_label">메할일 추가</div>
+                    </UtilBtnContainer>
+                    <UtilBtnContainer>
+                        <ToDoResetBtn accessplatform="1" />
+                        <div className="utilbtn_label" id="resetbtnlabel">
+                            <span>완료 기록</span>
+                            <span>초기화</span>
+                        </div>
+                    </UtilBtnContainer>
+                    <UtilBtnContainer>
+                        {
+                            (EditTarget !== "" && EditTarget === Bookmarks[NowIndex].charname) ? (
+                                <EditBar>
+                                    <EditBtn key={"editbar-editbtn"} onClick={Redirect_ToDoEditPage}>편집</EditBtn>
+                                    <EditBtn key={"editbar-delbtn"} onClick={DeleteBtnEventListener}>삭제</EditBtn>
+                                </EditBar>
+                            ) : null
+                        }
+                        <div className="utilbtn" onClick={MenuBtnClick}>
+                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 640" fill="#ffffff" width={"25"} height={"25"}>
+                                <path d="M96 320C96 289.1 121.1 264 152 264C182.9 264 208 289.1 208 320C208 350.9 182.9 376 152 376C121.1 376 96 350.9 96 320zM264 320C264 289.1 289.1 264 320 264C350.9 264 376 289.1 376 320C376 350.9 350.9 376 320 376C289.1 376 264 350.9 264 320zM488 264C518.9 264 544 289.1 544 320C544 350.9 518.9 376 488 376C457.1 376 432 350.9 432 320C432 289.1 457.1 264 488 264z"/>
+                            </svg>
+                        </div>
+                        <div className="utilbtn_label">메뉴</div>
+                    </UtilBtnContainer>
+                </UtilBtnList>
             {
-                EditTarget !== "" ? (<EditWrapper onClick={() => setEditTarget("")}></EditWrapper>) : null
+                EditTarget !== "" ? (
+                    <EditWrapper onClick={() => setEditTarget("")}></EditWrapper>
+                ) : null
             }
         </Container>
     );

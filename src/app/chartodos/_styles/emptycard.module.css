@@ -1,0 +1,87 @@
+
+.emptycard_container {
+    width: 50%;
+    height: 60%;
+    min-width: 240px;
+    max-width: 265px;
+    min-height: 310px;
+    max-height: 330px;
+    background-color: rgb(241, 242, 246);
+    border-radius: 10px;
+    box-shadow: 2px 2px rgba(0, 0, 0, 0.3);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.emptycard_imagebox {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    height: 75%;
+}
+
+.emptycard_chardatabox {
+    width: 90%;
+    height: 20%;
+    min-height: 50px;
+    padding: 2px 5px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    background-color: rgb(200, 198, 198);
+    border-radius: 8px;
+}
+
+.emptycard_chardatabox_namedata {
+    width: 100%;
+    height: 40%;
+    margin: 3px 0px;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: flex-start;
+
+    span {
+        margin-left: 5px;
+        font-weight: bold;
+    };
+}
+
+.emptycard_chardatabox_classdata {
+    width: 100%;
+    height: 45%;
+    margin: 3px 0px;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+    font-weight: bold;
+
+    .charclassdata_child {
+        width: 50%;
+        height: 100%;
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        font-size: 16px;
+    };
+
+    #level {
+        min-width: 80px;
+        justify-content: flex-start;
+    };
+
+    #charclass {
+        min-width: 80px;
+        
+        justify-content: flex-end;
+        
+        span {
+            margin-left: 5px;
+        }
+    };
+}

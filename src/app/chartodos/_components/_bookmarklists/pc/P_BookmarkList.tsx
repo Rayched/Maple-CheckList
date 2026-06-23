@@ -6,6 +6,7 @@ import BookmarkCard from "./BookmarkCard";
 import { ChartodosPage_ModeStore } from "@/stores/ModeStore";
 import { useState } from "react";
 import ToDoResetBtn from "@/components/ToDoResetBtn";
+import { EmptyCardTypeB } from "../../ChartodoEmptyCards";
 
 interface I_SearchTarget {
     charname: string;
@@ -207,14 +208,22 @@ export default function P_BookmarkList(){
     return (
         <Container>
             <Titles>메할일 목록</Titles>
-            <ButtonListBox>
-                <BookmarkList_UtilButton className="utilBtn" onClick={AddBtnClickEvent}>메할일 추가</BookmarkList_UtilButton>
-                {!SearchMode && (<BookmarkList_UtilButton className="utilBtn" onClick={SearchBtnClick}>메할일 검색</BookmarkList_UtilButton>)}
-                {SearchMode && (<BookmarkList_UtilButton className="cancelBtn" onClick={SearchCancelBtnClick}>검색 취소</BookmarkList_UtilButton>)}
-                <ToDoResetBtn accessplatform="0"/>
-            </ButtonListBox>
             {
-                !SearchMode && (
+                Bookmarks.length === 0 ? (
+                    <ButtonListBox style={{justifyContent: "center"}}>
+                        <BookmarkList_UtilButton className="utilBtn" onClick={AddBtnClickEvent}>메할일 추가</BookmarkList_UtilButton>
+                    </ButtonListBox>
+                ) : (
+                <ButtonListBox>
+                    <BookmarkList_UtilButton className="utilBtn" onClick={AddBtnClickEvent}>메할일 추가</BookmarkList_UtilButton>
+                    {!SearchMode && (<BookmarkList_UtilButton className="utilBtn" onClick={SearchBtnClick}>메할일 검색</BookmarkList_UtilButton>)}
+                    {SearchMode && (<BookmarkList_UtilButton className="cancelBtn" onClick={SearchCancelBtnClick}>검색 취소</BookmarkList_UtilButton>)}
+                    <ToDoResetBtn accessplatform="0"/>
+                </ButtonListBox>
+                )
+            }
+            {
+                !SearchMode && Bookmarks.length !== 0 ? (
                     <BookmarkList bookmarklength={Bookmarks.length <= 1 ? "1" : "0"}>
                         {
                             Bookmarks.map((data, idx) => {
@@ -231,10 +240,10 @@ export default function P_BookmarkList(){
                             })
                         }
                     </BookmarkList>
-                )
+                ): <EmptyCardTypeB />
             }
             {
-                (SearchMode && SearchTarget !== undefined) ? (
+                SearchMode && SearchTarget !== undefined ? (
                     <SearchOutputs>
                         <BookmarkCard 
                             charname={SearchTarget.charname}

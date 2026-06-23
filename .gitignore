@@ -39,3 +39,6 @@ yarn-error.log*
 # typescript
 *.tsbuildinfo
 next-env.d.ts
+
+# nexon open api/maplestory, scheduler data api 업데이트 대비용 code's
+/src/app/chartodos/(new_version)
