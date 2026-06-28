@@ -14,28 +14,28 @@ const Rank_Easy: RankColorType = {
 };
 
 const Rank_Normal: RankColorType = {
-    rankId: "Normal",
+    rankId: "normal",
     fontColor: "#ffffff",
     bgColor: "#319DBC",
     borderColor: "#319DBC"
 };
 
 const Rank_Hard: RankColorType = {
-    rankId: "Hard",
+    rankId: "hard",
     fontColor: "#ffffff",
     bgColor: "#aa3355",
     borderColor: "#aa3355"
 };
 
 const Rank_Chaos: RankColorType = {
-    rankId: "Chaos",
+    rankId: "chaos",
     fontColor: "#ffe1be",
     bgColor: "#222233",
     borderColor: "#ffe1be"
 };
 
 const Rank_Extreme: RankColorType = {
-    rankId: "Extreme",
+    rankId: "extreme",
     fontColor: "#ee3355",
     bgColor: "#222233",
     borderColor: "#ee3355"

@@ -46,6 +46,15 @@ const SingleRank = styled.div<I_SingleRankProps>`
     color: ${(props) => props.textcolor};
     background-color: ${(props) => props.bgcolor};
     border: 3px solid ${(props) => props.bordercolor};
+    width: 15px;
+    height: 15px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    justify-content: center;
+    font-size: 16px;
+    font-weight: bold;
 `;
 
 export const IncomeFormsCommons = {

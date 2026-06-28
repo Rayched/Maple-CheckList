@@ -15,6 +15,11 @@ export interface I_IncomeData {
     members: number;
 };
 
+export interface I_NowAddsWorld {
+    worldId: string;
+    worldname: string;
+};
+
 export interface I_CharIncomeData {
     charname: string;
     charimgurl: string;
@@ -24,15 +29,20 @@ export interface I_CharIncomeData {
 };
 
 interface I_CharIncomeStore {
+    //캐릭터 별 결정 수익 관련
    CharIncomeDatas: I_CharIncomeData[];
    AddNewCharIncomeData: (NewData: I_CharIncomeData) => void;
    EditCharIncomeData: (UpdateData: I_CharIncomeData) => void;
    DeleteCharIncomeData: (ocid: string) => void;
+
+   NowAddsWorld: I_NowAddsWorld[];
+   setNowAddsWorld: (UpdateData: I_NowAddsWorld[]) => void;
 };
 
 export const CharIncomeStore = create<I_CharIncomeStore>()(
     persist((set, get) => ({
         CharIncomeDatas: [] as I_CharIncomeData[],
+        NowAddsWorld: [] as I_NowAddsWorld[],
         AddNewCharIncomeData: (NewData) => set((state) => {
             return {
                 CharIncomeDatas: [...state.CharIncomeDatas, NewData]
@@ -71,11 +81,13 @@ export const CharIncomeStore = create<I_CharIncomeStore>()(
                     ]
                 }
             }
-        })
+        }),
+        setNowAddsWorld: (UpdateValue) => set({NowAddsWorld: UpdateValue})
     }), {
         name: "MapleToDo-CharIncomeStore",
         partialize: (state) => ({
-            CharIncomeDatas: state.CharIncomeDatas
+            CharIncomeDatas: state.CharIncomeDatas,
+            NowAddsWorld: state.NowAddsWorld
         })
     })
 )

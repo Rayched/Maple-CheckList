@@ -32,33 +32,45 @@ export const ModifyIncomedata = (pricedata: number) => {
 };
 
 export default function useGetSummitValues(){
-    const [TotalValue, setTotalValue] = useState(0);
+    const [SummitValue, setSummitValue] = useState(0);
+    const {CharIncomeDatas} = useStore(CharIncomeStore);
+
     const GetSummitData = ({IncomeDatas}: {IncomeDatas: I_IncomeData[]}) => {
         const Values = IncomeSummit(IncomeDatas);
 
         return ModifyIncomedata(Values);
     };
 
-    const GetTotals = ({charincomedatas}: {charincomedatas: I_CharIncomeData[]}) => {
-        const SummitValues = charincomedatas.map((charincomedata) => {
-            if(charincomedata.incomeData.length === 0){
-                return null;
-            } else {
-                const values = IncomeSummit(charincomedata.incomeData);
+    const GetTotals = ({NowSelectWorld}: {NowSelectWorld: string}) => {
+        if(NowSelectWorld === "all"){
+            const PriceSummit = CharIncomeDatas.map((data) => {
+                if(data.incomeData.length === 0){
+                    return null;
+                } else {
+                    const values = IncomeSummit(data.incomeData);
+                    return values;
+                }
+            }).filter((data) => data !== null).reduce((accumulator, currentValue) => accumulator + currentValue, 0);
 
-                return values;
-            };
-        }).filter((data) => data !== null);
-
-        let Outputs = 0;
-
-        SummitValues.forEach((value) => Outputs += value);
-
-        return ModifyIncomedata(Outputs);
+            setSummitValue(PriceSummit);
+        } else {
+            const PriceSummit = CharIncomeDatas.map((data) => {
+                if(data.worldId !== NowSelectWorld){
+                    return null;
+                } else if(data.incomeData.length === 0){
+                    return null;
+                } else {
+                    const values = IncomeSummit(data.incomeData);
+                    return values;
+                }
+            }).filter((data) => data !== null).reduce((acc, current) => acc + current, 0);
+            setSummitValue(PriceSummit);
+        }
     };
 
     return {
+        TotalValue: SummitValue,
         SummitData: GetSummitData, 
-        Totals: GetTotals,
+        GetTotals: GetTotals,
     };
 }

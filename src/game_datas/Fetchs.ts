@@ -19,6 +19,56 @@ interface I_CharacterBasic {
     world_name?: string;
 };
 
+//daily contents, weekly contents type
+export interface ContentsType {
+    content_name: string;
+    max_count: number;
+    now_count: number;
+    quest_state: string|null;
+    registration_flag: string;
+    type: string;
+    /**
+     * contents_name: 콘텐츠/퀘스트명
+     * type: 타입 (contents/quest)
+     * registration_flag: 스케줄러 등록 여부 (true/false)
+     * now_count: 현재 완료 횟수/점수
+     * max_count: 최대 완료 가능 횟수/점수
+     * quest_state: 퀘스트인 경우 진행 상태 
+        ("0": 기타, "1": 진행중, "2": 완료)
+     */
+};
+
+export interface BossContentsType {
+    content_name: string;
+    cycle: string;
+    difficulty: string;
+    list_order_no: number;
+    registration_flag: string;
+    complete_flag: string;
+    /**
+     * complete_flag: 보스명
+     * content_name: 보스 난이도
+     * cycle: 보스 초기화 주기
+     * difficulty: 리스트 순서
+     * list_order_no: 리스트 순서
+     * registration_flag: 스케줄러 등록 여부 (true/false)
+     * complite_flag: 완료 여부 (true/false)
+     */
+};
+
+interface I_SchedulerData {
+    character_name?: string;
+    character_level?: number;
+    character_class?: string;
+    world_name?: string;
+    weekly_boss_clear_count?: number;
+    weekly_boss_clear_limit_count?: number;
+    date?: string;
+    daily_contents?: ContentsType[];
+    weekly_contents?: ContentsType[];
+    boss_contents?: BossContentsType[];
+};
+
 const BasedURL = "https://open.api.nexon.com/maplestory/v1";
 
 const APIKeys = process.env.NEXON_API_KEY;
@@ -27,6 +77,7 @@ const headers = {
     "x-nxopen-api-key": `${APIKeys}`
 };
 
+//ocid fetch function
 export async function GetOcids(charNm:string) {
     const APIURL = BasedURL + `/id?character_name=${charNm}`;
 
@@ -40,6 +91,7 @@ export async function GetOcids(charNm:string) {
     return Json;
 };
 
+//character data fetch
 export async function GetCharData(ocids?: string){
     const CharBasicURL = BasedURL + `/character/basic?ocid=${ocids}`
 
@@ -55,3 +107,16 @@ export async function GetCharData(ocids?: string){
 
     return CharBasicData;
 };
+
+//스케쥴러 데이터 fetch funtion
+export async function GetCharScheduleData(ocid?: string){
+    const APIURL = BasedURL + `/scheduler/character-state?ocid=${ocid}`;
+
+    const Resp = await fetch(APIURL, {headers});
+
+    if(!Resp.ok) return null;
+
+    const scheduleData = await Resp.json() as I_SchedulerData;
+
+    return scheduleData;
+}

@@ -1,0 +1,138 @@
+
+.charincomeitem_container {
+    width: 95%;
+    height: 30%;
+    margin: 3px 0px;
+    color: black;
+    background-color: rgb(250, 250, 250);
+    border: 2px solid #b0b0b0;
+    border-radius: 10px;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+
+    &:nth-child(1){
+        margin-top: 1px;
+        margin-bottom: 3px;
+    };
+    &:hover {
+        background-color: rgb(230, 230, 230);
+        border-color: #858383;
+    }
+}
+
+.charincomeitem_databox_charinfo {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    width: 30%;
+    height: 90%;
+    max-width: 100px;
+    img {
+        width: 80px;
+        height: 80px;
+    };
+}
+
+.charincomeitem_databox_charinfo_namebox {
+    width: 100%;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+    font-size: 13px;
+
+    img {
+        width: 16px;
+        height: 16px;
+        margin-right: 3px;
+    };
+}
+
+.charincomeitem_incomedatabox {
+    width: 70%;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+
+.charincomeitem_incomedatabox_itemlist {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    .spreads {
+        width: 30px;
+        height: 100%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-weight: bold;
+        font-size: 18px;
+    };
+}
+
+/*income item, 수익 총합 box css style code's*/
+
+.charincomeitem_incomesummitbox {
+    width: 70%;
+    height: 35%;
+    margin-top: 5px;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+}
+
+.charincomeitem_incomesummitbox_values {
+    width: 100%;
+    max-width: 200px;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+
+    .values {
+        font-size: 16px;
+        font-weight: bold;
+    };
+
+    .length {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin: 0px 5px;
+        padding: 1px;
+        background-color: darkgray;
+        border: 2px solid black;
+        font-size: 13px;
+        font-weight: bold;
+    };
+}
+
+/*income item, 삭제 버튼 css style code's*/
+
+.charincomeitem_delbtnbox {
+    width: 5%;
+    height: 85%;
+    margin-right: 5px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.charincomeitem_delbtnbox_delbtn {
+    width: 18px;
+    height: 18px;
+    margin: 3px 0px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    background-color: rgb(255, 118, 117);
+    border: 2px solid rgb(255, 118, 117);
+    border-radius: 30px;
+}

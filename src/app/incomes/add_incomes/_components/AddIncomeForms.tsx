@@ -1,7 +1,6 @@
 "use client"
 
 import { BossContentsData, WorldDatas } from "@/game_datas/contentsData";
-import { CharToDoStore } from "@/stores/CharToDoStore";
 import React, { useEffect, useState } from "react";
 import { FormProvider, useForm } from "react-hook-form";
 import styled from "styled-components";
@@ -9,7 +8,7 @@ import { useStore } from "zustand";
 import { IncomeDataSort } from "@/utils/SortFuncs";
 import { RankColorInfos } from "@/game_datas/bossrank_colordata";
 import BossRankRadioBox from "./BossRankSelect";
-import { CharIncomeStore, I_IncomeData } from "@/stores/CharIncomeStore";
+import { CharIncomeStore, I_IncomeData, I_NowAddsWorld } from "@/stores/CharIncomeStore";
 import { useRouter } from "next/navigation";
 import {GetRankBoxMinHeights, IncomeFormsCommons} from "../../_components/incomeform_commons";
 import styles from "../../_styles/incomeforms.module.css";
@@ -48,12 +47,16 @@ const ToDoItem = styled(IncomeFormsCommons.ToDoItem)``;
 const SingleRank = styled(IncomeFormsCommons.SingleRank)``;
 
 export default function AddBossIncomeForms({charname, ocid, charimg, worldname}: I_AddBossIncomeFormsProps){
-    const CharToDoData = useStore(CharToDoStore).chartodos.find((data) => data.ocid === ocid || data.charname === charname);
-    const {CharIncomeDatas, AddNewCharIncomeData} = useStore(CharIncomeStore);
+    const {
+        CharIncomeDatas, AddNewCharIncomeData,
+        NowAddsWorld, setNowAddsWorld
+    } = useStore(CharIncomeStore);
     const ContentsData = BossContentsData;
 
     const [IncomeDatas, setIncomeDatas] = useState<I_BossIncomeData[]>([]);
     const [TotalValues, setTotalValues] = useState(0);
+    const [NowSelectedWorld, setNowSelectedWorld] = useState("");
+    
     const MemberCountArr = [1, 2, 3, 4, 5, 6];
 
     const FormMethods = useForm<I_FormValue>({
@@ -134,6 +137,7 @@ export default function AddBossIncomeForms({charname, ocid, charimg, worldname}:
         if(!charname || !ocid || !charimg || !worldname) return;
 
         const IsDuplicate = CharIncomeDatas.find((data) => data.charname === charname || data.ocid === ocid);
+
         const GetWorldData = WorldDatas.find((world) => world.worldNm === worldname);
 
         if(IsDuplicate){
@@ -165,66 +169,25 @@ export default function AddBossIncomeForms({charname, ocid, charimg, worldname}:
                 incomeData: BossIncomeDataConvert
             });
 
-            push("/incomes");
+            const NowAddWorldsCheck = NowAddsWorld.find((world) => world.worldname === worldname);
+
+            if(NowAddWorldsCheck){
+                push("/incomes");
+            } else {
+                const NewWorldData: I_NowAddsWorld = {
+                    worldId: GetWorldData.worldId,
+                    worldname: worldname
+                };
+
+                setNowAddsWorld([...NowAddsWorld, NewWorldData]);
+                push("/incomes");
+            }
         }
     };
 
-    /**
-     * 해당 닉네임의 캐릭터의 메할일, 주간 보스 todo가
-     * 존재하는 경우, defaultdata setting하는 Side effect
-     */
     useEffect(() => {
-        if(!CharToDoData){
-            return;
-        } else if(CharToDoData.bossToDos.length <= 0){
-            return;
-        } else {
-            const TargetData = ContentsData.map((data) => {
-                const IsInclude = CharToDoData.bossToDos.find((todo) => todo.contentsId === data.BossId);
-
-                if(!IsInclude){
-                    return null;
-                } else {
-                    const RankData = data.Ranks.find((ranks) => ranks.rankId === IsInclude.bossrank);
-
-                    if(!RankData) return null;
-
-                    const Format: I_BossIncomeData = {
-                        bossid: data.BossId,
-                        bossname: data.BossNm,
-                        bossrank: IsInclude.bossrank,
-                        price: RankData.price,
-                        membercount: 1
-                    };
-
-                    return Format;
-                }
-            }).filter((data) => data !== null);
-
-            const CheckboxDefaultData = CharToDoData.bossToDos.map((data) => data.contentsId);
-            const BossRankDefaultData = Object.fromEntries(
-                CharToDoData.bossToDos.map((data) => [
-                    data.contentsId, data.bossrank
-                ])
-            );
-
-            setValue("BossToDoCheckbox", CheckboxDefaultData);
-            setValue("BossRankRadios", BossRankDefaultData)
-
-            setIncomeDatas(TargetData);
-        }
-    }, []);
-
-    useEffect(() => {
-        let outputs = 0;
-
-        IncomeDatas.forEach((data) => outputs += data.price);
-
-        if(outputs === 0){
-            return;
-        } else {
-            setTotalValues(outputs);
-        }
+        const PriceValues = IncomeDatas.map((data) => data.price).reduce((acc, currunt) => acc + currunt, 0);
+        setTotalValues(PriceValues);
     }, [IncomeDatas]);
 
     return (
@@ -334,7 +297,7 @@ export default function AddBossIncomeForms({charname, ocid, charimg, worldname}:
                     <span className={styles.incometotals_title}>총합</span>
                     <span className={styles.incometotals_values}>
                         {
-                            TotalValues !== 0 && ModifyIncomedata(TotalValues)
+                            IncomeDatas.length !== 0 ? ModifyIncomedata(TotalValues) : 0
                         }
                     </span>
                 </div>

@@ -224,7 +224,7 @@ function M_BookmarkList(){
                 return;
             } else {
                 setTimeout(() => {
-                    router.push(`/addtodos/${SearchParams}`);
+                    router.push(`/chartodos/addtodos?targetname=${SearchParams}`);
                 }, 300);
             }
         }

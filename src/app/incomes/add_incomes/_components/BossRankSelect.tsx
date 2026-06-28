@@ -50,7 +50,7 @@ const RankIcon = styled.div<I_RankIconProps>`
     border: 3px solid ${(props) => props.bordercolor};
     width: 15px;
     height: 15px;
-    font-size: 14px;
+    font-size: 13px;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -92,7 +92,7 @@ export default function BossRankRadioBox({StateData ,setStateFn, RanksData, boss
                 const UpdateValue: I_BossIncomeData = {
                     bossid: StateData[idx].bossid,
                     bossname: StateData[idx].bossname,
-                    bossrank: StateData[idx].bossrank,
+                    bossrank: BossRank,
                     price: PriceData.price,
                     membercount: 1
                 };
