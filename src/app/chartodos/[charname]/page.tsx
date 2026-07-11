@@ -31,7 +31,6 @@ export default async function Chartodos_charpage({params}: I_Chartodos_charpage)
                 CharData && ScheduleData ? (
                     <main className={styles.charpage_container}>
                         <Charpage_CharInfobox 
-                            ocid={OcidData?.ocid}
                             charname={CharData.character_name}
                             charlevel={CharData.character_level}
                             charclass={CharData.character_class}
