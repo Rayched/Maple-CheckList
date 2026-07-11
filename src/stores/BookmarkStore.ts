@@ -19,11 +19,9 @@ interface I_AuthStore {};
 
 export type DeleteTarget = {
     targetname: string;
-    targetOcid: string;
 };
 
 export interface I_BookmarkData {
-    ocid: string;
     charname: string;
     charlevel: number;
     charclass: string;
@@ -48,7 +46,7 @@ export const BookmarkStore = create<I_BookmarkStore>()(
             ]
         })),
         EditBookmarks: (EditBookmarkData) => set((state) => {
-            const idx = state.Bookmarks.findIndex((data) => data.ocid === EditBookmarkData.ocid);
+            const idx = state.Bookmarks.findIndex((data) => data.charname === EditBookmarkData.charname);
 
             if(idx === -1){
                 return {
@@ -70,7 +68,7 @@ export const BookmarkStore = create<I_BookmarkStore>()(
                     Bookmarks: state.Bookmarks
                 }
             } else {
-                const TargetFilter = state.Bookmarks.filter((data) => data.charname !== deletetarget.targetname || data.ocid !== deletetarget.targetOcid);
+                const TargetFilter = state.Bookmarks.filter((data) => data.charname !== deletetarget.targetname);
 
                 return {
                     Bookmarks: [

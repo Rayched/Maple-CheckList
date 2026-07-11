@@ -5,10 +5,9 @@ import styles from "../_styles/bookmarkitem.module.css";
 
 interface I_BookmarkItem {
     charname: string;
-    ocid: string;
 };
 
-export default function BookmarkItem({charname, ocid}: I_BookmarkItem){
+export default function BookmarkItem({charname}: I_BookmarkItem){
     const router = useRouter();
 
     const RedirectCharpage = () => {

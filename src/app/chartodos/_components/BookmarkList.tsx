@@ -89,12 +89,11 @@ export default function BookmarkList(){
             </div>
             <main className={styles.bookmarklist_mains}>
                 {
-                    Bookmarks.map((data) => {
+                    Bookmarks.map((data, idx) => {
                         return (
                             <BookmarkItem 
-                                key={data.ocid}
+                                key={`bookmarkitem_${idx}`}
                                 charname={data.charname}
-                                ocid={data.ocid}
                             />
                         );
                     })

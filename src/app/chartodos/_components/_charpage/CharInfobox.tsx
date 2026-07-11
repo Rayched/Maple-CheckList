@@ -9,7 +9,6 @@ import { ViewportWidthStore } from "@/stores/ViewportStore";
 import { useEffect } from "react";
 
 interface I_CharInfobox {
-    ocid?: string;
     charname?: string;
     charlevel?: number;
     charclass?: string;
@@ -17,7 +16,7 @@ interface I_CharInfobox {
     worldname?: string;
 };
 
-export default function Charpage_CharInfobox({ocid, charname, charlevel, charclass, charimgurl, worldname}: I_CharInfobox){
+export default function Charpage_CharInfobox({charname, charlevel, charclass, charimgurl, worldname}: I_CharInfobox){
     const {Bookmarks, AddNewBookmark, DeleteBookmark} = useStore(BookmarkStore);
     const {NowViewportWidthValue} = useStore(ViewportWidthStore);
 
@@ -29,12 +28,11 @@ export default function Charpage_CharInfobox({ocid, charname, charlevel, charcla
         if(BookmarkCheck){
             console.log("해당 북마크 중복됨");
             return;
-        } else if(!ocid || !charname || !charclass || !charlevel || !worldname || !charimgurl){
+        } else if(!charname || !charclass || !charlevel || !worldname || !charimgurl){
             console.log(`props is undefined`);
             return;
         } else {
             const NewBookmarkData: I_BookmarkData = {
-                ocid: ocid,
                 charname: charname,
                 charlevel: charlevel,
                 charclass: charclass,
@@ -46,13 +44,12 @@ export default function Charpage_CharInfobox({ocid, charname, charlevel, charcla
     }
 
     const DelBookmark = () => {
-        if(!ocid || !charname){
+        if(!charname){
             console.log(`ocid or charname이 undefined일 수도 있습니다.`);
             return;
         } else {
             DeleteBookmark({
-                targetname: charname,
-                targetOcid: ocid
+                targetname: charname
             });
         }
     };
