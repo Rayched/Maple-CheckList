@@ -1,11 +1,10 @@
-
+import BookmarkList from "./_components/BookmarkList";
 import styles from "./_styles/chartodos.module.css";
-import CharToDosBookmarkListBox from "./_components/BookmarkList_layout";
 
-export default function CharToDosPage(){
+export default function Chartodos_page(){
     return (
-        <div className={styles.chartodos_pagewrapper}>
-            <CharToDosBookmarkListBox />
+        <div className={styles.chartodos_page_wrapper}>
+            <BookmarkList />
         </div>
     );
 }

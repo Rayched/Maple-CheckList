@@ -13,6 +13,7 @@ import { useRouter } from "next/navigation";
 import {GetRankBoxMinHeights, IncomeFormsCommons} from "../../_components/incomeform_commons";
 import styles from "../../_styles/incomeforms.module.css";
 import { ModifyIncomedata } from "@/utils/useGetSummitValues";
+import RankIcon from "@/components/commons/rankicon";
 
 interface I_AddBossIncomeFormsProps {
     charname?: string;
@@ -247,9 +248,7 @@ export default function AddBossIncomeForms({charname, ocid, charimg, worldname}:
                                                     <div className={styles.bossrankbox}>
                                                         {
                                                             data.Ranks.length <= 1 ? (
-                                                                <SingleRank textcolor={ColorData?.fontColor} bgcolor={ColorData?.bgColor} bordercolor={ColorData?.borderColor}>
-                                                                    {data.Ranks[0].rankId.slice(0, 1)}
-                                                                </SingleRank>
+                                                                <RankIcon bossrank={data.Ranks[0].rankId} />
                                                             ) : null
                                                         }
                                                         {

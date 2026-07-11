@@ -3,6 +3,7 @@ import "../styles/global.css";
 import styles from "../styles/Root.module.css";
 import Link from "next/link";
 import Navigations from "@/components/navs/Navigations";
+import ViewportListener from "@/components/ViewportListener";
 
 export interface I_LayoutProps {
   children: React.ReactNode;
@@ -31,6 +32,7 @@ export default function RootLayout({
   return (
     <html>
       <body className={styles.Wrapper}>
+        <ViewportListener />
         <header className={styles.header}>
           <Link href={"/"} className={styles.Titles}>
             <img src={"/imgs/logo/icons.png"} />

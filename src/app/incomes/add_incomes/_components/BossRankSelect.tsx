@@ -6,6 +6,7 @@ import { useFormContext } from "react-hook-form";
 import { useEffect } from "react";
 import styled from "styled-components";
 import { RankColorInfos } from "@/game_datas/bossrank_colordata";
+import RankIcon from "@/components/commons/rankicon";
 
 interface I_BossRank_Radios {
     StateData: I_BossIncomeData[];
@@ -42,19 +43,6 @@ const RankSelectItem = styled.div`
     flex-direction: row;
     align-items: center;
     margin: 3px 0px;
-`;
-
-const RankIcon = styled.div<I_RankIconProps>`
-    color: ${(props) => props.textcolor};
-    background-color: ${(props) => props.bgcolor};
-    border: 3px solid ${(props) => props.bordercolor};
-    width: 15px;
-    height: 15px;
-    font-size: 13px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    text-align: center;
 `;
 
 export default function BossRankRadioBox({StateData ,setStateFn, RanksData, bossid}: I_BossRank_Radios){
@@ -144,9 +132,7 @@ export default function BossRankRadioBox({StateData ,setStateFn, RanksData, boss
                                     }
                                 })}
                             />
-                            <RankIcon textcolor={GetColors.fontColor} bgcolor={GetColors.bgColor} bordercolor={GetColors.borderColor}>
-                                {data.rankId.slice(0, 1)}
-                            </RankIcon>
+                            <RankIcon bossrank={data.rankId} />
                         </RankSelectItem>
                     );
                 })

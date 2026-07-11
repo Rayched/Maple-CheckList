@@ -1,10 +1,11 @@
-import { I_LayoutProps } from "../layout";
-import styles from "./_styles/chartodos.module.css"
+import styles from "./_styles/chartodos.module.css";
 
-export default function CharToDosLayout({children}: I_LayoutProps){
+interface I_Chartodos_layout {
+    children: React.ReactNode;
+};
+
+export default function Chartodos_layout({children}: I_Chartodos_layout){
     return (
-        <div className={styles.layoutwrapper}>
-            {children}
-        </div>
+        <div className={styles.chartodos_layout}>{children}</div>
     );
 }

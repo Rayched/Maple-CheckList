@@ -14,6 +14,7 @@ import BossRankRadioBox from "../../add_incomes/_components/BossRankSelect";
 import { IncomeDataSort } from "@/utils/SortFuncs";
 import { ModifyIncomedata } from "@/utils/useGetSummitValues";
 import { useRouter } from "next/navigation";
+import RankIcon from "@/components/commons/rankicon";
 
 interface I_EditIncomeListProps {
     charname: string;
@@ -287,9 +288,7 @@ export default function EditIncomeList({charname, ocid, charimgurl}: I_EditIncom
                                                     <div className={styles.bossrankbox}>
                                                         {
                                                             bossdata.Ranks.length <= 1 ? (
-                                                                <SingleRank textcolor={ColorData?.fontColor} bgcolor={ColorData?.bgColor} bordercolor={ColorData?.borderColor}>
-                                                                    {bossdata.Ranks[0].rankId.slice(0, 1)} 
-                                                                </SingleRank> 
+                                                                <RankIcon bossrank={bossdata.BossId} />
                                                             ) : null
                                                         }
                                                         {

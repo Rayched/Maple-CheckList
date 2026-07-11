@@ -1,5 +1,6 @@
 "use client"
 
+import RankIcon from "@/components/commons/rankicon";
 import { RankColorInfos } from "@/game_datas/bossrank_colordata";
 import { I_IncomeData } from "@/stores/CharIncomeStore";
 import styled from "styled-components";
@@ -35,24 +36,9 @@ const Container = styled.div`
         img {
             width: 21px;
             height: 21px;
+            margin-bottom: 3px;
         }
     };
-`;
-
-const RankIcon = styled.div<I_RankIcon>`
-    width: 17px;
-    height: 17px;
-    padding: 1px;
-    margin-top: 3px;
-    font-size: 14px;
-    font-weight: bold;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    text-align: center;
-    color: ${(props) => props.textcolor};
-    background-color: ${(props) => props.bgcolor};
-    border: 3px solid ${(props) => props.bordercolor};
 `;
 
 export default function IncomeItemBox({incomedatas}: I_IncomeItemBoxProps){
@@ -67,9 +53,7 @@ export default function IncomeItemBox({incomedatas}: I_IncomeItemBoxProps){
                     return (
                         <div key={`${data.bossid}`} className="bossincomeitem">
                             <img src={`imgs/boss_monsters/${data.bossid}.png`} />
-                            <RankIcon textcolor={ColorData.fontColor} bgcolor={ColorData.bgColor} bordercolor={ColorData.borderColor}>
-                                {data.bossrank.slice(0, 1)}
-                            </RankIcon>
+                            <RankIcon bossrank={data.bossrank} />
                         </div>
                     );
                 })

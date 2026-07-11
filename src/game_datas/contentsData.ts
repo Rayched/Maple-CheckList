@@ -1,11 +1,5 @@
 //주간 컨텐츠 및 주간 보스 컨텐츠 데이터 모음집
 
-export interface I_WeeklyContents {
-    ContentsId: string;
-    ContentsNm: string;
-    Units: string;
-};
-
 export interface I_RankType {
     rankId: string;
     rankNm: string;
@@ -29,23 +23,6 @@ interface I_ClassDatas {
     class_fullNm: string;
     class_littleNm?: string;
 };
-
-export const WeeklyContentsData: I_WeeklyContents[] = [
-    {ContentsId: "account02", ContentsNm: "하이마운틴", Units: "account"},
-    {ContentsId: "account03", ContentsNm: "앵글러 컴퍼니", Units: "account"},
-    {ContentsId: "account04", ContentsNm: "악몽선경", Units: "account"},
-    //아케인리버 주간 컨텐츠's
-    {ContentsId: "arcane01", ContentsNm: "에르다 스펙트럼", Units: "character"},
-    {ContentsId: "arcane02", ContentsNm: "배고픈 무토", Units: "character"},
-    {ContentsId: "arcane03", ContentsNm: "미드나잇 체이서", Units: "character"},
-    {ContentsId: "arcane04", ContentsNm: "스피릿 세이비어", Units: "character"},
-    {ContentsId: "arcane05", ContentsNm: "엔하임 디펜스", Units: "character"},
-    {ContentsId: "arcane06", ContentsNm: "프로텍트 에스페라", Units: "character"},
-    //무릉, 길드 컨텐츠's
-    {ContentsId: "weekly01", ContentsNm: "무릉도장", Units: "character"},
-    {ContentsId: "weekly02", ContentsNm: "지하수로", Units: "character"},
-    {ContentsId: "weekly03", ContentsNm: "플래그 레이스", Units: "character"},
-];
 
 export const BossContentsData: I_BossContents[] = [
     {
@@ -168,7 +145,7 @@ export const BossContentsData: I_BossContents[] = [
     },
     {
         BossId: "boss17",
-        BossNm: "진힐라",
+        BossNm: "진 힐라",
         Ranks: [
             {rankId: "normal",rankNm: "노말", price: 71200000},
             {rankId: "hard",rankNm: "하드", price: 106000000},

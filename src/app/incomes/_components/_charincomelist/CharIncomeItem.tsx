@@ -7,6 +7,7 @@ import useGetSummitValues from "@/utils/useGetSummitValues";
 import { useStore } from "zustand";
 import { useRouter } from "next/navigation";
 import IncomeItemBox from "./Incomeitembox";
+import { ViewportWidthStore } from "@/stores/ViewportStore";
 
 interface I_CharIncomeItemProps {
     chardata: I_CharIncomeData;
@@ -23,9 +24,7 @@ export default function CharIncomeItem({chardata, EditMode, setEditMode}: I_Char
     const {SummitData} = useGetSummitValues();
     const router = useRouter();
     const {CharIncomeDatas, NowAddsWorld, setNowAddsWorld, DeleteCharIncomeData} = useStore(CharIncomeStore);
-
-    //local state
-    const [NowWidth, setNowWidth] = useState(0);
+    const {NowViewportWidthValue} = useStore(ViewportWidthStore);
 
     const DelBtnClickEvent = ({targetId, targetname}: I_DelBtnClickEvent) => {
         const DeleteConfirm = window.confirm(`'${targetname}'의 주간보스 수익 데이터를 삭제하겠습니까?`);
@@ -70,27 +69,12 @@ export default function CharIncomeItem({chardata, EditMode, setEditMode}: I_Char
         setNowAddsWorld(EmptyDataFilter);
     }, [CharIncomeDatas]);
 
-    //viewport width, resize side effect
     /**
      * viewport-width 크기 따라
      * 캐릭터 수익 아이템, 보스 표시 형태가 달라짐
      * pc => 보스 12마리 전부 다 표시
      * mobile => '하위 2마리...상위 2마리', 간략하게 표시
      */
-    useEffect(() => {
-        const WidthResized = () => {
-            setNowWidth(window.innerWidth);
-        };
-
-        WidthResized();
-
-        window.addEventListener("resize", WidthResized);
-
-        return () => {
-            window.removeEventListener("resize", WidthResized);
-        }
-    }, []);
-        
     return (
         <div 
             className={styles.charincomeitem_container}
@@ -107,14 +91,14 @@ export default function CharIncomeItem({chardata, EditMode, setEditMode}: I_Char
             </div>
             <div className={styles.charincomeitem_incomedatabox}>
                 {
-                    NowWidth >= 640 ? (
+                    NowViewportWidthValue >= 640 ? (
                         <div className={styles.charincomeitem_incomedatabox_itemlist}>
                             <IncomeItemBox incomedatas={chardata.incomeData} />
                         </div>
                     ) : null
                 }
                 {
-                    NowWidth <= 640 ? (
+                    NowViewportWidthValue <= 640 ? (
                         <div className={styles.charincomeitem_incomedatabox_itemlist}>
                             <IncomeItemBox incomedatas={chardata.incomeData.slice(0, 2)} />
                             <div className={styles.spreads}>...</div>
