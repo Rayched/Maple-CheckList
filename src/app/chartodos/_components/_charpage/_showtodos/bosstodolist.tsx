@@ -23,6 +23,7 @@ const BossCycles: BossCycleType[] = [
 export default function BossToDoList({boss_contentsdata}: I_BossToDoList){
     const [ContentsData, setContentsData] = useState<BossContentsType[]>([]);
     const [NowCategory, setNowCategory] = useState<BossCycleType>(BossCycles[0]);
+    const [CompliteLength, setCompliteLength] = useState(0);
 
     const CategoryChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
         const {currentTarget: {value}} = e;
@@ -42,8 +43,10 @@ export default function BossToDoList({boss_contentsdata}: I_BossToDoList){
             return;
         } else {
             const Regist_Filter = boss_contentsdata.filter((data) => NowCategory.cycle_id === data.cycle && data.registration_flag === "true");
+            const GetComplites = Regist_Filter.filter((data) => data.complete_flag === "true");
 
             setContentsData(Regist_Filter);
+            setCompliteLength(GetComplites.length);
         }
     }, []);
 
@@ -55,29 +58,31 @@ export default function BossToDoList({boss_contentsdata}: I_BossToDoList){
             return;
         } else {
             const UpdateData = boss_contentsdata.filter((data) => cycle_id === data.cycle && data.registration_flag === "true");
+            const GetComplites = UpdateData.filter((data) => data.complete_flag === "true");
+
             console.log(UpdateData);
+
             setContentsData(UpdateData);
+            setCompliteLength(GetComplites.length);
         }
     }, [NowCategory]);
 
     return (
         <div className={styles.todolist_commons_container}>
-            <div className={styles.bosstodolist_cycle_selectbox}>
-                <select onChange={CategoryChange}>
-                    {
-                        BossCycles.map((data) => {
-                            return (
-                                <option key={data.cycle_id} value={data.cycle_id}>
-                                    {data.cycle_name}
-                                </option>
-                            );
-                        })
-                    }
-                </select>
-            </div>
             <div className={styles.bosstodolist_todoitems_container}>
                 <div className={styles.bosstodolist_todoitems_titlebox}>
-                    {`${NowCategory.cycle_name} (0 / ${ContentsData.length})`}
+                    <select onChange={CategoryChange}>
+                        {
+                            BossCycles.map((data) => {
+                                return (
+                                    <option key={data.cycle_id} value={data.cycle_id}>
+                                        {data.cycle_name}
+                                    </option>
+                                );
+                            })
+                        }
+                    </select>
+                    <span>{`${CompliteLength} / ${ContentsData.length}`}</span>
                 </div>
                 <div className={styles.bosstodolist_todoitems_area}>
                     {
