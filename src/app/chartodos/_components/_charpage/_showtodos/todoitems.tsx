@@ -5,7 +5,7 @@ import { ViewportWidthStore } from "@/stores/ViewportStore";
 
 interface I_ToDoItem {
     contents_name: string;
-    little_name?: string;
+    little_name: string;
 };
 
 interface I_ToDoCheckbox {
@@ -14,7 +14,7 @@ interface I_ToDoCheckbox {
 
 interface I_ToDoTextBox {
     contents_name: string;
-    little_name?: string;
+    little_name: string;
 }
 
 interface I_ToDoItem_Quest extends I_ToDoItem {
@@ -34,7 +34,9 @@ interface I_BossToDoItem {
     rank_name: string;
 }
 
-const TextBox = styled.div``;
+const TextBox = styled.div`
+    font-size: 14px;
+`;
 
 const Checkbox = styled.div`
     width: 13px;
@@ -51,10 +53,8 @@ function ToDoTextBox({contents_name, little_name}: I_ToDoTextBox){
 
     return (
         <TextBox>
-            {
-                (NowViewportWidthValue >= 400 && little_name !== undefined) 
-                ? contents_name : little_name
-            }
+            {NowViewportWidthValue > 500 ? contents_name : null}
+            {NowViewportWidthValue <= 500 ? little_name : null}
         </TextBox>
     );
 }
@@ -85,7 +85,7 @@ export function ToDoItem_Quest({quest_state, contents_name, little_name}: I_ToDo
             <div className={styles.todoitem_children_area}>
                 <ToDoTextBox 
                     contents_name={contents_name} 
-                    little_name={little_name} 
+                    little_name={little_name}
                 />
             </div>
         </div>
@@ -119,7 +119,7 @@ export function BossToDoItem({
         <div className={styles.bosstodoitem_container}>
             <div className={styles.todoitem_checkbox_area}>
                 <div className="checkbox">
-                    <ToDoCheckbox isdone={"false"} />
+                    <ToDoCheckbox isdone={complite_flag} />
                 </div>
             </div>
             <div className={styles.todoitem_children_area}>

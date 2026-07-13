@@ -39,7 +39,7 @@ export default function WeeklyToDoList({weeklycontentsdata}: I_WeeklyToDoList){
                                                 key={data.contentsId}
                                                 quest_state={GetRefData.quest_state}
                                                 contents_name={data.contentsName}
-                                                little_name={data.littlename}
+                                                little_name={data.little_name}
                                             />
                                         );
                                     } else if(GetRefData.type === "contents"){
@@ -47,9 +47,9 @@ export default function WeeklyToDoList({weeklycontentsdata}: I_WeeklyToDoList){
                                             <ToDoItem_Contents 
                                                 key={data.contentsId}
                                                 contents_name={data.contentsName}
-                                                little_name={data.littlename}
+                                                little_name={data.little_name}
                                                 now_count={GetRefData.now_count}
-                                                max_count={GetRefData.max_count}
+                                                max_count={data.max_count}
                                             />
                                         );
                                     }
