@@ -15,7 +15,7 @@ interface I_DeleteBtnClickEventProps {
 export default function CharIncomeList(){
     const {CharIncomeDatas, NowAddsWorld} = useStore(CharIncomeStore);
     const [EditMode, setEditMode] = useState(false);
-    const [NowSelectWorld, setNowSelectWorld] = useState("all");
+    const [NowSelectWorld, setNowSelectWorld] = useState(NowAddsWorld[0].worldId);
 
     const {TotalValue, GetTotals} = useGetSummitValues();
 
@@ -45,7 +45,6 @@ export default function CharIncomeList(){
                     <div className={styles.charincomelistbox_selectbox}>
                         <label>서버</label>
                         <select onChange={WorldSelectboxChangeEvent}>
-                            <option value={"all"}>전체 월드</option>
                             {
                                 NowAddsWorld.map((data) => {
                                     return (
@@ -59,17 +58,7 @@ export default function CharIncomeList(){
                 <div className={styles.charincomelist_mains}>
                     {
                         CharIncomeDatas.map((data) => {
-                            if(NowSelectWorld === "all"){
-                                return (
-                                    <CharIncomeItem 
-                                        key={`${data.charname}_incomeitem`}
-                                        chardata={data}
-                                        EditMode={EditMode}
-                                        setEditMode={setEditMode}
-                                    />
-                                );
-                            } else {
-                                if(NowSelectWorld === data.worldId){
+                            if(NowSelectWorld === data.worldId){
                                     return (
                                         <CharIncomeItem 
                                             key={`${data.charname}_incomeitem`}
@@ -78,9 +67,8 @@ export default function CharIncomeList(){
                                             setEditMode={setEditMode}
                                         />
                                     );
-                                } else {
-                                    return null;
-                                }
+                            } else {
+                                return null;
                             }
                         })
                     }

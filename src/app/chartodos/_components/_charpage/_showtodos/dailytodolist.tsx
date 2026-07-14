@@ -58,6 +58,8 @@ export default function DailyToDoList({dailycontentsdata}: I_DailyToDoList){
                                     contents_name={data.content_name}
                                     little_name={RefData.little_name}
                                     quest_state={data.quest_state}
+                                    now_count={data.now_count}
+                                    max_count={RefData.max_count}
                                 />
                             );
                         }

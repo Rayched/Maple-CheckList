@@ -59,18 +59,20 @@ export default function Charpage_CharInfobox({charname, charlevel, charclass, ch
             <img src={charimgurl} className={styles.charimage}/>
             <div className={styles.charinfobox_chardatabox}>
                 <div className={styles.chardatabox_chardata}>
-                    <div>
+                    <div className={styles.charnamebox}>
                         {GetWorldData ? (
                             <img src={`/imgs/worlds/${GetWorldData.worldId}.png`} className={styles.worldicon} />
                         ) : null}
-                        <span className={styles.charnamebox}>{charname}</span>
+                        <span className={styles.charnametext}>{charname}</span>
                     </div>
                     <div className={styles.charlevelbox}>
-                        <span>{`LV.${charlevel}`}</span>
+                        <span className={styles.charleveldata}>{`LV.${charlevel}`}</span>
                         <span className={styles.charclassdata}>
                             <img src={`/imgs/job_icons/${GetClassData?.class_category}.png`} />
-                            {NowViewportWidthValue > 400 ? <div>{charclass}</div> : null}
-                            {NowViewportWidthValue <= 400 ? <div>{GetClassData?.class_littleNm}</div> : null}
+                            <div>
+                                {NowViewportWidthValue <= 500 && String(charclass).length >= 6 ? `${GetClassData?.class_littleNm}`: null}
+                                {String(charclass).length < 6 ? `${charclass}` : null}
+                            </div>
                         </span>
                     </div>
                 </div>

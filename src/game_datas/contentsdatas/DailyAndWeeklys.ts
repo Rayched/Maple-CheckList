@@ -38,8 +38,8 @@ const DailyContentsData: I_ContentsData[] = [
         contentsId: "daily02", 
         contentsName: "[일일 퀘스트] 츄츄 아일랜드 최고의 요리", 
         little_name: "[일퀘]츄츄 아일랜드",
-        max_count: 1,
-        contents_type: "ques100"
+        max_count: 100,
+        contents_type: "quest"
     },
     {
         contentsId: "daily03", 
@@ -153,21 +153,21 @@ const WeeklyContentsData: I_ContentsData[] = [
         contentsId: "weekly00", 
         contentsName: "에픽 던전 : 하이마운틴", 
         little_name: "하이마운틴",
-        max_count: 1,
+        max_count: 5,
         contents_type: "contents"
     },
     {
         contentsId: "weekly01", 
         contentsName: "에픽 던전 : 앵글러 컴퍼니", 
         little_name: "앵글러 컴퍼니",
-        max_count: 1,
+        max_count: 5,
         contents_type: "contents"
     },
     {
         contentsId: "weekly02", 
         contentsName: "에픽 던전 : 악몽선경", 
         little_name: "악몽선경",
-        max_count: 1,
+        max_count: 5,
         contents_type: "contents"
     },
     {
@@ -187,7 +187,7 @@ const WeeklyContentsData: I_ContentsData[] = [
     {
         contentsId: "weekly05", 
         contentsName: "[몬스터파크] 익스트림 몬스터파커에 도전해보겠나?", 
-        little_name: "익스트림 몬스터 파커",
+        little_name: "익스몬파",
         max_count: 5,
         contents_type: "quest"
     },
@@ -236,42 +236,42 @@ const WeeklyContentsData: I_ContentsData[] = [
     {
         contentsId: "weekly12", 
         contentsName: "[주간 퀘스트] 성실한 조사에 대한 보답", 
-        little_name: "여로 주간 퀘스트",
+        little_name: "[주간] 여로 보답 퀘스트",
         max_count: 2,
         contents_type: "quest"
     },
     {
         contentsId: "weekly13", 
         contentsName: "[주간 퀘스트] 크리티아스 주간 임무", 
-        little_name: "[주간] 크리티아스 주간 임무",
+        little_name: "크리티아스 주간 퀘스트",
         max_count: 1,
         contents_type: "quest"
     },
     {
         contentsId: "weekly14", 
         contentsName: "[주간 퀘스트] 타락한 세계수 주간 임무", 
-        little_name: "[주간] 타락한 세계수 주간 임무",
+        little_name: "타락한 세계수 주간 퀘스트",
         max_count: 1,
         contents_type: "quest"
     },
     {
         contentsId: "weekly15", 
         contentsName: "[주간 퀘스트] 타락한 세계수 정화에 대한 보답", 
-        little_name: "[주간] 타락한 세계수 정화에 대한 보답",
+        little_name: "타락한 세계수 보답 퀘스트",
         max_count: 1,
         contents_type: "quest"
     },
     {
         contentsId: "weekly16", 
         contentsName: "[주간 퀘스트] 헤이븐 주간 임무", 
-        little_name: "[주간] 헤이븐 주간 임무",
+        little_name: "헤이븐 주간 퀘스트",
         max_count: 1,
         contents_type: "quest"
     },
     {
         contentsId: "weekly17", 
         contentsName: "[주간 퀘스트] 꾸준한 의뢰에 대한 보답", 
-        little_name: "[주간/헤이븐] 꾸준한 의뢰에 대한 보답",
+        little_name: "헤이븐 보답 퀘스트",
         max_count: 1,
         contents_type: "quest"
     },

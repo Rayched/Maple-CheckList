@@ -1,5 +1,6 @@
 .charinfobox_container {
-    width: 90%;
+    width: 95%;
+    max-width: 380px;
     height: 20%;
     margin-top: 3%;
     display: flex;
@@ -22,17 +23,16 @@
     display: flex;
     flex-direction: column;
     align-items: center;
-    justify-content: center;
 }
 
 .chardatabox_chardata {
     width: 80%;
-    height: 45%;
-    margin: 5px 0px;
+    height: 50%;
+    margin-top: 5px;
     display: flex;
     flex-direction: column;
     align-items: center;
-    justify-content: center;
+    justify-content: space-between;
 
     div {
         display: flex;
@@ -41,39 +41,56 @@
         justify-content: flex-start;
         font-size: 15px;
         font-weight: bold;
-        width: 80%;
     }
 
     .worldicon {
         width: 20px;
         height: 20px;
+        margin-right: 5px;
     }
 
     .charnamebox {
-        margin-left: 3px;
+        width: 100%;
+        height: 50%;
+        display: flex;
+        flex-direction: row;
+        align-items: center;
     }
 
     .charlevelbox {
+        width: 100%;
+        height: 50%;
         display: flex;
         flex-direction: row;
         align-items: center;
         justify-content: space-between;
     }
 
+    .charleveldata {
+        width: 40%;
+        height: 100%;
+        display: flex;
+        align-items: center;
+        justify-content: flex-start;
+    }
+
     .charclassdata {
+        width: 55%;
+        height: 100%;
         display: flex;
         flex-direction: row;
         align-items: center;
+        justify-content: center;
         
         img {
-            margin-right: 2px;
+            margin-right: 5px;
         }
     }
 }
 
 .chardatabox_bookmarkbtnbox {
     width: 100%;
-    height: 55%;
+    height: 50%;
     display: flex;
     align-items: center;
     justify-content: center;

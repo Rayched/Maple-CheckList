@@ -8,8 +8,8 @@
 }
 
 .charpage_container {
-    width: 85%;
-    max-width: 350px;
+    width: 100%;
+    max-width: 500px;
     height: 90%;
     margin-top: 3%;
     background-color: rgb(230, 230, 230);

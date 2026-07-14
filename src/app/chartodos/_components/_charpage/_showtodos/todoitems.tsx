@@ -15,10 +15,18 @@ interface I_ToDoCheckbox {
 interface I_ToDoTextBox {
     contents_name: string;
     little_name: string;
+    ModifyCheck: string;
+    isdone: string;
+}
+
+interface I_ToDoItemContainer {
+    contents_state: string;
 }
 
 interface I_ToDoItem_Quest extends I_ToDoItem {
     quest_state: string|null;
+    now_count: number;
+    max_count: number;
 }
 
 interface I_ToDoItem_Contents extends I_ToDoItem {
@@ -34,7 +42,24 @@ interface I_BossToDoItem {
     rank_name: string;
 }
 
-const TextBox = styled.div`
+const ToDoItemContainer = styled.div<I_ToDoItemContainer>`
+    width: 90%;
+    height: 10%;
+    min-height: 50px;
+    margin: 5px 0px;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    background-color: ${(props) => props.contents_state === "true" ? "rgb(170, 170, 170)" : "rgb(220, 220, 220)"};
+    border-width: 2px;
+    border-style: solid;
+    border-color: ${(props) => props.contents_state === "true" ? "rgb(145, 145, 145)" : "rgb(198, 199, 200)"};
+    border-radius: 8px;
+`;
+
+const TextBox = styled.div<I_ToDoItemContainer>`
+    text-decoration: ${(props) => props.contents_state === "true" ? "line-through" : "none"};
+    text-decoration-thickness: 2px;
     font-size: 14px;
 `;
 
@@ -48,13 +73,13 @@ const Checkbox = styled.div`
     border-radius: 3px;
 `;
 
-function ToDoTextBox({contents_name, little_name}: I_ToDoTextBox){
+function ToDoTextBox({contents_name, little_name, ModifyCheck, isdone}: I_ToDoTextBox){
     const {NowViewportWidthValue} = useStore(ViewportWidthStore);
 
     return (
-        <TextBox>
-            {NowViewportWidthValue > 500 ? contents_name : null}
-            {NowViewportWidthValue <= 500 ? little_name : null}
+        <TextBox contents_state={isdone}>
+            {NowViewportWidthValue > 600 ? contents_name : null}
+            {NowViewportWidthValue <= 599 ? little_name : null}
         </TextBox>
     );
 }
@@ -74,39 +99,55 @@ function ToDoCheckbox({isdone}: I_ToDoCheckbox){
 }
 
 //contents_type = quest, todoitem
-export function ToDoItem_Quest({quest_state, contents_name, little_name}: I_ToDoItem_Quest){
+export function ToDoItem_Quest({quest_state, contents_name, little_name, now_count, max_count}: I_ToDoItem_Quest){
+    const ModifyCheck = (little_name.includes("주간 퀘스트") && contents_name.length >= 12);
+    const contents_state = quest_state === "2" ? "true" : "false";
+
     return (
-        <div className={styles.todoitem_container}>
+        <ToDoItemContainer contents_state={quest_state === "2" ? "true" : "false"}>
             <div className={styles.todoitem_checkbox_area}>
                 <div className="checkbox">
-                    <ToDoCheckbox isdone={quest_state === "2" ? "true" : "false"} />
+                    <ToDoCheckbox isdone={contents_state} />
                 </div>
             </div>
             <div className={styles.todoitem_children_area}>
                 <ToDoTextBox 
                     contents_name={contents_name} 
                     little_name={little_name}
+                    ModifyCheck={String(ModifyCheck)}
+                    isdone={contents_state}
                 />
+                <div className={styles.todoitem_countbox}>
+                    {`${now_count}/${max_count}`}
+                </div>
             </div>
-        </div>
+        </ToDoItemContainer>
     );
 }
 
 export function ToDoItem_Contents({contents_name, little_name, now_count, max_count}: I_ToDoItem_Contents){
+    const contents_state = now_count > 0 ? "true" : "false";
+
     return (
-        <div className={styles.todoitem_container}>
+        <ToDoItemContainer contents_state={contents_state}>
             <div className={styles.todoitem_checkbox_area}>
                 <div className="checkbox">
-                    <ToDoCheckbox isdone={now_count > 0 ? "true" : "false"} />
+                    <ToDoCheckbox isdone={contents_state} />
                 </div>
             </div>
             <div className={styles.todoitem_children_area}>
                 <ToDoTextBox 
                     contents_name={contents_name}
                     little_name={little_name}
+                    ModifyCheck={"false"}
+                    isdone={contents_state}
                 />
+                <div className={styles.todoitem_countbox}>
+                    {max_count === 0 ? `${now_count}` : null}
+                    {max_count !== 0 ? `${now_count}/${max_count}`: null}
+                </div>
             </div>
-        </div>
+        </ToDoItemContainer>
     );
 }
 
@@ -114,9 +155,10 @@ export function BossToDoItem({
     complite_flag, contents_id, contents_name, little_name, rank_name
 }: I_BossToDoItem){
     const {NowViewportWidthValue} = useStore(ViewportWidthStore);
+    const contents_state = complite_flag === "true" ? "true" : "false";
 
     return (
-        <div className={styles.bosstodoitem_container}>
+        <ToDoItemContainer contents_state={contents_state}>
             <div className={styles.todoitem_checkbox_area}>
                 <div className="checkbox">
                     <ToDoCheckbox isdone={complite_flag} />
@@ -130,6 +172,6 @@ export function BossToDoItem({
                 </span>
                 <span>{rank_name}</span>
             </div>
-        </div>
+        </ToDoItemContainer>
     );
 }
