@@ -15,7 +15,7 @@ interface I_DeleteBtnClickEventProps {
 export default function CharIncomeList(){
     const {CharIncomeDatas, NowAddsWorld} = useStore(CharIncomeStore);
     const [EditMode, setEditMode] = useState(false);
-    const [NowSelectWorld, setNowSelectWorld] = useState(NowAddsWorld[0].worldId);
+    const [NowSelectWorld, setNowSelectWorld] = useState("");
 
     const {TotalValue, GetTotals} = useGetSummitValues();
 
@@ -27,6 +27,14 @@ export default function CharIncomeList(){
 
         setNowSelectWorld(value);
     };
+
+    useEffect(() => {
+        if(NowAddsWorld.length === 0){
+            return;
+        } else {
+            setNowSelectWorld(NowAddsWorld[0].worldId);
+        }
+    }, []);
 
     useEffect(() => {
         GetTotals({NowSelectWorld: NowSelectWorld})
