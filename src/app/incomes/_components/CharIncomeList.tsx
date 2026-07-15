@@ -7,11 +7,6 @@ import { useEffect, useState } from "react";
 import useGetSummitValues, { ModifyIncomedata } from "@/utils/useGetSummitValues";
 import CharIncomeItem from "./_charincomelist/CharIncomeItem";
 
-interface I_DeleteBtnClickEventProps {
-    targetId: string;
-    targetNm: string;
-};
-
 export default function CharIncomeList(){
     const {CharIncomeDatas, NowAddsWorld} = useStore(CharIncomeStore);
     const [EditMode, setEditMode] = useState(false);
