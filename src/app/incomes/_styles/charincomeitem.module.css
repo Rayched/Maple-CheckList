@@ -1,7 +1,7 @@
 
 .charincomeitem_container {
     width: 95%;
-    height: 30%;
+    height: 35%;
     margin: 3px 0px;
     color: black;
     background-color: rgb(250, 250, 250);
@@ -28,11 +28,12 @@
     align-items: center;
     justify-content: center;
     width: 30%;
-    height: 90%;
+    height: 85%;
     max-width: 100px;
     img {
-        width: 80px;
-        height: 80px;
+        width: 75px;
+        height: 75px;
+        z-index: 1;
     };
 }
 
@@ -43,10 +44,12 @@
     align-items: center;
     justify-content: center;
     font-size: 13px;
+    font-weight: bold;
+    z-index: 2;
 
     img {
-        width: 16px;
-        height: 16px;
+        width: 15px;
+        height: 15px;
         margin-right: 3px;
     };
 }

@@ -32,7 +32,7 @@ export default function CharIncomeList(){
     }, []);
 
     useEffect(() => {
-        GetTotals({NowSelectWorld: NowSelectWorld})
+        GetTotals({NowSelectWorld: NowSelectWorld});
     }, [NowSelectWorld]);
 
     return (
@@ -48,6 +48,7 @@ export default function CharIncomeList(){
                     <div className={styles.charincomelistbox_selectbox}>
                         <label>서버</label>
                         <select onChange={WorldSelectboxChangeEvent}>
+                            {NowAddsWorld.length === 0 ? <option key={"world_empty"}>캐릭터를 추가해주세요.</option> : null}
                             {
                                 NowAddsWorld.map((data) => {
                                     return (
@@ -68,6 +69,8 @@ export default function CharIncomeList(){
                                             chardata={data}
                                             EditMode={EditMode}
                                             setEditMode={setEditMode}
+                                            NowSelectWorld={NowSelectWorld}
+                                            setNowSelectWorld={setNowSelectWorld}
                                         />
                                     );
                             } else {

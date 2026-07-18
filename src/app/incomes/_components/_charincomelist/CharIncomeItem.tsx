@@ -11,29 +11,47 @@ import { ViewportWidthStore } from "@/stores/ViewportStore";
 
 interface I_CharIncomeItemProps {
     chardata: I_CharIncomeData;
+    NowSelectWorld: string;
     EditMode: boolean;
     setEditMode: React.Dispatch<SetStateAction<boolean>>;
+    setNowSelectWorld: React.Dispatch<SetStateAction<string>>;
 };
 
 interface I_DelBtnClickEvent {
     targetId: string;
     targetname: string;
+    targetWorldId: string;
 }
 
-export default function CharIncomeItem({chardata, EditMode, setEditMode}: I_CharIncomeItemProps){
+export default function CharIncomeItem({chardata, EditMode, NowSelectWorld, setNowSelectWorld,setEditMode}: I_CharIncomeItemProps){
     const {SummitData} = useGetSummitValues();
     const router = useRouter();
     const {CharIncomeDatas, NowAddsWorld, setNowAddsWorld, DeleteCharIncomeData} = useStore(CharIncomeStore);
     const {NowViewportWidthValue} = useStore(ViewportWidthStore);
 
-    const DelBtnClickEvent = ({targetId, targetname}: I_DelBtnClickEvent) => {
+    const DelBtnClickEvent = ({targetId, targetname, targetWorldId}: I_DelBtnClickEvent) => {
         const DeleteConfirm = window.confirm(`'${targetname}'의 주간보스 수익 데이터를 삭제하겠습니까?`);
+        const WorldLength = CharIncomeDatas.filter((chardata) => chardata.worldId === targetWorldId).length;
 
         if(!DeleteConfirm){
             return;
         } else {
             DeleteCharIncomeData(targetId);
-            setEditMode(false);
+
+            if(WorldLength > 1){
+                setEditMode(false);
+            } else if(WorldLength <= 1){
+                const WorldsUpdate = NowAddsWorld.filter((worlds) => worlds.worldId !== targetWorldId);
+
+                setNowAddsWorld(WorldsUpdate);
+                
+                if(WorldsUpdate.length >= 1){
+                    setNowSelectWorld(WorldsUpdate[0].worldId);
+                } else {
+                    setNowSelectWorld("");
+                }
+                setEditMode(false);
+            }
         };
     };
 
@@ -120,7 +138,8 @@ export default function CharIncomeItem({chardata, EditMode, setEditMode}: I_Char
                             className={styles.charincomeitem_delbtnbox_delbtn} 
                             onClick={() => DelBtnClickEvent({
                                 targetId: chardata.ocid, 
-                                targetname: chardata.charname
+                                targetname: chardata.charname,
+                                targetWorldId: chardata.worldId
                             })
                         }>
                             <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 384 512" fill="white" width={"13"} height={"13"}>
