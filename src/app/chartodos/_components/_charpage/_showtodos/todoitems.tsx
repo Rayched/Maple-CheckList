@@ -6,6 +6,8 @@ import { ViewportWidthStore } from "@/stores/ViewportStore";
 interface I_ToDoItem {
     contents_name: string;
     little_name: string;
+    now_count: number;
+    max_count: number;
 };
 
 interface I_ToDoCheckbox {
@@ -25,13 +27,10 @@ interface I_ToDoItemContainer {
 
 interface I_ToDoItem_Quest extends I_ToDoItem {
     quest_state: string|null;
-    now_count: number;
-    max_count: number;
 }
 
-interface I_ToDoItem_Contents extends I_ToDoItem {
-    now_count: number;
-    max_count: number;
+interface I_ToDoItem_Guilds extends I_ToDoItem {
+    
 }
 
 interface I_BossToDoItem {
@@ -118,15 +117,19 @@ export function ToDoItem_Quest({quest_state, contents_name, little_name, now_cou
                     isdone={contents_state}
                 />
                 <div className={styles.todoitem_countbox}>
-                    {`${now_count}/${max_count}`}
+                    {quest_state !== "2" && `${now_count}/${max_count}`}
+                    {quest_state === "2" && "완료"}
                 </div>
             </div>
         </ToDoItemContainer>
     );
 }
 
-export function ToDoItem_Contents({contents_name, little_name, now_count, max_count}: I_ToDoItem_Contents){
-    const contents_state = now_count > 0 ? "true" : "false";
+//일일 및 주간 컨텐츠 todoitem (길드 컨텐츠 제외)
+export function ToDoItem_Contents({contents_name, little_name, now_count, max_count}: I_ToDoItem){
+    const contents_state = (
+        now_count > 0 && now_count === max_count
+    ) ? "true" : "false";
 
     return (
         <ToDoItemContainer contents_state={contents_state}>
@@ -151,6 +154,51 @@ export function ToDoItem_Contents({contents_name, little_name, now_count, max_co
     );
 }
 
+//길드 컨텐츠 todoitem 
+export function ToDoItem_Guilds({contents_name, little_name, now_count, max_count}: I_ToDoItem_Guilds){
+    const GuildItemStyles = {
+        width: "28%",
+        minWidth: "50px",
+        fontWeight: "normal", 
+        fontSize: "13.5px", 
+    }
+
+    const ModifyText = (now_count: string) => {
+        if(now_count.length <= 3){
+            return `${now_count}`
+        } else {
+            const length = now_count.length;
+            const TextOne = now_count.slice(0, length-3);
+            const TextTwo = now_count.slice(length-3);
+
+            return `${TextOne},${TextTwo}`
+        }
+    };
+
+    return (
+        <ToDoItemContainer contents_state={''}>
+            <div className={styles.todoitem_checkbox_area}>
+                <ToDoCheckbox isdone={""} />
+            </div>
+            <div className={styles.todoitem_children_area}>
+                <ToDoTextBox 
+                    contents_name={contents_name}
+                    little_name={little_name}
+                    ModifyCheck={"false"}
+                    isdone={""}
+                />
+                <div className={styles.todoitem_countbox} style={GuildItemStyles}>
+                    {
+                        contents_name === "[길드] 주간 미션 포인트" ? 
+                        (`${now_count}/${max_count}`) : (
+                            ModifyText(String(now_count))
+                        )
+                    }
+                </div>
+            </div>
+        </ToDoItemContainer>
+    );
+}
 export function BossToDoItem({
     complite_flag, contents_id, contents_name, little_name, rank_name
 }: I_BossToDoItem){

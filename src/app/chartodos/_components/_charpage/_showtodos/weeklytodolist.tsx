@@ -4,7 +4,8 @@ import { DailyAndWeeklyData } from "@/game_datas/contentsdatas/DailyAndWeeklys";
 import { useStore } from "zustand";
 import { ViewportWidthStore } from "@/stores/ViewportStore";
 import { useEffect, useState } from "react";
-import { ToDoItem_Contents, ToDoItem_Quest } from "./todoitems";
+import { ToDoItem_Contents, ToDoItem_Guilds, ToDoItem_Quest } from "./todoitems";
+import ToDoEmptyMessage from "./EmptyMessage";
 
 export interface I_ScheduleData {
     titleText: string;
@@ -31,13 +32,18 @@ export default function WeeklyToDoList({weeklycontentsdata}: I_WeeklyToDoList){
         
         if(!weeklycontentsdata || weeklycontentsdata.length === 0) return;
 
-        const TypeContents = weeklycontentsdata.filter((data) => data.type === "contents" && data.registration_flag === "true");
+        const TypeContents = weeklycontentsdata.filter((data) => data.type === "contents" && data.registration_flag === "true" && !data.content_name.includes("[길드]"));
         const TypeQuest = weeklycontentsdata.filter((data) => data.type === "quest" && data.registration_flag === "true");
+        const TypeGuild = weeklycontentsdata.filter((data) => data.content_name.includes("[길드]"));
 
         const NewScheduleData: I_ScheduleData[] = [
             {
                 titleText: "주간 컨텐츠",
                 contents_data: TypeContents
+            },
+            {
+                titleText: "길드 컨텐츠",
+                contents_data: TypeGuild
             },
             {
                 titleText: "주간 퀘스트",
@@ -51,22 +57,40 @@ export default function WeeklyToDoList({weeklycontentsdata}: I_WeeklyToDoList){
     return (
         <div className={styles.todolist_commons_container}>
             <div className={styles.todolist_container}>
-                {!weeklycontentsdata || weeklycontentsdata.length === 0 ? <div>주간 컨텐츠 데이터를 불러오지 못했습니다.</div> : null}
+                {
+                    ScheduleData.length === 0 ? (
+                        <ToDoEmptyMessage 
+                            message_refname={"주간 컨텐츠"}
+                        />
+                    ) : null
+                }
                 {
                     ScheduleData.map((data, idx) => {
+                        const ContentsEmpty = data.contents_data.filter((weeklycontents) => weeklycontents.type === "contents").length === 0;
+                        const QuestEmpty = data.contents_data.filter((weeklycontents) => weeklycontents.type === "quest").length === 0;
                         return (
                             <div key={`weeklytodos_${idx}`} className={styles.todolist_todos}>
                                 <div className={styles.todolist_todos_titles}>
                                     {data.titleText}
                                 </div>
                                 <div className={styles.todolist_todos_bodys}>
+                                    {ContentsEmpty === true && data.titleText === "주간 컨텐츠" ? (
+                                        <ToDoEmptyMessage 
+                                            message_refname={data.titleText}
+                                        />
+                                    ) : null}
+                                    {QuestEmpty === true && data.titleText === "주간 퀘스트" ? (
+                                        <ToDoEmptyMessage 
+                                            message_refname={data.titleText}
+                                        />
+                                    ) : null}
                                     {
                                         data.contents_data.map((data) => {
                                             const GetRefData = weeklys.find((weekly) => weekly.contentsName === data.content_name);
 
                                             if(!GetRefData){
                                                 return null;
-                                            } else if(data.type === "contents"){
+                                            } else if(GetRefData.contents_type === "contents"){
                                                 return (
                                                     <ToDoItem_Contents 
                                                         key={GetRefData.contentsId}
@@ -76,7 +100,7 @@ export default function WeeklyToDoList({weeklycontentsdata}: I_WeeklyToDoList){
                                                         max_count={GetRefData.max_count}
                                                     />
                                                 );
-                                            } else {
+                                            } else if(GetRefData.contents_type === "quest"){
                                                 return (
                                                     <ToDoItem_Quest 
                                                         key={GetRefData.contentsId}
@@ -85,6 +109,16 @@ export default function WeeklyToDoList({weeklycontentsdata}: I_WeeklyToDoList){
                                                         now_count={data.now_count}
                                                         max_count={GetRefData.max_count}
                                                         quest_state={data.quest_state}
+                                                    />
+                                                );
+                                            } else if(GetRefData.contents_type === "guild"){
+                                                return (
+                                                    <ToDoItem_Guilds 
+                                                        key={GetRefData.contentsId}
+                                                        contents_name={data.content_name}
+                                                        little_name={GetRefData.little_name}
+                                                        now_count={data.now_count}
+                                                        max_count={GetRefData.max_count}
                                                     />
                                                 );
                                             }                                            

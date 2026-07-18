@@ -3,6 +3,7 @@ import { BossContentsType } from "@/game_datas/Fetchs";
 import { useEffect, useState } from "react";
 import styles from "../../../_styles/_charpage/todolist.module.css";
 import { BossToDoItem } from "./todoitems";
+import ToDoEmptyMessage from "./EmptyMessage";
 
 interface I_BossToDoList {
     //cycles: string;  일간(bossDaily)|주간(bossWeekly)|월간(bossMonthly)
@@ -104,6 +105,13 @@ export default function BossToDoList({boss_contentsdata}: I_BossToDoList){
                                 );
                             }
                         })
+                    }
+                    {
+                        ContentsData.length === 0 ? (
+                            <ToDoEmptyMessage 
+                                message_refname={NowCategory.cycle_name}
+                            />
+                        ) : null
                     }
                 </div>
             </div>

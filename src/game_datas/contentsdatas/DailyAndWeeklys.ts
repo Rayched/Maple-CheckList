@@ -30,119 +30,119 @@ const DailyContentsData: I_ContentsData[] = [
     {
         contentsId: "daily01", 
         contentsName: "[일일 퀘스트] 소멸의 여로 조사", 
-        little_name: "[일퀘]소멸의 여로",
+        little_name: "[일퀘] 소멸의 여로",
         max_count: 100,
         contents_type: "quest"
     },
     {
         contentsId: "daily02", 
         contentsName: "[일일 퀘스트] 츄츄 아일랜드 최고의 요리", 
-        little_name: "[일퀘]츄츄 아일랜드",
+        little_name: "[일퀘] 츄츄 아일랜드",
         max_count: 100,
         contents_type: "quest"
     },
     {
         contentsId: "daily03", 
         contentsName: "[일일 퀘스트] 레헬른의 평온한 밤", 
-        little_name: "[일퀘]레헬른",
+        little_name: "[일퀘] 레헬른",
         max_count: 100,
         contents_type: "quest"
     },
     {
         contentsId: "daily04", 
         contentsName: "[일일 퀘스트] 아르카나의 평온한 바람", 
-        little_name: "[일퀘]아르카나",
+        little_name: "[일퀘] 아르카나",
         max_count: 100,
         contents_type: "quest"
     },
     {
         contentsId: "daily05", 
         contentsName: "[일일 퀘스트] 모라스의 안정을 위해", 
-        little_name: "[일퀘]모라스",
+        little_name: "[일퀘] 모라스",
         max_count: 100,
         contents_type: "quest"
     },
     {
         contentsId: "daily06", 
         contentsName: "[일일 퀘스트] 에스페라 연구 명령", 
-        little_name: "[일퀘]에스페라",
+        little_name: "[일퀘] 에스페라",
         max_count: 100,
         contents_type: "quest"
     },
     {
         contentsId: "daily07", 
         contentsName: "[일일 퀘스트] 문브릿지 조사", 
-        little_name: "[일퀘]문브릿지",
+        little_name: "[일퀘] 문브릿지",
         max_count: 100,
         contents_type: "quest"
     },
     {
         contentsId: "daily08", 
         contentsName: "[일일 퀘스트] 고통의 미궁 조사", 
-        little_name: "[일일]고통의 미궁",
+        little_name: "[일일] 고통의 미궁",
         max_count: 100,
         contents_type: "quest"
     },
     {
         contentsId: "daily09", 
         contentsName: "[일일 퀘스트] 리멘 조사", 
-        little_name: "[일퀘]리멘",
+        little_name: "[일퀘] 리멘",
         max_count: 100,
         contents_type: "quest"
     },
     {
         contentsId: "daily10", 
         contentsName: "[일일 퀘스트] 세르니움 조사", 
-        little_name: "[일퀘]세르니움",
+        little_name: "[일퀘] 세르니움",
         max_count: 100,
         contents_type: "quest"
     },
     {
         contentsId: "daily11",
         contentsName: "[일일 퀘스트] 호텔 아르크스 주변 청소",
-        little_name: "[일퀘]호텔 아르크스",
+        little_name: "[일퀘] 호텔 아르크스",
         max_count: 100,
         contents_type: "quest"
     }, 
     {
         contentsId: "daily12", 
         contentsName: "[일일 퀘스트] 오디움 일대 탐사", 
-        little_name: "[일퀘]오디움",
+        little_name: "[일퀘] 오디움",
         max_count: 100,
         contents_type: "quest"
     },
     {
         contentsId: "daily13", 
         contentsName: "[일일 퀘스트] 도원경 오염 정화", 
-        little_name: "[일퀘]도원경",
+        little_name: "[일퀘] 도원경",
         max_count: 100,
         contents_type: "quest"
     },
     {
         contentsId: "daily14", 
         contentsName: "[일일 퀘스트] 아르테리아 잔당 처치", 
-        little_name: "[일퀘]아르테리아",
+        little_name: "[일퀘] 아르테리아",
         max_count: 100,
         contents_type: "quest"
     },
     {
         contentsId: "daily15", 
         contentsName: "[일일 퀘스트] 카르시온 복구 지원", 
-        little_name: "[일퀘]카르시온",
+        little_name: "[일퀘] 카르시온",
         max_count: 100,
         contents_type: "quest"
     },
     {
         contentsId: "daily16", 
         contentsName: "[일일 퀘스트] 탈라하트 고대신의 힘 조사", 
-        little_name: "[일퀘]탈라하트",
+        little_name: "[일퀘] 탈라하트",
         max_count: 100,
         contents_type: "quest"
     },
     {
         contentsId: "daily17", 
         contentsName: "[일일 퀘스트] 기어드락 크로노스의 잔재 수집", 
-        little_name: "[일퀘]기어드락",
+        little_name: "[일퀘] 기어드락",
         max_count: 100,
         contents_type: "quest"
     },

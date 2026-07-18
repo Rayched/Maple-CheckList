@@ -102,7 +102,7 @@ const CharToDosURLBox = styled(LinkItem)`
 const CharToDoPathItem = styled.div<I_CharToDoPathItemProps>`
     width: 90%;
     height: 50%;
-    max-height: 30px;
+    min-height: 35px;
     margin-left: 8px;
     margin-top: 3px;
     padding: 5px 5px;
@@ -110,25 +110,29 @@ const CharToDoPathItem = styled.div<I_CharToDoPathItemProps>`
     flex-direction: row;
     align-items: center;
     justify-content: space-between;
-    font-size: 15px;
     font-weight: normal;
-    background-color: rgb(235, 230, 230);
+    background-color: ${(props) => props.ismatchs === "false" ? "inherit" : "white"};
+    border-radius: 5px;
     
     img {
         width: 16px;
         height: 16px;
     };
 
-    .chardatabox {
+    .charurlbox {
         width: 80%;
+        height: 30%;
         min-width: 50px;
         display: flex;
         flex-direction: row;
         align-items: center;
+        justify-content: space-between;
 
         span {
-            margin: 0px 2px;
-        };
+            width: 70%;
+            font-size: ${(props) => props.ismatchs === "false" ? "14px" : "15px"};
+            font-weight: ${(props) => props.ismatchs === "false" ? "none" : "bold"};
+        }
     };
 
     &:hover {
@@ -180,7 +184,11 @@ export default function Sidebar({pathData, setStateFn}: SidebarProps){
         }
     }
 
-    useEffect(() => console.log(NowPath), [NowPath]);
+    useEffect(() => {
+        const Arr = NowPath.split("/");
+        console.log(decodeURI(NowPath));
+        console.log(decodeURI(Arr[2]));
+    }, [NowPath]);
 
     return (
         <Container 
@@ -219,23 +227,34 @@ export default function Sidebar({pathData, setStateFn}: SidebarProps){
                             const GetClassData = ClassDatas.find((classdata) => classdata.class_fullNm === data.charclass);
                             const PathValue = `/chartodos/${data.charname}`;
 
-                            if(!GetWorldId || !GetClassData) return null;
-
-                            return (
-                                <CharToDoPathItem 
-                                    key={`chartodo_${idx}`} 
-                                    onClick={() => LinkClicked(`/chartodos/${data.charname}`)}
-                                    ismatchs={NowPath === PathValue ? "1" : "0"}
-                                >
-                                    <div className="chardatabox">
-                                        <img src={`/imgs/worlds/${GetWorldId}.png`} />
-                                        <span className="chardata">
-                                            {`${data.charname} / `}
-                                            {!GetClassData.class_littleNm ? `${data.charclass}` : `${GetClassData.class_littleNm}`}
-                                        </span>
-                                    </div>
-                                </CharToDoPathItem>
-                            );
+                            if(!GetWorldId || !GetClassData){
+                                return null;
+                            } else if(decodeURI(NowPath) === PathValue){
+                                return (
+                                    <CharToDoPathItem 
+                                        key={`chartodo_${idx}`} 
+                                        ismatchs="true"
+                                    >
+                                        <div className="charurlbox">
+                                            <img src={`/imgs/worlds/${GetWorldId}.png`} />
+                                            <span>{data.charname}</span>
+                                        </div>
+                                    </CharToDoPathItem>
+                                );
+                            } else {
+                                return (
+                                    <CharToDoPathItem 
+                                        key={`chartodo_${idx}`} 
+                                        onClick={() => LinkClicked(`/chartodos/${data.charname}`)}
+                                        ismatchs={"false"}
+                                    >
+                                        <div className="charurlbox">
+                                            <img src={`/imgs/worlds/${GetWorldId}.png`} />
+                                            <span>{data.charname}</span>
+                                        </div>
+                                    </CharToDoPathItem>
+                                );
+                            }
                         }))
                     }
                 </CharToDosURLBox>

@@ -6,6 +6,7 @@ import { ContextType, useEffect, useState } from "react";
 import { DailyAndWeeklyData } from "@/game_datas/contentsdatas/DailyAndWeeklys";
 import { ToDoItem_Contents, ToDoItem_Quest } from "./todoitems";
 import { I_ScheduleData } from "./weeklytodolist";
+import ToDoEmptyMessage from "./EmptyMessage";
 
 interface I_DailyToDoList {
     dailycontentsdata?: ContentsType[];
@@ -39,22 +40,37 @@ export default function DailyToDoList({dailycontentsdata}: I_DailyToDoList){
             <div className={styles.todolist_container}>
                 {
                     ScheduleData.length === 0 ? (
-                        <div>일일 컨텐츠 데이터를 불러오지 못했습니다.</div>
+                        <ToDoEmptyMessage 
+                            message_refname={"일일 컨텐츠"}
+                        />
                     ) : null
                 }
                 {
                     ScheduleData.map((data, idx) => {
+                        const ContentsEmpty = data.contents_data.filter((contentsdata) => contentsdata.type === "contents").length === 0;
+                        const QuestsEmpty = data.contents_data.filter((contentsdata) => contentsdata.type === "quest").length === 0;
+                       
                         return (
                             <div key={`dailytodos_${idx}`} className={styles.todolist_todos}>
                                 <div className={styles.todolist_todos_titles}>{data.titleText}</div>
                                 <div className={styles.todolist_todos_bodys}>
+                                    {
+                                        ContentsEmpty === true && data.titleText === "일일 컨텐츠" ? (
+                                            <ToDoEmptyMessage message_refname="일일 컨텐츠" />
+                                        ) : null
+                                    }
+                                    {
+                                        QuestsEmpty === true && data.titleText === "일일 퀘스트" ? (
+                                            <ToDoEmptyMessage message_refname="일일 퀘스트"/>
+                                        ) : null
+                                    }
                                     {
                                         data.contents_data.map((contents) => {
                                             const GetRefData = dailys.find((daily) => daily.contentsName === contents.content_name);
 
                                             if(!GetRefData){
                                                 return null;
-                                            } else if(contents.type === "contents"){
+                                            } else if(contents.type === "contents" && !ContentsEmpty){
                                                 return (
                                                     <ToDoItem_Contents 
                                                         key={GetRefData.contentsId}
@@ -64,7 +80,7 @@ export default function DailyToDoList({dailycontentsdata}: I_DailyToDoList){
                                                         max_count={contents.max_count}
                                                     />
                                                 );
-                                            } else {
+                                            } else if(contents.type === "quest" && !QuestsEmpty){
                                                 return (
                                                     <ToDoItem_Quest 
                                                         key={GetRefData.contentsId}
@@ -72,7 +88,7 @@ export default function DailyToDoList({dailycontentsdata}: I_DailyToDoList){
                                                         little_name={GetRefData.little_name}
                                                         quest_state={contents.quest_state}
                                                         now_count={contents.now_count}
-                                                        max_count={contents.max_count}
+                                                        max_count={GetRefData.max_count}
                                                     />
                                                 );
                                             };
