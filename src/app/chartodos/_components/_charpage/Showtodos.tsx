@@ -13,6 +13,7 @@ interface I_ToDoList {
     dailycontentsdata?: ContentsType[];
     weeklycontentsdata?: ContentsType[];
     bosscontentsdata?: BossContentsType[];
+    boss_clear_count?: number;
 };
 
 type CategoryType = {
@@ -53,7 +54,7 @@ const Categories: CategoryType[] = [
     {categoryId: "category03", categoryname: "보스"},
 ]
 
-export default function ShowToDos({dailycontentsdata, weeklycontentsdata, bosscontentsdata}: I_ToDoList){
+export default function ShowToDos({dailycontentsdata, weeklycontentsdata, bosscontentsdata, boss_clear_count}: I_ToDoList){
     const [NowCategory, setNowCategory] = useState("category01");
 
     const CategoryChangeEvent = (categoryId: string) => {
@@ -98,6 +99,7 @@ export default function ShowToDos({dailycontentsdata, weeklycontentsdata, bossco
                 {
                     NowCategory === Categories[2].categoryId ? (
                         <BossToDoList 
+                            weekly_boss_clearcount={boss_clear_count}
                             boss_contentsdata={bosscontentsdata}
                         />
                     ) : null

@@ -7,6 +7,7 @@ import ToDoEmptyMessage from "./EmptyMessage";
 
 interface I_BossToDoList {
     //cycles: string;  일간(bossDaily)|주간(bossWeekly)|월간(bossMonthly)
+    weekly_boss_clearcount?: number;
     boss_contentsdata?: BossContentsType[];
 };
 
@@ -21,7 +22,7 @@ const BossCycles: BossCycleType[] = [
     {cycle_id: "bossMonthly", cycle_name: "월간 보스"}
 ]
 
-export default function BossToDoList({boss_contentsdata}: I_BossToDoList){
+export default function BossToDoList({weekly_boss_clearcount, boss_contentsdata}: I_BossToDoList){
     const [ContentsData, setContentsData] = useState<BossContentsType[]>([]);
     const [NowCategory, setNowCategory] = useState<BossCycleType>(BossCycles[0]);
     const [CompliteLength, setCompliteLength] = useState(0);
@@ -40,14 +41,13 @@ export default function BossToDoList({boss_contentsdata}: I_BossToDoList){
 
     //Default Data Setting용
     useEffect(() => {
-        if(!boss_contentsdata){
+        if(!boss_contentsdata || !weekly_boss_clearcount){
             return;
         } else {
             const Regist_Filter = boss_contentsdata.filter((data) => NowCategory.cycle_id === data.cycle && data.registration_flag === "true");
-            const GetComplites = Regist_Filter.filter((data) => data.complete_flag === "true");
 
             setContentsData(Regist_Filter);
-            setCompliteLength(GetComplites.length);
+            setCompliteLength(weekly_boss_clearcount);
         }
     }, []);
 

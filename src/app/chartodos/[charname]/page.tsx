@@ -41,6 +41,7 @@ export default async function Chartodos_charpage({params}: I_Chartodos_charpage)
                             dailycontentsdata={ScheduleData.daily_contents}
                             bosscontentsdata={ScheduleData.boss_contents}
                             weeklycontentsdata={ScheduleData.weekly_contents}
+                            boss_clear_count={ScheduleData.weekly_boss_clear_count}
                         />
                     </main>
                 ) : null

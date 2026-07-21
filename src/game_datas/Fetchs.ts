@@ -119,4 +119,51 @@ export async function GetCharScheduleData(ocid?: string){
     const scheduleData = await Resp.json() as I_SchedulerData;
 
     return scheduleData;
+};
+
+/**
+ * 'chartodos' page 전용 fetch function
+ * 
+ * - 북마크 등록된 캐릭터들의 스케줄러 데이터 return하는 함수
+ */
+
+export async function GetBookmarksSchduleData(charnames: string[]){
+    /**
+     * cookie data, charnames (북마크 등록된 캐릭터 명 list)
+     */
+    const Ocids = await Promise.all(
+        charnames.map((value) => GetOcids(value).then((resp) => resp?.ocid))
+    );
+
+    if(Ocids && Ocids.length > 0){
+        const ScheduleData = await Promise.all(
+            Ocids.map((value) => GetCharScheduleData(value).then((resp) => resp))
+        );
+
+        if(ScheduleData === null || !ScheduleData) return;
+
+        const ModifyScheduleData = ScheduleData.map((data) => {
+            if(data === null){
+                return null;
+            } else {
+                const NewScheduleData: I_SchedulerData = {
+                    character_name: data.character_name,
+                    character_class: data.character_class,
+                    world_name: data.world_name,
+                    daily_contents: data.daily_contents,
+                    weekly_contents: data.weekly_contents,
+                    boss_contents: data.boss_contents,
+                    weekly_boss_clear_count: data.weekly_boss_clear_count,
+                    weekly_boss_clear_limit_count: data.weekly_boss_clear_limit_count
+                };
+
+                return NewScheduleData;
+            }
+        });
+
+        return ModifyScheduleData;
+    } else {
+        console.log("fetch error");
+        return;
+    }
 }

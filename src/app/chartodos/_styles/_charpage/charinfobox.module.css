@@ -1,13 +1,21 @@
 .charinfobox_container {
     width: 95%;
-    max-width: 380px;
+    max-width: 500px;
     height: 20%;
     margin-top: 3%;
     display: flex;
     flex-direction: row;
     align-items: center;
-    background-color: rgb(210, 210, 210);
+    background-color: rgb(200, 200, 200);
     border-radius: 10px;
+}
+
+.charinfobox_charimage_area {
+    width: 30%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
 
     .charimage {
         width: 100px;
@@ -16,19 +24,29 @@
     };
 }
 
-.charinfobox_chardatabox {
+.charinfobox_chardata_buttons_area {
     width: 70%;
     height: 100%;
-    z-index: 2;
     display: flex;
     flex-direction: column;
+    align-items: flex-start;
+    justify-content: center;
+}
+
+.charinfobox_chardata_area {
+    width: 75%;
+    max-width: 250px;
+    height: 50%;
+    z-index: 2;
+    display: flex;
+    flex-direction: row;
     align-items: center;
 }
 
 .chardatabox_chardata {
     width: 80%;
+    max-width: 300px;
     height: 50%;
-    margin-top: 5px;
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -52,6 +70,7 @@
     .charnamebox {
         width: 100%;
         height: 50%;
+        margin-bottom: 5px;
         display: flex;
         flex-direction: row;
         align-items: center;
@@ -88,37 +107,52 @@
     }
 }
 
-.chardatabox_bookmarkbtnbox {
+.charinfobox_buttons_area {
     width: 100%;
     height: 50%;
     display: flex;
+    flex-direction: row;
     align-items: center;
-    justify-content: center;
+    justify-content: space-between;
 
     button {
-        width: 80%;
+        width: 90%;
         height: 60%;
+        font-size: 13px;
         font-weight: bold;
+        border-width: 2px;
+        border-style: solid;
         border-radius: 8px;
     };
+}
+
+.charinfo_buttons_area_buttonbox {
+    width: 50%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
 }
 
 .bookmarkbtn_isadds_true {
     color: rgb(230, 230, 230);
     background-color: black;
-    border: 2px solid rgb(255, 255, 255);
-
-    &:hover {
-        background-color: rgb(70, 70, 70);
-    };
+    border-color: white;
 }
 
 .bookmarkbtn_isadds_false {
     color: black;
     background-color: rgb(210, 210, 210);
-    border: 2px solid black;
+    border-color: black;
+}
 
-    &:hover {
-        background-color: rgb(230, 230, 230);
-    };
+.registflag_button {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+
+    svg {
+        margin-right: 5px;
+    }
 }
