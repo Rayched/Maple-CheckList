@@ -52,7 +52,7 @@ const Categories: CategoryType[] = [
     {categoryId: "category01", categoryname: "일일"},
     {categoryId: "category02", categoryname: "주간"},
     {categoryId: "category03", categoryname: "보스"},
-]
+];
 
 export default function ShowToDos({dailycontentsdata, weeklycontentsdata, bosscontentsdata, boss_clear_count}: I_ToDoList){
     const [NowCategory, setNowCategory] = useState("category01");

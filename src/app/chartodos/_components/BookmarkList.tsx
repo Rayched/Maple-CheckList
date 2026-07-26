@@ -94,6 +94,8 @@ export default function BookmarkList(){
                             <BookmarkItem 
                                 key={`bookmarkitem_${idx}`}
                                 charname={data.charname}
+                                charimgurl={data.charimgurl}
+                                worldname={data.worldname}
                             />
                         );
                     })

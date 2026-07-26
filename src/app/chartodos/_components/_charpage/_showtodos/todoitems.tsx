@@ -213,12 +213,16 @@ export function BossToDoItem({
                 </div>
             </div>
             <div className={styles.todoitem_children_area}>
-                <img src={`/imgs/boss_monsters/${contents_id}.png`} />
-                <span>
-                    {little_name ? little_name : null}
-                    {!little_name ? contents_name : null}
-                </span>
-                <span>{rank_name}</span>
+                <div className={styles.todoitem_bosstodos_data_area}>
+                    <img src={`/imgs/boss_monsters/${contents_id}.png`} />
+                    <span>
+                        {little_name ? little_name : null}
+                        {!little_name ? contents_name : null}
+                    </span>
+                </div>
+                <div className={styles.bosstodoitem_ranks_area}>
+                    {rank_name}
+                </div>
             </div>
         </ToDoItemContainer>
     );

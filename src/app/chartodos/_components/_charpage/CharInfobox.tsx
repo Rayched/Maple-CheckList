@@ -32,7 +32,7 @@ const BtnStyle = {
 };
 
 export default function Charpage_CharInfobox({charname, charlevel, charclass, charimgurl, worldname}: I_CharInfobox){
-    const {Bookmarks, AddNewBookmark, DeleteBookmark} = useStore(BookmarkStore);
+    const {Bookmarks, AddNewBookmark, DeleteBookmark, EditBookmarks} = useStore(BookmarkStore);
     const {NowViewportWidthValue} = useStore(ViewportWidthStore);
     const {ShowAllRegist, setShowAllRegist} = useStore(RegistFlagStore);
 
@@ -80,13 +80,13 @@ export default function Charpage_CharInfobox({charname, charlevel, charclass, ch
     };
 
     useEffect(() => {
-        if(!worldname || !charclass || !charname) return;
+        if(!worldname || !charclass || !charname || !charlevel || !charimgurl) return;
 
         setShowAllRegist(false);
 
         const GetWorldData = WorldDatas.find((worlds) => worlds.worldNm === worldname);
         const GetClassData = ClassDatas.find((classdata) => classdata.class_fullNm === charclass);
-        const BookmarkCheck = Bookmarks.find((data) => data.charname === charname);
+        const BookmarkCheck = Bookmarks.findIndex((data) => data.charname === charname);
 
         if(!GetWorldData || !GetClassData || !BookmarkCheck){
             return;
@@ -94,6 +94,16 @@ export default function Charpage_CharInfobox({charname, charlevel, charclass, ch
             setWorldIconName(GetWorldData.worldId);
             setClassIconName(GetClassData.class_category);
             setIsAddBookmarks(true);
+
+            const updateData: I_BookmarkData = {
+                charname: charname,
+                charlevel: charlevel,
+                charclass: charclass,
+                charimgurl: charimgurl,
+                worldname: worldname
+            };
+
+            EditBookmarks(updateData);
         }
     }, []);
 

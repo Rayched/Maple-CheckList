@@ -6,7 +6,6 @@ import { FormProvider, useForm } from "react-hook-form";
 import styled from "styled-components";
 import { useStore } from "zustand";
 import { I_BossIncomeData, I_FormValue } from "../../add_incomes/_components/AddIncomeForms";
-import { BossContentsData } from "@/game_datas/contentsData";
 import { RankColorInfos } from "@/game_datas/bossrank_colordata";
 import { GetRankBoxMinHeights, IncomeFormsCommons } from "../../_components/incomeform_commons";
 import styles from "../../_styles/incomeforms.module.css";
@@ -15,6 +14,7 @@ import { IncomeDataSort } from "@/utils/SortFuncs";
 import { ModifyIncomedata } from "@/utils/useGetSummitValues";
 import { useRouter } from "next/navigation";
 import RankIcon from "@/components/commons/rankicon";
+import { BossToDoRefData } from "@/game_datas/contentsdatas/BossContentsData";
 
 interface I_EditIncomeListProps {
     charname: string;
@@ -60,7 +60,7 @@ export default function EditIncomeList({charname, ocid, charimgurl}: I_EditIncom
     const {CharIncomeDatas, EditCharIncomeData} = useStore(CharIncomeStore);
     const [BossIncomeData, setBossIncomeData] = useState<I_BossIncomeData[]>([]);
     const [TotalValues, setTotalValues] = useState(0);
-    const ContentsData = BossContentsData;
+    const ContentsData = BossToDoRefData.weeklyboss_refdata;
 
     const FormMethods = useForm<I_EditFormValue>({
         defaultValues: {
@@ -287,8 +287,8 @@ export default function EditIncomeList({charname, ocid, charimgurl}: I_EditIncom
                                                 <div className={styles.incomeforms_todoitem_bossranks}>
                                                     <div className={styles.bossrankbox}>
                                                         {
-                                                            bossdata.Ranks.length <= 1 ? (
-                                                                <RankIcon bossrank={bossdata.BossId} />
+                                                            bossdata.Ranks.length === 1 ? (
+                                                                <RankIcon bossrank={bossdata.Ranks[0].rankId} />
                                                             ) : null
                                                         }
                                                         {

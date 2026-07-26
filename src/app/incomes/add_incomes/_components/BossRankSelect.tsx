@@ -1,12 +1,11 @@
 "use client"
 
-import { BossContentsData, I_RankType } from "@/game_datas/contentsData";
 import { I_BossIncomeData, I_FormValue } from "./AddIncomeForms";
 import { useFormContext } from "react-hook-form";
-import { useEffect } from "react";
 import styled from "styled-components";
 import { RankColorInfos } from "@/game_datas/bossrank_colordata";
 import RankIcon from "@/components/commons/rankicon";
+import { BossToDoRefData, I_RankType } from "@/game_datas/contentsdatas/BossContentsData";
 
 interface I_BossRank_Radios {
     StateData: I_BossIncomeData[];
@@ -60,6 +59,7 @@ export default function BossRankRadioBox({StateData ,setStateFn, RanksData, boss
 
     const RankChangeEventListener = ({rankId, targetId}: I_RankChangeEventListenerProps) => {
         const [BossId, BossRank] = targetId.split("_");
+        const BossContentsData = BossToDoRefData.weeklyboss_refdata;
 
         const idx = StateData.findIndex((data) => data.bossid === BossId);
         const TargetData = BossContentsData.find((data) => data.BossId === BossId);

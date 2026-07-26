@@ -1,9 +1,9 @@
-import { BossContentsData, I_BossContents } from "@/game_datas/contentsData";
 import { BossContentsType } from "@/game_datas/Fetchs";
 import { useEffect, useState } from "react";
 import styles from "../../../_styles/_charpage/todolist.module.css";
 import { BossToDoItem } from "./todoitems";
 import ToDoEmptyMessage from "./EmptyMessage";
+import { BossToDoRefData } from "@/game_datas/contentsdatas/BossContentsData";
 
 interface I_BossToDoList {
     //cycles: string;  일간(bossDaily)|주간(bossWeekly)|월간(bossMonthly)
@@ -26,6 +26,8 @@ export default function BossToDoList({weekly_boss_clearcount, boss_contentsdata}
     const [ContentsData, setContentsData] = useState<BossContentsType[]>([]);
     const [NowCategory, setNowCategory] = useState<BossCycleType>(BossCycles[0]);
     const [CompliteLength, setCompliteLength] = useState(0);
+
+    const {dailyboss_refdata, weeklyboss_refdata, monthlyboss_refdata} = BossToDoRefData;
 
     const CategoryChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
         const {currentTarget: {value}} = e;
@@ -88,11 +90,42 @@ export default function BossToDoList({weekly_boss_clearcount, boss_contentsdata}
                 <div className={styles.bosstodolist_todoitems_area}>
                     {
                         ContentsData.map((contents) => {
-                            const TargetData = BossContentsData.find((bossdata) => bossdata.BossNm === contents.content_name);
+                            if(NowCategory.cycle_id === BossCycles[0].cycle_id){
+                                //일일 보스
+                                const TargetData = dailyboss_refdata.find((data) => data.BossNm === contents.content_name);
 
-                            if(!TargetData){
-                                return null;
+                                if(!TargetData) return null;
+
+                                return (
+                                    <BossToDoItem 
+                                        key={TargetData.BossId}
+                                        contents_id={TargetData.BossId}
+                                        contents_name={contents.content_name}
+                                        little_name={TargetData.SubName}
+                                        complite_flag={contents.complete_flag}
+                                        rank_name={contents.difficulty}
+                                    />
+                                );
+                            } else if(NowCategory.cycle_id === BossCycles[1].cycle_id){
+                                const TargetData = weeklyboss_refdata.find((data) => data.BossNm === contents.content_name);
+
+                                if(!TargetData) return null;
+
+                                return (
+                                    <BossToDoItem 
+                                        key={TargetData.BossId}
+                                        contents_id={TargetData.BossId}
+                                        contents_name={contents.content_name}
+                                        little_name={TargetData.SubName}
+                                        complite_flag={contents.complete_flag}
+                                        rank_name={contents.difficulty}
+                                    />
+                                );
                             } else {
+                                const TargetData = monthlyboss_refdata.find((data) => data.BossNm === contents.content_name);
+
+                                if(!TargetData) return null;
+                                
                                 return (
                                     <BossToDoItem 
                                         key={TargetData.BossId}

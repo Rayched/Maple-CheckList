@@ -1,6 +1,6 @@
 "use client"
 
-import { BossContentsData, WorldDatas } from "@/game_datas/contentsData";
+import { WorldDatas } from "@/game_datas/contentsData";
 import React, { useEffect, useState } from "react";
 import { FormProvider, useForm } from "react-hook-form";
 import styled from "styled-components";
@@ -14,6 +14,7 @@ import {GetRankBoxMinHeights, IncomeFormsCommons} from "../../_components/income
 import styles from "../../_styles/incomeforms.module.css";
 import { ModifyIncomedata } from "@/utils/useGetSummitValues";
 import RankIcon from "@/components/commons/rankicon";
+import { BossToDoRefData } from "@/game_datas/contentsdatas/BossContentsData";
 
 interface I_AddBossIncomeFormsProps {
     charname?: string;
@@ -52,7 +53,7 @@ export default function AddBossIncomeForms({charname, ocid, charimg, worldname}:
         CharIncomeDatas, AddNewCharIncomeData,
         NowAddsWorld, setNowAddsWorld
     } = useStore(CharIncomeStore);
-    const ContentsData = BossContentsData;
+    const ContentsData = BossToDoRefData.weeklyboss_refdata;
 
     const [IncomeDatas, setIncomeDatas] = useState<I_BossIncomeData[]>([]);
     const [TotalValues, setTotalValues] = useState(0);
@@ -206,18 +207,6 @@ export default function AddBossIncomeForms({charname, ocid, charimg, worldname}:
                             //const MinHeights = GetRankBoxMinHeights(data.Ranks.length);
                             const MinHeights = GetRankBoxMinHeights(data.Ranks.length);
                             const IsIncludes = IncomeDatas.find((todos) => todos.bossid === data.BossId); 
-
-                            const ColorData = RankColorInfos.find((colors) => {
-                                const RankLength = data.Ranks.length;
-
-                                if(RankLength >= 2){
-                                    return undefined;
-                                } else if(data.Ranks[0].rankId === colors.rankId){
-                                    return colors;
-                                } else {
-                                    return undefined
-                                }
-                            });
 
                             const DisabledValue = (!watch("BossToDoCheckbox").includes(data.BossId) && IncomeDatas.length >= 12 ? "1" : "0");
 
