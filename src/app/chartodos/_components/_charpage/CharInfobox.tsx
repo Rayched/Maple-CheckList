@@ -86,7 +86,7 @@ export default function Charpage_CharInfobox({charname, charlevel, charclass, ch
 
         const GetWorldData = WorldDatas.find((worlds) => worlds.worldNm === worldname);
         const GetClassData = ClassDatas.find((classdata) => classdata.class_fullNm === charclass);
-        const BookmarkCheck = Bookmarks.findIndex((data) => data.charname === charname);
+        const BookmarkCheck = Bookmarks.find((data) => data.charname === charname);
 
         if(!GetWorldData || !GetClassData || !BookmarkCheck){
             return;
