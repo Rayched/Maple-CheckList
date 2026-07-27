@@ -2,7 +2,8 @@
 /*일일, 주간 컨텐츠 todoitem style's*/
 
 .todoitem_checkbox_area {
-    width: 15%;
+    width: 10%;
+    min-width: 20px;
     height: 100%;
     display: flex;
     flex-direction: row;
@@ -21,7 +22,7 @@
 }
 
 .todoitem_children_area {
-    width: 80%;
+    width: 85%;
     height: 100%;
     display: flex;
     flex-direction: row;
@@ -44,3 +45,37 @@
 }
 
 /*보스 컨텐츠, todoitem style's*/
+.bosstodoitem_bossdata_area {
+    width: 60%;
+    height: 100%;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+
+    img {
+        width: 25px;
+        height: 25px;
+        margin-right: 5px
+    };
+}
+
+.bosstodoitem_ranks_area {
+    width: 40%;
+    min-height: 25px;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.bosstodoitem_rankicon {
+    width: 70px;
+    height: 25px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 13px;
+    border-width: 3px;
+    border-style: solid;
+    border-radius: 15px;
+}

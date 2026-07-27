@@ -15,6 +15,12 @@ interface I_BossContents {
     Ranks: I_RankType[];
 };
 
+export type RankIconTextType = {
+    rankId: string,
+    rankname_en: string;
+    rankname_ko: string;
+};
+
 //일일 보스 Data
 /**
  * boss icon img name 순
@@ -365,10 +371,39 @@ const MonthlyBossDatas: I_BossContents[] = [
             {rankId: "extreme", rankNm: "익스트림", price: 0}
         ]
     }
-]
+];
+
+const RankIconText: RankIconTextType[] = [
+    {
+        rankId: "easy",
+        rankname_en: "Easy",
+        rankname_ko: "이지"
+    },
+    {
+        rankId: "normal",
+        rankname_en: "Normal",
+        rankname_ko: "노말"
+    },
+    {
+        rankId: "hard",
+        rankname_en: "Hard",
+        rankname_ko: "하드"
+    },
+    {
+        rankId: "chaos",
+        rankname_en: "Chaos",
+        rankname_ko: "카오스"
+    },
+    {
+        rankId: "extreme",
+        rankname_en: "Extreme",
+        rankname_ko: "익스트림"
+    }
+];
 
 export const BossToDoRefData = {
     dailyboss_refdata: DailyBossDatas,
     weeklyboss_refdata: WeeklyBossDatas,
-    monthlyboss_refdata: MonthlyBossDatas
+    monthlyboss_refdata: MonthlyBossDatas,
+    rankicontext: RankIconText
 };

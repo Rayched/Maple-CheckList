@@ -2,6 +2,9 @@ import styled from "styled-components";
 import styles from "../../../_styles/_charpage/todoitem.module.css";
 import { useStore } from "zustand";
 import { ViewportWidthStore } from "@/stores/ViewportStore";
+import { BossToDoRefData, RankIconTextType } from "@/game_datas/contentsdatas/BossContentsData";
+import { useEffect, useState } from "react";
+import { RankColorInfos } from "@/game_datas/bossrank_colordata";
 
 interface I_ToDoItem {
     contents_name: string;
@@ -29,9 +32,7 @@ interface I_ToDoItem_Quest extends I_ToDoItem {
     quest_state: string|null;
 }
 
-interface I_ToDoItem_Guilds extends I_ToDoItem {
-    
-}
+interface I_ToDoItem_Guilds extends I_ToDoItem {}
 
 interface I_BossToDoItem {
     complite_flag: string;
@@ -40,6 +41,12 @@ interface I_BossToDoItem {
     little_name?: string;
     rank_name: string;
 }
+
+interface I_ColorData {
+    textcolor: string;
+    bgcolor: string;
+    bordercolor: string;
+};
 
 const ToDoItemContainer = styled.div<I_ToDoItemContainer>`
     width: 90%;
@@ -203,7 +210,29 @@ export function BossToDoItem({
     complite_flag, contents_id, contents_name, little_name, rank_name
 }: I_BossToDoItem){
     const {NowViewportWidthValue} = useStore(ViewportWidthStore);
+    const {rankicontext} = BossToDoRefData;
+
+    const [RankText, setRankText] = useState<RankIconTextType>();
+    const [ColorData, setColorData] = useState<I_ColorData>();
+
     const contents_state = complite_flag === "true" ? "true" : "false";
+
+    useEffect(() => {
+        const GetRankTextData = rankicontext.find((data) => data.rankId === rank_name);
+        const GetColorData = RankColorInfos.find((data) => data.rankId === rank_name);
+
+        if(!GetRankTextData || !GetColorData){
+            return;
+        } else {
+            setRankText(GetRankTextData);
+
+            setColorData({
+                textcolor: GetColorData.fontColor,
+                bgcolor: GetColorData.bgColor,
+                bordercolor: GetColorData.borderColor
+            });
+        }
+    }, []);
 
     return (
         <ToDoItemContainer contents_state={contents_state}>
@@ -213,7 +242,7 @@ export function BossToDoItem({
                 </div>
             </div>
             <div className={styles.todoitem_children_area}>
-                <div className={styles.todoitem_bosstodos_data_area}>
+                <div className={styles.bosstodoitem_bossdata_area}>
                     <img src={`/imgs/boss_monsters/${contents_id}.png`} />
                     <span>
                         {little_name ? little_name : null}
@@ -221,7 +250,9 @@ export function BossToDoItem({
                     </span>
                 </div>
                 <div className={styles.bosstodoitem_ranks_area}>
-                    {rank_name}
+                    <div className={styles.bosstodoitem_rankicon} style={{color: ColorData?.textcolor,backgroundColor: ColorData?.bgcolor, borderColor: ColorData?.bordercolor}}>
+                        {RankText ? `${RankText.rankname_en}` : `${rank_name}`}
+                    </div>
                 </div>
             </div>
         </ToDoItemContainer>
