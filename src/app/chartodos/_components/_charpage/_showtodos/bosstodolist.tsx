@@ -4,6 +4,9 @@ import styles from "../../../_styles/_charpage/todolist.module.css";
 import { BossToDoItem } from "./todoitems";
 import ToDoEmptyMessage from "./EmptyMessage";
 import { BossToDoRefData } from "@/game_datas/contentsdatas/BossContentsData";
+import { useStore } from "zustand";
+import { RegistFlagStore } from "@/stores/RegistFlagStore";
+import { useBossToDoRegistFilter } from "@/utils/RegistFilters";
 
 interface I_BossToDoList {
     //cycles: string;  일간(bossDaily)|주간(bossWeekly)|월간(bossMonthly)
@@ -20,55 +23,61 @@ const BossCycles: BossCycleType[] = [
     {cycle_id: "bossDaily", cycle_name: "일일 보스"},
     {cycle_id: "bossWeekly", cycle_name: "주간 보스"},
     {cycle_id: "bossMonthly", cycle_name: "월간 보스"}
-]
+];
 
 export default function BossToDoList({weekly_boss_clearcount, boss_contentsdata}: I_BossToDoList){
-    const [ContentsData, setContentsData] = useState<BossContentsType[]>([]);
     const [NowCategory, setNowCategory] = useState<BossCycleType>(BossCycles[0]);
     const [CompliteLength, setCompliteLength] = useState(0);
+
+    const {ShowAllRegist} = useStore(RegistFlagStore);
+    const {contents_data, registFilter} = useBossToDoRegistFilter({boss_contents_data: boss_contentsdata});
 
     const {dailyboss_refdata, weeklyboss_refdata, monthlyboss_refdata} = BossToDoRefData;
 
     const CategoryChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
         const {currentTarget: {value}} = e;
+        
+        const Idx = BossCycles.findIndex((data) => data.cycle_id === value);
 
-        const GetBossCycleData = BossCycles.find((data) => data.cycle_id === value);
-
-        if(!GetBossCycleData){
+        if(Idx === -1){
             return;
         } else {
-            setNowCategory(GetBossCycleData);
+            setNowCategory(BossCycles[Idx]);
         }
-    };
+    }
 
     //Default Data Setting용
     useEffect(() => {
-        if(!boss_contentsdata || !weekly_boss_clearcount){
+        if(!boss_contentsdata || !weekly_boss_clearcount || boss_contentsdata.length === 0){
             return;
         } else {
-            const Regist_Filter = boss_contentsdata.filter((data) => NowCategory.cycle_id === data.cycle && data.registration_flag === "true");
+            const NewCompliteLength = boss_contentsdata.filter((data) => data.complete_flag === "true" && data.cycle === NowCategory.cycle_id).length;
 
-            setContentsData(Regist_Filter);
-            setCompliteLength(weekly_boss_clearcount);
+            registFilter(NowCategory.cycle_id);
+            setCompliteLength(NewCompliteLength); 
         }
     }, []);
 
-    //Boss Cycle Category Change 대응 data update
     useEffect(() => {
-        const {cycle_id} = NowCategory;
+        if(!boss_contentsdata || boss_contentsdata.length === 0 || !weekly_boss_clearcount) return;
 
-        if(!boss_contentsdata){
-            return;
+        if(NowCategory.cycle_id === "bossDaily"){
+            const NewLength = boss_contentsdata.filter((data) => data.cycle === "bossDaily" && data.complete_flag === "true").length;
+            setCompliteLength(NewLength);
+            registFilter("bossDaily");
+        } else if(NowCategory.cycle_id === "bossWeekly"){
+            setCompliteLength(weekly_boss_clearcount);
+            registFilter("bossWeekly");
         } else {
-            const UpdateData = boss_contentsdata.filter((data) => cycle_id === data.cycle && data.registration_flag === "true");
-            const GetComplites = UpdateData.filter((data) => data.complete_flag === "true");
-
-            console.log(UpdateData);
-
-            setContentsData(UpdateData);
-            setCompliteLength(GetComplites.length);
+            const NewLength = boss_contentsdata.filter((data) => data.cycle === "bossMonthly" && data.complete_flag === "true").length;
+            setCompliteLength(NewLength);
+            registFilter("bossMonthly")
         }
     }, [NowCategory]);
+
+    useEffect(() => {
+        registFilter(NowCategory.cycle_id);
+    }, [ShowAllRegist]);
 
     return (
         <div className={styles.todolist_commons_container}>
@@ -85,11 +94,11 @@ export default function BossToDoList({weekly_boss_clearcount, boss_contentsdata}
                             })
                         }
                     </select>
-                    <span>{`${CompliteLength} / ${ContentsData.length}`}</span>
+                    <span>{`${CompliteLength} / ${contents_data.length}`}</span>
                 </div>
                 <div className={styles.bosstodolist_todoitems_area}>
                     {
-                        ContentsData.map((contents) => {
+                        contents_data.map((contents) => {
                             if(NowCategory.cycle_id === BossCycles[0].cycle_id){
                                 //일일 보스
                                 const TargetData = dailyboss_refdata.find((data) => data.BossNm === contents.content_name);
@@ -98,7 +107,7 @@ export default function BossToDoList({weekly_boss_clearcount, boss_contentsdata}
 
                                 return (
                                     <BossToDoItem 
-                                        key={TargetData.BossId}
+                                        key={`${TargetData.BossId}_${contents.difficulty}`}
                                         contents_id={TargetData.BossId}
                                         contents_name={contents.content_name}
                                         little_name={TargetData.SubName}
@@ -113,7 +122,7 @@ export default function BossToDoList({weekly_boss_clearcount, boss_contentsdata}
 
                                 return (
                                     <BossToDoItem 
-                                        key={TargetData.BossId}
+                                        key={`${TargetData.BossId}_${contents.difficulty}`}
                                         contents_id={TargetData.BossId}
                                         contents_name={contents.content_name}
                                         little_name={TargetData.SubName}
@@ -128,7 +137,7 @@ export default function BossToDoList({weekly_boss_clearcount, boss_contentsdata}
                                 
                                 return (
                                     <BossToDoItem 
-                                        key={TargetData.BossId}
+                                        key={`${TargetData.BossId}_${contents.difficulty}`}
                                         contents_id={TargetData.BossId}
                                         contents_name={contents.content_name}
                                         little_name={TargetData.SubName}
@@ -140,7 +149,7 @@ export default function BossToDoList({weekly_boss_clearcount, boss_contentsdata}
                         })
                     }
                     {
-                        ContentsData.length === 0 ? (
+                        contents_data.length === 0 ? (
                             <ToDoEmptyMessage 
                                 message_refname={NowCategory.cycle_name}
                             />

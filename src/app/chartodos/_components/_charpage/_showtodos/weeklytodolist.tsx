@@ -6,6 +6,7 @@ import { ViewportWidthStore } from "@/stores/ViewportStore";
 import { useEffect, useState } from "react";
 import { ToDoItem_Contents, ToDoItem_Guilds, ToDoItem_Quest } from "./todoitems";
 import ToDoEmptyMessage from "./EmptyMessage";
+import { RegistFlagStore } from "@/stores/RegistFlagStore";
 
 export interface I_ScheduleData {
     titleText: string;
@@ -19,6 +20,7 @@ interface I_WeeklyToDoList {
 export default function WeeklyToDoList({weeklycontentsdata}: I_WeeklyToDoList){
     const {weeklys} = DailyAndWeeklyData;
     const [ScheduleData, setScheduleData] = useState<I_ScheduleData[]>([]);
+    const {ShowAllRegist} = useStore(RegistFlagStore);
 
     //registration_flag = "false" data 필터링용
     /**
@@ -53,6 +55,54 @@ export default function WeeklyToDoList({weeklycontentsdata}: I_WeeklyToDoList){
 
         setScheduleData(NewScheduleData);
     }, []);
+
+    useEffect(() => {
+        if(!weeklycontentsdata || weeklycontentsdata.length === 0){
+            return;
+        } else if(ShowAllRegist){
+            const TypeContents = weeklycontentsdata.filter((data) => data.type === "contents" && !data.content_name.includes("[길드]"));
+            const TypeQuest = weeklycontentsdata.filter((data) => data.type === "quest");
+            const TypeGuild = weeklycontentsdata.filter((data) => data.content_name.includes("[길드]"));
+
+            const NewScheduleData: I_ScheduleData[] = [
+                {
+                    titleText: "주간 컨텐츠",
+                    contents_data: TypeContents
+                },
+                {
+                    titleText: "길드 컨텐츠",
+                    contents_data: TypeGuild
+                },
+                {
+                    titleText: "주간 퀘스트",
+                    contents_data: TypeQuest
+                }
+            ];
+
+            setScheduleData(NewScheduleData);
+        } else {
+            const TypeContents = weeklycontentsdata.filter((data) => data.type === "contents" && data.registration_flag === "true" && !data.content_name.includes("[길드]"));
+            const TypeQuest = weeklycontentsdata.filter((data) => data.type === "quest" && data.registration_flag === "true");
+            const TypeGuild = weeklycontentsdata.filter((data) => data.content_name.includes("[길드]") && data.registration_flag === "true");
+
+            const NewScheduleData: I_ScheduleData[] = [
+                {
+                    titleText: "주간 컨텐츠",
+                    contents_data: TypeContents
+                },
+                {
+                    titleText: "길드 컨텐츠",
+                    contents_data: TypeGuild
+                },
+                {
+                    titleText: "주간 퀘스트",
+                    contents_data: TypeQuest
+                }
+            ];
+
+            setScheduleData(NewScheduleData);
+        }
+    }, [ShowAllRegist]);
 
     return (
         <div className={styles.todolist_commons_container}>

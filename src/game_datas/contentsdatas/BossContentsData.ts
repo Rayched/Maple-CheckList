@@ -344,7 +344,6 @@ const WeeklyBossDatas: I_BossContents[] = [
     {
         BossId: "boss25",
         BossNm: "발드릭스",
-        SubName: "발드",
         Ranks: [
             {rankId: "normal",rankNm: "노말", price: 1368000000},
             {rankId: "hard", rankNm: "하드", price: 3078000000},
@@ -353,7 +352,6 @@ const WeeklyBossDatas: I_BossContents[] = [
     {
         BossId: "boss26",
         BossNm: "유피테르",
-        SubName: "유피",
         Ranks: [
             {rankId: "normal", rankNm: "노말", price: 1615000000},
             {rankId: "hard", rankNm: "하드", price: 4845000000}

@@ -187,7 +187,7 @@ const WeeklyContentsData: I_ContentsData[] = [
     {
         contentsId: "weekly05", 
         contentsName: "[몬스터파크] 익스트림 몬스터파커에 도전해보겠나?", 
-        little_name: "익스몬파",
+        little_name: "익스트림 몬스터파커",
         max_count: 5,
         contents_type: "quest"
     },
@@ -236,42 +236,42 @@ const WeeklyContentsData: I_ContentsData[] = [
     {
         contentsId: "weekly12", 
         contentsName: "[주간 퀘스트] 성실한 조사에 대한 보답", 
-        little_name: "[주간] 여로 보답 퀘스트",
+        little_name: "성실한 조사에 대한 보답",
         max_count: 2,
         contents_type: "quest"
     },
     {
         contentsId: "weekly13", 
         contentsName: "[주간 퀘스트] 크리티아스 주간 임무", 
-        little_name: "크리티아스 주간 퀘스트",
+        little_name: "크리티아스 주간 임무",
         max_count: 1,
         contents_type: "quest"
     },
     {
         contentsId: "weekly14", 
         contentsName: "[주간 퀘스트] 타락한 세계수 주간 임무", 
-        little_name: "타락한 세계수 주간 퀘스트",
+        little_name: "타락한 세계수 주간 임무",
         max_count: 1,
         contents_type: "quest"
     },
     {
         contentsId: "weekly15", 
         contentsName: "[주간 퀘스트] 타락한 세계수 정화에 대한 보답", 
-        little_name: "타락한 세계수 보답 퀘스트",
+        little_name: "타락한 세계수 정화에 대한 보답",
         max_count: 1,
         contents_type: "quest"
     },
     {
         contentsId: "weekly16", 
         contentsName: "[주간 퀘스트] 헤이븐 주간 임무", 
-        little_name: "헤이븐 주간 퀘스트",
+        little_name: "헤이븐 주간 임무",
         max_count: 1,
         contents_type: "quest"
     },
     {
         contentsId: "weekly17", 
         contentsName: "[주간 퀘스트] 꾸준한 의뢰에 대한 보답", 
-        little_name: "헤이븐 보답 퀘스트",
+        little_name: "꾸준한 의뢰에 대한 보답",
         max_count: 1,
         contents_type: "quest"
     },

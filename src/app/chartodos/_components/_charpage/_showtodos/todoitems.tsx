@@ -56,18 +56,14 @@ const ToDoItemContainer = styled.div<I_ToDoItemContainer>`
     display: flex;
     flex-direction: row;
     align-items: center;
-    background-color: ${(props) => props.contents_state === "true" ? "rgb(170, 170, 170)" : "rgb(220, 220, 220)"};
+    background-color: ${(props) => props.contents_state === "true" ? "rgb(130, 129, 129)" : "rgb(220, 220, 220)"};
     border-width: 2px;
     border-style: solid;
-    border-color: ${(props) => props.contents_state === "true" ? "rgb(145, 145, 145)" : "rgb(198, 199, 200)"};
+    border-color: ${(props) => props.contents_state === "true" ? "rgb(130, 129, 129)" : "rgb(198, 199, 200)"};
     border-radius: 8px;
 `;
 
-const TextBox = styled.div<I_ToDoItemContainer>`
-    text-decoration: ${(props) => props.contents_state === "true" ? "line-through" : "none"};
-    text-decoration-thickness: 2px;
-    font-size: 14px;
-`;
+const TextBox = styled.div<I_ToDoItemContainer>``;
 
 const Checkbox = styled.div`
     width: 13px;
@@ -123,10 +119,13 @@ export function ToDoItem_Quest({quest_state, contents_name, little_name, now_cou
                     ModifyCheck={String(ModifyCheck)}
                     isdone={contents_state}
                 />
-                <div className={styles.todoitem_countbox}>
-                    {quest_state !== "2" && `${now_count}/${max_count}`}
-                    {quest_state === "2" && "완료"}
-                </div>
+                {
+                    contents_state !== "true" ? (
+                        <div className={styles.todoitem_countbox}>
+                            {`${now_count}/${max_count}`}
+                        </div>
+                    ) : null
+                }
             </div>
         </ToDoItemContainer>
     );

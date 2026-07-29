@@ -5,7 +5,10 @@ export default function HomePage() {
   return (
     <div className={styles.HomeWrapper}>
       <div className={styles.linkbox} id={styles.chartodos}>
-        <Link href={"/chartodos"}>메할일 목록</Link>
+        <Link href={"/chartodos"}>
+          <span>메할일 목록</span>
+          <span>{`(스케줄러)`}</span>
+        </Link>
       </div>
       <div className={styles.linkbox} id={styles.incomes}>
         <Link href={"/incomes"}>주간 수익</Link>

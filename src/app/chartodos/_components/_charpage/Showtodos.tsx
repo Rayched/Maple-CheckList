@@ -1,6 +1,6 @@
 "use client"
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import styles from "../../_styles/_charpage/showtodos.module.css";
 import { BossContentsType, ContentsType } from "@/game_datas/Fetchs";
 import DailyToDoList from "./_showtodos/dailytodolist";
@@ -8,6 +8,8 @@ import WeeklyToDoList from "./_showtodos/weeklytodolist";
 import BossToDoList from "./_showtodos/bosstodolist";
 import styled from "styled-components";
 import { motion } from "framer-motion";
+import { useStore } from "zustand";
+import { RegistFlagStore } from "@/stores/RegistFlagStore";
 
 interface I_ToDoList {
     dailycontentsdata?: ContentsType[];
@@ -56,6 +58,7 @@ const Categories: CategoryType[] = [
 
 export default function ShowToDos({dailycontentsdata, weeklycontentsdata, bosscontentsdata, boss_clear_count}: I_ToDoList){
     const [NowCategory, setNowCategory] = useState("category01");
+    const {setShowAllRegist} = useStore(RegistFlagStore);
 
     const CategoryChangeEvent = (categoryId: string) => {
         if(NowCategory === categoryId){
@@ -64,6 +67,10 @@ export default function ShowToDos({dailycontentsdata, weeklycontentsdata, bossco
             setNowCategory(categoryId);
         }
     };
+
+    useEffect(() => {
+        setShowAllRegist(false);
+    }, []);
 
     return (
         <div className={styles.showtodos_wrapper}>
