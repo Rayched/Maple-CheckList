@@ -2,6 +2,7 @@
     display: flex;
     flex-direction: row;
     align-items: center;
+    justify-content: center;
     width: 100%;
     height: 70px;
     margin: 5px 0px;
@@ -13,4 +14,34 @@
         border: 2px solid black;
         font-weight: bold;
     }
+}
+
+.bookmarkitem_bookmarkdata_container {
+    width: 94%;
+    height: 100%;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+}
+
+.bookmarkitem_deletebtn_container {
+    width: 5%;
+    height: 100%;
+    padding-right: 3px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.bookmarkitem_deletebutton {
+    width: 19px;
+    height: 19px;
+    margin: 3px 0px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    background-color: rgb(255, 118, 117);
+    border: 2px solid rgb(255, 118, 117);
+    border-radius: 30px;
 }

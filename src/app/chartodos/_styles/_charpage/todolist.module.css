@@ -13,88 +13,21 @@
     align-items: center;
     width: 100%;
     height: 100%;
-    overflow-y: auto;
-    scroll-snap-type: y mandatory;
-    scroll-behavior: smooth;
-    &::-webkit-scrollbar {
-        width: 0px;
-    };
 }
 
-/*weeklytodolist css styles*/
-.todolist_container {
-    width: 100%;
-    height: 100%;
-    min-height: min-content;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-}
-
-/*<WeeklyToDoList />, ToDos (주간 컨텐츠, 주간 퀘스트)*/
-.todolist_todos {
-    width: 90%;
-    height: auto;
-    margin: 5px 0px;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    background-color: rgb(250, 250, 250);
-    border-radius: 4px;
-}
-
-.todolist_todos_titles {
-    width: 100%;
-    min-height: 30px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-weight: bold;
-    color: white;
-    background-color: black;
-    border-top-right-radius: inherit;
-    border-top-left-radius: inherit;
-}
-
-.todolist_todos_bodys {
-    width: 100%;
-    height: auto;
-    min-height: min-content;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-}
-
-/*<BossToDoList />, CSS Style's*/
-.bosstodolist_cycle_selectbox {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    width: 100%;
-    height: 8%;
-
-    select {
-        width: 60%;
-        height: 95%;
-        text-align: center;
-        font-size: 14px;
-        font-weight: bold;
-        border: 2px solid black;
-        border-radius: 5px;
-    }
-}
-
-.bosstodolist_todoitems_container {
-    width: 90%;
-    height: auto;
+.todolist_todoitems_container {
+    width: 95%;
+    height: 95%;
+    max-height: 400px;
     margin-top: 1%;
     border-radius: 8px;
     background-color: rgb(250, 250, 250);
+    overflow: hidden;
 }
 
-.bosstodolist_todoitems_titlebox {
+.todolist_titlebox {
     width: 100%;
-    height: 50px;
+    height: 45px;
     display: flex;
     flex-direction: row;
     align-items: center;
@@ -135,13 +68,27 @@
     }
 }
 
-.bosstodolist_todoitems_area {
+.todolist_todoitems_area {
     width: 100%;
-    height: auto;
-    min-height: 250px;
-    padding: 3px 0px;
+    height: 87%;
+    overflow: hidden;
     display: flex;
     flex-direction: column;
     align-items: center;
     justify-content: center;
+}
+
+.todolist_todoitemlist {
+    width: 100%;
+    height: auto;
+    min-height: 250px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    overflow-y: auto;
+    scroll-snap-type: y mandatory;
+    scroll-behavior: smooth;
+    &::-webkit-scrollbar {
+        width: 0px;
+    };
 }

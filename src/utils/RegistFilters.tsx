@@ -1,15 +1,18 @@
 "use client"
 
-import { BossContentsType } from "@/game_datas/Fetchs"
+import { BossContentsType, ContentsType } from "@/game_datas/Fetchs"
 import { RegistFlagStore } from "@/stores/RegistFlagStore";
 import { useEffect, useState } from "react";
 import { useStore } from "zustand";
 
 interface I_useBossToDoRegistFilter {
+    contents_data?: ContentsType[];
     boss_contents_data?: BossContentsType[];
-}
+};
 
-export function useBossToDoRegistFilter({boss_contents_data}: I_useBossToDoRegistFilter){
+export function useRegistFilter(){}
+
+export function useBossToDoRegistFilter({contents_data, boss_contents_data}: I_useBossToDoRegistFilter){
     const [ContentsData, setContentsData] = useState<BossContentsType[]>([]);
     const {ShowAllRegist} = useStore(RegistFlagStore);
 
@@ -27,7 +30,7 @@ export function useBossToDoRegistFilter({boss_contents_data}: I_useBossToDoRegis
     };
 
     return {
-        contents_data: ContentsData,
-        registFilter: BossRegistFilter
+        bossContentsData: ContentsData,
+        bossFilter: BossRegistFilter
     }
 }

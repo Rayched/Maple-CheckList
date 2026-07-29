@@ -96,6 +96,7 @@ export default function BookmarkList(){
                                 charname={data.charname}
                                 charimgurl={data.charimgurl}
                                 worldname={data.worldname}
+                                isEditMode={IsEdits}
                             />
                         );
                     })
