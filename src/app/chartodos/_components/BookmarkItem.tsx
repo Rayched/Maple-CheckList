@@ -8,11 +8,11 @@ import { BookmarkStore } from "@/stores/BookmarkStore";
 interface I_BookmarkItem {
     charname: string;
     charimgurl: string;
-    worldname: string;
+    worldId: string;
     isEditMode: boolean;
 };
 
-export default function BookmarkItem({charname, charimgurl, worldname, isEditMode}: I_BookmarkItem){
+export default function BookmarkItem({charname, charimgurl, worldId, isEditMode}: I_BookmarkItem){
     const router = useRouter();
     const {DeleteBookmark} = useStore(BookmarkStore);
 
@@ -39,7 +39,13 @@ export default function BookmarkItem({charname, charimgurl, worldname, isEditMod
     return (
         <div className={styles.bookmarkitem_container} onClick={RedirectCharpage}>
             <div className={styles.bookmarkitem_bookmarkdata_container}>
-                <span>{charname}</span>
+                <div className={styles.bookmarkitem_chardatabox_container}>
+                    <img className={styles.chardatabox_charimage} src={charimgurl} />
+                    <div className={styles.chardatabox_charnamebox}>
+                        <img className={styles.chardatabox_worldicon} src={`/imgs/worlds/${worldId}.png`} />
+                        <span>{charname}</span>
+                    </div>
+                </div>
             </div>
             {
                 isEditMode ? (

@@ -15,13 +15,17 @@ interface I_CookieOptions {
 export async function AddNewCookies(charname: string){
     const cookieStore = await cookies();
 
-    const PrevData = cookieStore.get("charnames");
+    const PrevData = cookieStore.get("mapletodos_charnames");
 
     if(!PrevData){
-        cookieStore.set("charnames", `${charname}`);
+        cookieStore.set("mapletodos_charnames", `[${charname},]`);
     } else {
-        const UpdateValue = PrevData.value + `,${charname}`;
-        cookieStore.set("charnames", UpdateValue);
+        /**
+         * PrevData (기존 cookie data, charname list)
+         * - 기존 데이터, 배열 형태로 변경
+         * - param 전달받은 charname 값의 중복 여부 따라
+         *   각기 다른 기능 수행
+         */
     }
 }
 

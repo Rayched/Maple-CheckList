@@ -7,6 +7,7 @@ import styles from "../_styles/bookmarklist.module.css";
 import styled from "styled-components";
 import { useRouter } from "next/navigation";
 import BookmarkItem from "./BookmarkItem";
+import { WorldDatas } from "@/game_datas/contentsData";
 
 const UtilButton = styled.div`
     width: 80px;
@@ -90,16 +91,30 @@ export default function BookmarkList(){
             <main className={styles.bookmarklist_mains}>
                 {
                     Bookmarks.map((data, idx) => {
+                        const GetWorldData = WorldDatas.find((worlds) => worlds.worldNm === data.worldname);
                         return (
                             <BookmarkItem 
                                 key={`bookmarkitem_${idx}`}
                                 charname={data.charname}
                                 charimgurl={data.charimgurl}
-                                worldname={data.worldname}
+                                worldId={!GetWorldData ? data.worldname : GetWorldData.worldId}
                                 isEditMode={IsEdits}
                             />
                         );
                     })
+                    /**
+                     * BookmarkList, cookie data 참고하여
+                     * nexon open api의 ocid api, 스케줄러 api 호출함
+                     * 
+                     * ocid => 스케줄러 api 사용하기 위한 선제 조건
+                     * 스케줄러 api => 실시간으로 스케줄러 데이터 조회용
+                     * 
+                     * localstorage에 스케줄러 수행 여부 저장하는 방식도
+                     * 생각을 해봤지만, 이 경우 실시간 데이터 확인에
+                     * 다소 불편함이 있기 때문에 그냥 bookmarklist에서
+                     * 스케줄러 api 호출하고, 그걸 참고해서
+                     * 현재 메할일 수행 여부를 보여주는 방식이 더 나음
+                     */
                 }
             </main>
         </div>
