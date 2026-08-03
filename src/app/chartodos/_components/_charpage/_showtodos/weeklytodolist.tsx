@@ -2,184 +2,155 @@ import { ContentsType } from "@/game_datas/Fetchs";
 import styles from "../../../_styles/_charpage/todolist.module.css";
 import { DailyAndWeeklyData } from "@/game_datas/contentsdatas/DailyAndWeeklys";
 import { useStore } from "zustand";
-import { ViewportWidthStore } from "@/stores/ViewportStore";
-import { useEffect, useState } from "react";
-import { ToDoItem_Contents, ToDoItem_Guilds, ToDoItem_Quest } from "./todoitems";
-import ToDoEmptyMessage from "./EmptyMessage";
 import { RegistFlagStore } from "@/stores/RegistFlagStore";
-
-export interface I_ScheduleData {
-    titleText: string;
-    contents_data: ContentsType[];
-};
+import { useEffect, useState } from "react";
+import { useToDoRegistFilter } from "@/utils/RegistFilters";
+import { ToDoItem_Contents, ToDoItem_Guilds, ToDoItem_Quest } from "./todoitems";
 
 interface I_WeeklyToDoList {
     weeklycontentsdata?: ContentsType[];
 };
 
+export type ContentsCategoryType = {
+    category_id: string;
+    category_name: string;
+};
+
+const WeeklyCategory: ContentsCategoryType[] = [
+    {category_id: "contents", category_name: "주간 컨텐츠"},
+    {category_id: "quest", category_name: "주간 퀘스트"}
+];
+
 export default function WeeklyToDoList({weeklycontentsdata}: I_WeeklyToDoList){
     const {weeklys} = DailyAndWeeklyData;
-    const [ScheduleData, setScheduleData] = useState<I_ScheduleData[]>([]);
+    const [NowCategory, setNowCategory] = useState<ContentsCategoryType>(WeeklyCategory[0]);
+    const [ClearCount, setClearCount] = useState(0);
+
     const {ShowAllRegist} = useStore(RegistFlagStore);
+    const {ContentsData, weeklyFilter} = useToDoRegistFilter({contents_data: weeklycontentsdata})
 
-    //registration_flag = "false" data 필터링용
-    /**
-     * registration_flag (스케줄러 등록 여부)
-     * - true : 등록 O
-     * - false : 등록 X
-     * */
+    const CategoryChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
+        const {currentTarget: {value}} = e;
+
+        if(value === NowCategory.category_id){
+            return;
+        } else if(value === WeeklyCategory[0].category_id){
+            setNowCategory(WeeklyCategory[0]);
+        } else {
+            setNowCategory(WeeklyCategory[1]);
+        }
+    };
+
     useEffect(() => {
-        //weeklycontentsdata == undefined 방지용 (api fetch한 data)
-        console.log(weeklycontentsdata);
-        
-        if(!weeklycontentsdata || weeklycontentsdata.length === 0) return;
-
-        const TypeContents = weeklycontentsdata.filter((data) => data.type === "contents" && data.registration_flag === "true" && !data.content_name.includes("[길드]"));
-        const TypeQuest = weeklycontentsdata.filter((data) => data.type === "quest" && data.registration_flag === "true");
-        const TypeGuild = weeklycontentsdata.filter((data) => data.content_name.includes("[길드]"));
-
-        const NewScheduleData: I_ScheduleData[] = [
-            {
-                titleText: "주간 컨텐츠",
-                contents_data: TypeContents
-            },
-            {
-                titleText: "길드 컨텐츠",
-                contents_data: TypeGuild
-            },
-            {
-                titleText: "주간 퀘스트",
-                contents_data: TypeQuest
-            }
-        ];
-
-        setScheduleData(NewScheduleData);
+        if(!weeklycontentsdata || weeklycontentsdata.length === 0){
+            return;
+        } else if(!ShowAllRegist){
+            const Filters = weeklycontentsdata.filter((data) => data.registration_flag === "true" && data.type === "contents" && data.now_count > 0);
+            console.log(Filters);
+            setClearCount(Filters.length);
+            weeklyFilter(NowCategory.category_id);
+        } else {
+            const Filters = weeklycontentsdata.filter((data) => data.now_count > 0 && data.type === "contents");
+            console.log(Filters);
+            setClearCount(Filters.length);
+            weeklyFilter(NowCategory.category_id);
+        }
     }, []);
 
     useEffect(() => {
         if(!weeklycontentsdata || weeklycontentsdata.length === 0){
             return;
-        } else if(ShowAllRegist){
-            const TypeContents = weeklycontentsdata.filter((data) => data.type === "contents" && !data.content_name.includes("[길드]"));
-            const TypeQuest = weeklycontentsdata.filter((data) => data.type === "quest");
-            const TypeGuild = weeklycontentsdata.filter((data) => data.content_name.includes("[길드]"));
-
-            const NewScheduleData: I_ScheduleData[] = [
-                {
-                    titleText: "주간 컨텐츠",
-                    contents_data: TypeContents
-                },
-                {
-                    titleText: "길드 컨텐츠",
-                    contents_data: TypeGuild
-                },
-                {
-                    titleText: "주간 퀘스트",
-                    contents_data: TypeQuest
-                }
-            ];
-
-            setScheduleData(NewScheduleData);
+        } else if(NowCategory.category_id === "quest"){
+            if(!ShowAllRegist){
+                const Filters = weeklycontentsdata.filter((data) => data.quest_state === "2" && data.type === "quest" && data.registration_flag === "true");
+                setClearCount(Filters.length);
+            } else {
+                const Filters = weeklycontentsdata.filter((data) => data.quest_state === "2" && data.type === "quest");
+                setClearCount(Filters.length);
+            }
+            weeklyFilter(NowCategory.category_id);
         } else {
-            const TypeContents = weeklycontentsdata.filter((data) => data.type === "contents" && data.registration_flag === "true" && !data.content_name.includes("[길드]"));
-            const TypeQuest = weeklycontentsdata.filter((data) => data.type === "quest" && data.registration_flag === "true");
-            const TypeGuild = weeklycontentsdata.filter((data) => data.content_name.includes("[길드]") && data.registration_flag === "true");
-
-            const NewScheduleData: I_ScheduleData[] = [
-                {
-                    titleText: "주간 컨텐츠",
-                    contents_data: TypeContents
-                },
-                {
-                    titleText: "길드 컨텐츠",
-                    contents_data: TypeGuild
-                },
-                {
-                    titleText: "주간 퀘스트",
-                    contents_data: TypeQuest
-                }
-            ];
-
-            setScheduleData(NewScheduleData);
+            if(!ShowAllRegist){
+                const Filters = weeklycontentsdata.filter((data) => data.now_count > 0 && data.type === "contents" && data.registration_flag === "true");
+                setClearCount(Filters.length);
+            } else {
+                const Filters = weeklycontentsdata.filter((data) => data.now_count > 0 && data.type === "contents");
+                setClearCount(Filters.length);
+            }
+            weeklyFilter(NowCategory.category_id);
         }
-    }, [ShowAllRegist]);
+    }, [NowCategory, ShowAllRegist]);
 
     return (
         <div className={styles.todolist_commons_container}>
-            <div className={styles.todolist_container}>
-                {
-                    ScheduleData.length === 0 ? (
-                        <ToDoEmptyMessage 
-                            message_refname={"주간 컨텐츠"}
-                        />
-                    ) : null
-                }
-                {
-                    ScheduleData.map((data, idx) => {
-                        const ContentsEmpty = data.contents_data.filter((weeklycontents) => weeklycontents.type === "contents").length === 0;
-                        const QuestEmpty = data.contents_data.filter((weeklycontents) => weeklycontents.type === "quest").length === 0;
-                        return (
-                            <div key={`weeklytodos_${idx}`} className={styles.todolist_todos}>
-                                <div className={styles.todolist_todos_titles}>
-                                    {data.titleText}
-                                </div>
-                                <div className={styles.todolist_todos_bodys}>
-                                    {ContentsEmpty === true && data.titleText === "주간 컨텐츠" ? (
-                                        <ToDoEmptyMessage 
-                                            message_refname={data.titleText}
-                                        />
-                                    ) : null}
-                                    {QuestEmpty === true && data.titleText === "주간 퀘스트" ? (
-                                        <ToDoEmptyMessage 
-                                            message_refname={data.titleText}
-                                        />
-                                    ) : null}
-                                    {
-                                        data.contents_data.map((data) => {
-                                            const GetRefData = weeklys.find((weekly) => weekly.contentsName === data.content_name);
+           <div className={styles.todolist_todoitems_container}>
+                <div className={styles.todolist_titlebox}>
+                    <select onChange={CategoryChange}>
+                        {
+                            WeeklyCategory.map((data) => {
+                                return (
+                                    <option key={data.category_id} value={data.category_id}>
+                                        {data.category_name}
+                                    </option>
+                                );
+                            })
+                        }
+                    </select>
+                    <span>{`${ClearCount} / ${ContentsData.length}`}</span>
+                </div>
+                <div className={styles.todolist_todoitems_area}>
+                    <div className={styles.todolist_todoitemlist}>
+                        {
+                            ContentsData.map((data) => {
+                                const idx = weeklys.findIndex((refdata) => refdata.contentsName === data.content_name);
 
-                                            if(!GetRefData){
-                                                return null;
-                                            } else if(GetRefData.contents_type === "contents"){
-                                                return (
-                                                    <ToDoItem_Contents 
-                                                        key={GetRefData.contentsId}
-                                                        contents_name={data.content_name}
-                                                        little_name={GetRefData.little_name}
-                                                        now_count={data.now_count}
-                                                        max_count={GetRefData.max_count}
-                                                    />
-                                                );
-                                            } else if(GetRefData.contents_type === "quest"){
-                                                return (
-                                                    <ToDoItem_Quest 
-                                                        key={GetRefData.contentsId}
-                                                        contents_name={data.content_name}
-                                                        little_name={GetRefData.little_name}
-                                                        now_count={data.now_count}
-                                                        max_count={GetRefData.max_count}
-                                                        quest_state={data.quest_state}
-                                                    />
-                                                );
-                                            } else if(GetRefData.contents_type === "guild"){
-                                                return (
-                                                    <ToDoItem_Guilds 
-                                                        key={GetRefData.contentsId}
-                                                        contents_name={data.content_name}
-                                                        little_name={GetRefData.little_name}
-                                                        now_count={data.now_count}
-                                                        max_count={GetRefData.max_count}
-                                                    />
-                                                );
-                                            }                                            
-                                        })
+                                if(idx === -1){
+                                    return null;
+                                } else if(NowCategory.category_id === "quest"){
+                                    //NowCategory.category_id === "quest"
+                                    //'주간 퀘스트' 선택한 경우
+
+                                    return (
+                                        <ToDoItem_Quest 
+                                            key={weeklys[idx].contentsId}
+                                            contents_name={data.content_name}
+                                            quest_state={data.quest_state}
+                                            little_name={weeklys[idx].little_name}
+                                            now_count={data.now_count}
+                                            max_count={weeklys[idx].max_count}
+                                        />
+                                    );
+                                } else {
+                                    //NowCategory.category_id === "contents"
+                                    //'주간 컨텐츠' 선택한 경우
+
+                                    if(data.content_name.includes("길드")){
+                                        return (
+                                            <ToDoItem_Guilds 
+                                                key={weeklys[idx].contentsId}
+                                                contents_name={data.content_name}
+                                                little_name={weeklys[idx].little_name}
+                                                now_count={data.now_count}
+                                                max_count={data.max_count}
+                                            />
+                                        );
+                                    } else {
+                                        return (
+                                            <ToDoItem_Contents 
+                                                key={weeklys[idx].contentsId}
+                                                contents_name={data.content_name}
+                                                little_name={weeklys[idx].little_name}
+                                                now_count={data.now_count}
+                                                max_count={weeklys[idx].max_count}
+                                            />
+                                        );
                                     }
-                                </div>
-                            </div>
-                        );
-                    })
-                }
-            </div>
+                                }
+                            })
+                        }
+                    </div>
+                </div>
+           </div>
         </div>
     );
 }

@@ -6,7 +6,7 @@ import ToDoEmptyMessage from "./EmptyMessage";
 import { BossToDoRefData } from "@/game_datas/contentsdatas/BossContentsData";
 import { useStore } from "zustand";
 import { RegistFlagStore } from "@/stores/RegistFlagStore";
-import { useBossToDoRegistFilter } from "@/utils/RegistFilters";
+import { useToDoRegistFilter } from "@/utils/RegistFilters";
 
 interface I_BossToDoList {
     //cycles: string;  일간(bossDaily)|주간(bossWeekly)|월간(bossMonthly)
@@ -25,14 +25,18 @@ const BossCycles: BossCycleType[] = [
     {cycle_id: "bossMonthly", cycle_name: "월간 보스"}
 ];
 
-export default function BossToDoList({weekly_boss_clearcount, boss_contentsdata}: I_BossToDoList){
+export default function BossToDoList({boss_contentsdata}: I_BossToDoList){
     const [NowCategory, setNowCategory] = useState<BossCycleType>(BossCycles[0]);
     const [CompliteLength, setCompliteLength] = useState(0);
 
     const {ShowAllRegist} = useStore(RegistFlagStore);
-    const {bossContentsData, bossFilter} = useBossToDoRegistFilter({boss_contents_data: boss_contentsdata});
+    const {bossContentsData, bossFilter} = useToDoRegistFilter({boss_contents_data: boss_contentsdata});
 
-    const {dailyboss_refdata, weeklyboss_refdata, monthlyboss_refdata} = BossToDoRefData;
+    const {
+        dailyboss_refdata, 
+        weeklyboss_refdata,
+        monthlyboss_refdata
+    } = BossToDoRefData;
 
     const CategoryChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
         const {currentTarget: {value}} = e;
@@ -48,7 +52,7 @@ export default function BossToDoList({weekly_boss_clearcount, boss_contentsdata}
 
     //Default Data Setting용
     useEffect(() => {
-        if(!boss_contentsdata || !weekly_boss_clearcount || boss_contentsdata.length === 0){
+        if(!boss_contentsdata || boss_contentsdata.length === 0){
             return;
         } else {
             const NewCompliteLength = boss_contentsdata.filter((data) => data.complete_flag === "true" && data.cycle === NowCategory.cycle_id).length;
@@ -59,25 +63,14 @@ export default function BossToDoList({weekly_boss_clearcount, boss_contentsdata}
     }, []);
 
     useEffect(() => {
-        if(!boss_contentsdata || boss_contentsdata.length === 0 || !weekly_boss_clearcount) return;
-
-        if(NowCategory.cycle_id === "bossDaily"){
-            const NewLength = boss_contentsdata.filter((data) => data.cycle === "bossDaily" && data.complete_flag === "true").length;
-            setCompliteLength(NewLength);
-            bossFilter("bossDaily");
-        } else if(NowCategory.cycle_id === "bossWeekly"){
-            setCompliteLength(weekly_boss_clearcount);
-            bossFilter("bossWeekly");
+        if(!boss_contentsdata || boss_contentsdata.length === 0){
+            return;
         } else {
-            const NewLength = boss_contentsdata.filter((data) => data.cycle === "bossMonthly" && data.complete_flag === "true").length;
-            setCompliteLength(NewLength);
-            bossFilter("bossMonthly")
+            const NewClearCount = boss_contentsdata.filter((data) => data.cycle === NowCategory.cycle_id && data.complete_flag === "true");
+            setCompliteLength(NewClearCount.length);
+            bossFilter(NowCategory.cycle_id);
         }
-    }, [NowCategory]);
-
-    useEffect(() => {
-        bossFilter(NowCategory.cycle_id);
-    }, [ShowAllRegist]);
+    }, [NowCategory, ShowAllRegist]);
 
     return (
         <div className={styles.todolist_commons_container}>

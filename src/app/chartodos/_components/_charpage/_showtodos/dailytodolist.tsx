@@ -5,8 +5,10 @@ import styles from "../../../_styles/_charpage/todolist.module.css";
 import { ContextType, useEffect, useState } from "react";
 import { DailyAndWeeklyData } from "@/game_datas/contentsdatas/DailyAndWeeklys";
 import { ToDoItem_Contents, ToDoItem_Quest } from "./todoitems";
-import { I_ScheduleData } from "./weeklytodolist";
 import ToDoEmptyMessage from "./EmptyMessage";
+import { useRegistFilter, useToDoRegistFilter } from "@/utils/RegistFilters";
+import { useStore } from "zustand";
+import { RegistFlagStore } from "@/stores/RegistFlagStore";
 
 interface I_DailyToDoList {
     dailycontentsdata?: ContentsType[];
@@ -14,91 +16,68 @@ interface I_DailyToDoList {
 
 export default function DailyToDoList({dailycontentsdata}: I_DailyToDoList){
     const {dailys} = DailyAndWeeklyData;
-    const [ScheduleData, setScheduleData] = useState<I_ScheduleData[]>([]);
+    const {ContentsData, dailyFilter} = useToDoRegistFilter({contents_data: dailycontentsdata});
+    const {ShowAllRegist} = useStore(RegistFlagStore);
 
     useEffect(() => {
-        if(!dailycontentsdata || dailycontentsdata.length === 0) return;
-
-        const TypeContents = dailycontentsdata.filter((data) => data.type === "contents" && data.registration_flag === "true");
-        const TypeQuest = dailycontentsdata.filter((data) => data.type === "quest" && data.registration_flag === "true");
-
-        const NewScheduleDatas: I_ScheduleData[] = [
-            {
-                titleText: "일일 컨텐츠",
-                contents_data: TypeContents
-            },
-            {
-                titleText: "일일 퀘스트",
-                contents_data: TypeQuest
-            }
-        ];
-        setScheduleData(NewScheduleDatas);
+        if(!dailycontentsdata || dailycontentsdata.length === 0){
+            return;
+        } else {
+            console.log(dailycontentsdata);
+            dailyFilter();
+        }
     }, []);
+
+    useEffect(() => {
+        if(!dailycontentsdata || dailycontentsdata.length === 0){
+            return;
+        } else {
+            dailyFilter();
+        }
+    }, [ShowAllRegist]);
 
     return (
         <div className={styles.todolist_commons_container}>
-            <div className={styles.todolist_container}>
-                {
-                    ScheduleData.length === 0 ? (
-                        <ToDoEmptyMessage 
-                            message_refname={"일일 컨텐츠"}
-                        />
-                    ) : null
-                }
-                {
-                    ScheduleData.map((data, idx) => {
-                        const ContentsEmpty = data.contents_data.filter((contentsdata) => contentsdata.type === "contents").length === 0;
-                        const QuestsEmpty = data.contents_data.filter((contentsdata) => contentsdata.type === "quest").length === 0;
-                       
-                        return (
-                            <div key={`dailytodos_${idx}`} className={styles.todolist_todos}>
-                                <div className={styles.todolist_todos_titles}>{data.titleText}</div>
-                                <div className={styles.todolist_todos_bodys}>
-                                    {
-                                        ContentsEmpty === true && data.titleText === "일일 컨텐츠" ? (
-                                            <ToDoEmptyMessage message_refname="일일 컨텐츠" />
-                                        ) : null
-                                    }
-                                    {
-                                        QuestsEmpty === true && data.titleText === "일일 퀘스트" ? (
-                                            <ToDoEmptyMessage message_refname="일일 퀘스트"/>
-                                        ) : null
-                                    }
-                                    {
-                                        data.contents_data.map((contents) => {
-                                            const GetRefData = dailys.find((daily) => daily.contentsName === contents.content_name);
+            <div className={styles.todolist_todoitems_container}>
+                <div className={styles.todolist_titlebox}>
+                    <div className={styles.todolist_titlebox_singlenamebox}>
+                        {`일일 컨텐츠 / 퀘스트`}
+                    </div>
+                </div>
+                <div className={styles.todolist_todoitems_area}>
+                    <div className={styles.todolist_todoitemlist}>
+                        {
+                            ContentsData.map((data) => {
+                                const RefData = dailys.find((contents) => contents.contentsName === data.content_name);
 
-                                            if(!GetRefData){
-                                                return null;
-                                            } else if(contents.type === "contents" && !ContentsEmpty){
-                                                return (
-                                                    <ToDoItem_Contents 
-                                                        key={GetRefData.contentsId}
-                                                        contents_name={contents.content_name}
-                                                        little_name={GetRefData.little_name}
-                                                        now_count={contents.now_count}
-                                                        max_count={contents.max_count}
-                                                    />
-                                                );
-                                            } else if(contents.type === "quest" && !QuestsEmpty){
-                                                return (
-                                                    <ToDoItem_Quest 
-                                                        key={GetRefData.contentsId}
-                                                        contents_name={contents.content_name}
-                                                        little_name={GetRefData.little_name}
-                                                        quest_state={contents.quest_state}
-                                                        now_count={contents.now_count}
-                                                        max_count={GetRefData.max_count}
-                                                    />
-                                                );
-                                            };
-                                        })
-                                    }
-                                </div>
-                            </div>
-                        );
-                    })
-                }
+                                if(!RefData){
+                                    return null;
+                                } else if(data.type === "contents"){
+                                    return (
+                                        <ToDoItem_Contents 
+                                            key={RefData.contentsId}
+                                            contents_name={data.content_name}
+                                            little_name={RefData.little_name}
+                                            now_count={data.now_count}
+                                            max_count={RefData.max_count}
+                                        />
+                                    );
+                                } else {
+                                    return (
+                                        <ToDoItem_Quest 
+                                            key={RefData.contentsId}
+                                            contents_name={data.content_name}
+                                            little_name={RefData.little_name}
+                                            now_count={data.now_count}
+                                            max_count={RefData.max_count}
+                                            quest_state={data.quest_state}
+                                        />
+                                    );
+                                }
+                            })
+                        }
+                    </div>
+                </div>
             </div>
         </div>
     );

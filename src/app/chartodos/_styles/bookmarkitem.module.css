@@ -17,7 +17,7 @@
 }
 
 .bookmarkitem_bookmarkdata_container {
-    width: 94%;
+    width: 90%;
     height: 100%;
     display: flex;
     flex-direction: row;
@@ -27,7 +27,6 @@
 .bookmarkitem_deletebtn_container {
     width: 5%;
     height: 100%;
-    padding-right: 3px;
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -36,7 +35,8 @@
 .bookmarkitem_deletebutton {
     width: 19px;
     height: 19px;
-    margin: 3px 0px;
+    margin-top: 5px;
+    margin-right: 3px;
     display: flex;
     flex-direction: column;
     align-items: center;

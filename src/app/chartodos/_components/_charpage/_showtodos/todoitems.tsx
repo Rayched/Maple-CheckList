@@ -182,9 +182,9 @@ export function ToDoItem_Guilds({contents_name, little_name, now_count, max_coun
     };
 
     return (
-        <ToDoItemContainer contents_state={''}>
+        <ToDoItemContainer contents_state={now_count > 0 ? "true" : "false"}>
             <div className={styles.todoitem_checkbox_area}>
-                <ToDoCheckbox isdone={""} />
+                <ToDoCheckbox isdone={now_count > 0 ? "true" : "false"} />
             </div>
             <div className={styles.todoitem_children_area}>
                 <ToDoTextBox 
