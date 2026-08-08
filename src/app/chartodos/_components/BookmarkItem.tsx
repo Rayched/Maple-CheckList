@@ -4,17 +4,35 @@ import { useRouter } from "next/navigation";
 import styles from "../_styles/bookmarkitem.module.css";
 import { useStore } from "zustand";
 import { BookmarkStore } from "@/stores/BookmarkStore";
+import { BossContentsType, ContentsType } from "@/game_datas/Fetchs";
 
 interface I_BookmarkItem {
     charname: string;
     charimgurl: string;
     worldId: string;
     isEditMode: boolean;
+
+    //Scheduler api fetch data's
+    daily_contents?: ContentsType[];
+    weekly_contents?: ContentsType[];
+    boss_contents?: BossContentsType[];
+    boss_clear_count?: number;
 };
 
-export default function BookmarkItem({charname, charimgurl, worldId, isEditMode}: I_BookmarkItem){
+export default function BookmarkItem({
+    charname, charimgurl, worldId, isEditMode, daily_contents, 
+    weekly_contents, boss_contents, boss_clear_count
+}: I_BookmarkItem){
     const router = useRouter();
     const {DeleteBookmark} = useStore(BookmarkStore);
+
+    const DailyContentsFilter = (
+        daily_contents ? daily_contents.filter((data) => data.registration_flag === "true") : null
+    );
+
+    const WeeklyContentsFilter = (
+        weekly_contents ? weekly_contents.filter((data) => data.registration_flag === "true") : null
+    );
 
     const RedirectCharpage = () => {
         if(isEditMode){
@@ -44,6 +62,29 @@ export default function BookmarkItem({charname, charimgurl, worldId, isEditMode}
                     <div className={styles.chardatabox_charnamebox}>
                         <img className={styles.chardatabox_worldicon} src={`/imgs/worlds/${worldId}.png`} />
                         <span>{charname}</span>
+                    </div>
+                </div>
+                <div className={styles.bookmarkitem_scheduledatabox}>
+                    <div>
+                        <div>일일 및 주간 컨텐츠</div>
+                        <div>
+                            <span>일일 컨텐츠 개수</span>
+                            <span>
+                                <span>{DailyContentsFilter?.length}</span>
+                            </span>
+                        </div>
+                        <div>
+                            <span>주간 컨텐츠 개수</span>
+                            <span>{WeeklyContentsFilter?.length}</span>
+                        </div>
+                    </div>
+                    <div>
+                        <span>주간 보스</span>
+                        <span>
+                            {
+                                boss_clear_count ? boss_clear_count : 0
+                            } / 12
+                        </span>
                     </div>
                 </div>
             </div>

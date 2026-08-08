@@ -4,11 +4,11 @@ import { ClassDatas, WorldDatas } from "@/game_datas/contentsData";
 import styles from "../../_styles/_charpage/charinfobox.module.css";
 import { useStore } from "zustand";
 import { BookmarkStore, I_BookmarkData } from "@/stores/BookmarkStore";
-import styled from "styled-components";
 import { ViewportWidthStore } from "@/stores/ViewportStore";
-import { AddNewCookies, DeleteCookies } from "@/utils/CookieUtils";
 import { RegistFlagStore } from "@/stores/RegistFlagStore";
 import { useEffect, useState } from "react";
+import { getCookie, getCookies, setCookie } from "cookies-next/client";
+import useClientCookieUtils from "@/utils/cookies/ClientCookieUtils";
 
 interface I_CharInfobox {
     charname?: string;
@@ -37,8 +37,10 @@ export default function Charpage_CharInfobox({charname, charlevel, charclass, ch
     const {ShowAllRegist, setShowAllRegist} = useStore(RegistFlagStore);
 
     const [IsAddBookmarks, setIsAddBookmarks] = useState(false);
-    const [WorldIconName, setWorldIconName] = useState("");
-    const [ClassIconName, setClassIconName] = useState("");
+
+    //직업군 및 서버 아이콘 이미지 호출용
+    const GetWorldDatas = WorldDatas.find((worlds) => worlds.worldNm === worldname);
+    const GetClassDatas = ClassDatas.find((classdata) => classdata.class_fullNm === charclass);
 
     const BookmarkBtnClicked = () => {
         /**
@@ -84,15 +86,11 @@ export default function Charpage_CharInfobox({charname, charlevel, charclass, ch
 
         setShowAllRegist(false);
 
-        const GetWorldData = WorldDatas.find((worlds) => worlds.worldNm === worldname);
-        const GetClassData = ClassDatas.find((classdata) => classdata.class_fullNm === charclass);
         const BookmarkCheck = Bookmarks.find((data) => data.charname === charname);
 
-        if(!GetWorldData || !GetClassData || !BookmarkCheck){
+        if(!BookmarkCheck){
             return;
         } else {
-            setWorldIconName(GetWorldData.worldId);
-            setClassIconName(GetClassData.class_category);
             setIsAddBookmarks(true);
 
             const updateData: I_BookmarkData = {
@@ -116,13 +114,27 @@ export default function Charpage_CharInfobox({charname, charlevel, charclass, ch
                 <div className={styles.charinfobox_chardata_area}>
                     <div className={styles.chardatabox_chardata}>
                         <div className={styles.charnamebox}>
-                            {WorldIconName !== "" ? (<img src={`/imgs/worlds/${WorldIconName}.png`} className={styles.worldicon} />) : null}
+                            {
+                                GetWorldDatas ? (
+                                    <img 
+                                        src={`/imgs/worlds/${GetWorldDatas.worldId}.png`} 
+                                        className={styles.worldicon} 
+                                    />
+                                ) : null
+                            }
                             <span className={styles.charnametext}>{charname}</span>
                         </div>
                         <div className={styles.charlevelbox}>
                             <span className={styles.charleveldata}>{`LV.${charlevel}`}</span>
                             <span className={styles.charclassdata}>
-                                {ClassIconName !== "" ? <img src={`/imgs/job_icons/${ClassIconName}.png`} /> : null}
+                                {
+                                    GetClassDatas ? (
+                                        <img 
+                                            src={`/imgs/job_icons/${GetClassDatas.class_category}.png`} 
+                                            className={styles.classicon}
+                                        />
+                                    ) : null
+                                }
                                 <div>
                                     {String(charclass).length < 6 ? `${charclass}` : null}
                                 </div>

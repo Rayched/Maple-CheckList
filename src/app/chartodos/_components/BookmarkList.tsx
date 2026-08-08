@@ -8,6 +8,11 @@ import styled from "styled-components";
 import { useRouter } from "next/navigation";
 import BookmarkItem from "./BookmarkItem";
 import { WorldDatas } from "@/game_datas/contentsData";
+import { I_SchedulerData } from "@/game_datas/Fetchs";
+
+interface I_BookmarkList {
+    AllScheduleData: I_SchedulerData[];
+};
 
 const UtilButton = styled.div`
     width: 80px;
@@ -26,7 +31,7 @@ const UtilButton = styled.div`
     }
 `;
 
-export default function BookmarkList(){
+export default function BookmarkList({AllScheduleData}: I_BookmarkList){
     const {Bookmarks} = useStore(BookmarkStore);
     const router = useRouter();
 
@@ -92,6 +97,8 @@ export default function BookmarkList(){
                 {
                     Bookmarks.map((data, idx) => {
                         const GetWorldData = WorldDatas.find((worlds) => worlds.worldNm === data.worldname);
+                        const GetTargetScheduleData = AllScheduleData.find((scheduledata) => scheduledata.character_name === data.charname);
+
                         return (
                             <BookmarkItem 
                                 key={`bookmarkitem_${idx}`}
@@ -99,6 +106,10 @@ export default function BookmarkList(){
                                 charimgurl={data.charimgurl}
                                 worldId={!GetWorldData ? data.worldname : GetWorldData.worldId}
                                 isEditMode={IsEdits}
+                                boss_clear_count={GetTargetScheduleData?.weekly_boss_clear_count}
+                                daily_contents={GetTargetScheduleData?.daily_contents}
+                                weekly_contents={GetTargetScheduleData?.weekly_contents}
+                                boss_contents={GetTargetScheduleData?.boss_contents}
                             />
                         );
                     })

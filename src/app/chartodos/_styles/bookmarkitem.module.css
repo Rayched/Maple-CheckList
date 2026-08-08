@@ -59,6 +59,15 @@
     };
 }
 
+/*북마크 아이템, 스케줄러 데이터 box*/
+.bookmarkitem_scheduledatabox {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 70%;
+    height: 100%;
+}
+
 /*북마크 삭제 버튼 관련 css code*/
 .bookmarkitem_deletebtn_container {
     width: 5%;

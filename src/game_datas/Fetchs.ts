@@ -56,7 +56,7 @@ export interface BossContentsType {
      */
 };
 
-interface I_SchedulerData {
+export interface I_SchedulerData {
     character_name?: string;
     character_level?: number;
     character_class?: string;
@@ -127,20 +127,32 @@ export async function GetCharScheduleData(ocid?: string){
  * - 북마크 등록된 캐릭터들의 스케줄러 데이터 return하는 함수
  */
 
-export async function GetBookmarksSchduleData(charnames: string[]){
+export async function GetBookmarksSchduleData(charnames?: string[]){
     /**
      * cookie data, charnames (북마크 등록된 캐릭터 명 list)
      */
-    const Ocids = await Promise.all(
-        charnames.map((value) => GetOcids(value).then((resp) => resp?.ocid))
-    );
+    if(charnames === undefined){
+        console.log(`charnames가 undefined일 수도 있습니다.`);
+        return;
+    }
 
-    if(Ocids && Ocids.length > 0){
+    const Ocids = (await Promise.all(
+        charnames.map(
+            async(value) => {
+                const resp = await GetOcids(value);
+                return resp?.ocid;
+            })
+    )).filter((data) => data !== undefined);
+
+    if(Ocids.length > 0){
         const ScheduleData = await Promise.all(
-            Ocids.map((value) => GetCharScheduleData(value).then((resp) => resp))
+            Ocids.map(async(ocid) => {
+                const Resp = await GetCharScheduleData(ocid);
+                return Resp;
+            })
         );
 
-        if(ScheduleData === null || !ScheduleData) return;
+        if(ScheduleData === null) return;
 
         const ModifyScheduleData = ScheduleData.map((data) => {
             if(data === null){
@@ -159,11 +171,11 @@ export async function GetBookmarksSchduleData(charnames: string[]){
 
                 return NewScheduleData;
             }
-        });
+        }).filter((data) => data !== null);
 
         return ModifyScheduleData;
     } else {
-        console.log("fetch error");
+        console.log("ocid is undefined or fetch error");
         return;
     }
-}
+};
